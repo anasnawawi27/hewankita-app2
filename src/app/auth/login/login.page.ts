@@ -57,6 +57,7 @@ export class LoginPage implements OnInit {
               this._encryptionService.encryption(res.data.access_token)
             )
           );
+          localStorage.setItem('isRegisteredHewanKita', 'true');
           localStorage.setItem('isLoginHewanKita', 'true');
           localStorage.setItem('hewanKitaUserMobile', JSON.stringify(res.data.account));
 
