@@ -1,0 +1,18 @@
+<ion-header class="common-header bg-white">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Profile</ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-avatar>
+    <img
+      alt="Silhouette of a person's head"
+      [src]="user.profile_image ? (user.profile_image | imgCld ) : 'assets/images/avatar.svg'"
+    />
+  </ion-avatar>
+  <h3>Akun</h3>
+  <h3>Pet Shop</h3>
+</ion-content>

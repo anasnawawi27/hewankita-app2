@@ -253,8 +253,9 @@
     #filterModal
     class="filter-modal"
     [isOpen]="openFilter"
+    [initialBreakpoint]="0.5"
     [backdropDismiss]="false"
-    [showBackdrop]="false"
+    [mode]="'ios'"
   >
     <ng-template>
       <ion-content class="ion-padding">
@@ -296,7 +297,11 @@
           </span>
         </div>
       </ion-content>
-      <ion-toolbar slot="end" class="common-toolbar">
+      <ion-toolbar
+        style="position: absolute; bottom: 50%"
+        slot="end"
+        class="common-toolbar"
+      >
         <ion-row>
           <ion-col size="6">
             <ion-button
