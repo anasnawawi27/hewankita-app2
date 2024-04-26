@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { ProfilePageRoutingModule } from './profile-routing.module';
 import { lucideChevronLeft } from '@ng-icons/lucide';
 import { ProfilePage } from './profile.page';
-import { FormPage } from './form/form.page';
 import { NgIconsModule } from '@ng-icons/core';
 import { CorePipesModule } from 'src/pipes/pipes.module';
 
@@ -20,6 +19,6 @@ import { CorePipesModule } from 'src/pipes/pipes.module';
     NgIconsModule.withIcons({ lucideChevronLeft }),
     ProfilePageRoutingModule,
   ],
-  declarations: [ProfilePage, FormPage]
+  declarations: [ProfilePage]
 })
 export class ProfilePageModule {}
