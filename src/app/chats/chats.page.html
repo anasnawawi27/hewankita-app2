@@ -1,0 +1,129 @@
+<ion-header class="common-header bg-white">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Chats </ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-list *ngIf="!loading; else loader" mode="md" class="ion-no-padding">
+    <ng-container *ngIf="chats.length; else empty"></ng-container>
+    <ion-item
+      (click)="onOpenDetail(chat)"
+      *ngFor="let chat of chats"
+      lines="full"
+      [button]="true"
+    >
+      <ion-thumbnail slot="start" style="border-radius: 50%">
+        <ng-container *ngIf="user.id == chat.sender_id">
+          <img
+            style="border-radius: 50%"
+            [src]="chat.shop.profile_image ? (chat.shop.profile_image | imgCld) : 'assets/images/avatar.svg'"
+          />
+        </ng-container>
+        <ng-container *ngIf="user.id == chat.receiver_id">
+          <img
+            style="border-radius: 50%"
+            [src]="chat.user.profile_image ? (chat.user.profile_image | imgCld) : 'assets/images/avatar.svg'"
+          />
+        </ng-container>
+      </ion-thumbnail>
+      <div>
+        <h6
+          style="
+            font-size: 17px;
+            font-weight: 600;
+            margin-top: 0;
+            color: #636363;
+          "
+        >
+          <ng-container *ngIf="user.id == chat.sender_id">
+            {{ chat.shop?.shop?.name || chat.shop.fullname }}
+          </ng-container>
+          <ng-container *ngIf="user.id == chat.receiver_id">
+            {{ chat.user.fullname }}
+          </ng-container>
+        </h6>
+
+        <p
+          style="
+            width: 230px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+            font-size: 15px;
+            color: #818181;
+          "
+          [class.ion-text-bold]="chat.unseen"
+        >
+          {{ chat.last_message }}
+        </p>
+      </div>
+      <div slot="end">
+        <span
+          style="
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: #b2b2b2;
+            margin-bottom: 10px;
+          "
+          >{{ chat.updated_at | date: 'HH:mm'}}</span
+        >
+        <span
+          *ngIf="chat.unseen"
+          class="badge"
+          style="
+            background: var(--ion-color-primary);
+            color: white;
+            margin: 0 auto;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            font-weight: 600;
+          "
+          >{{ chat.unseen }}</span
+        >
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ng-template #loader>
+  <ion-list mode="ios" class="ion-no-padding">
+    <ion-item
+      class="ion-margin-bottom"
+      *ngFor="let val of loop(10)"
+      lines="none"
+    >
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+        <p>
+          <ion-skeleton-text
+            [animated]="true"
+            style="width: 60%"
+          ></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text
+            [animated]="true"
+            style="width: 30%"
+          ></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ng-template>
+
+<ng-template #empty>
+  <div class="ion-padding ion-text-center not-found" style="margin-top: 200px">
+    <img src="assets/illustrations/no-chats.svg" />
+    <h4>Belum Ada Chat</h4>
+  </div>
+</ng-template>

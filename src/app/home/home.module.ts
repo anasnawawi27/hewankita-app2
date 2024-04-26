@@ -1,19 +1,26 @@
+import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
-
+import { SwiperModule } from 'swiper/angular';
 import { HomePageRoutingModule } from './home-routing.module';
+import { CorePipesModule } from 'src/pipes/pipes.module';
 
+import { NgIconsModule } from '@ng-icons/core';
+import { lucideSearch, lucideMapPin, lucideShoppingCart, lucideChevronsRight, lucideChevronRight } from '@ng-icons/lucide';
+import { ImageViewPage } from '../image-view/image-view.page';
 
 @NgModule({
   imports: [
+    IonicModule,
     CommonModule,
     FormsModule,
-    IonicModule,
-    HomePageRoutingModule
+    SwiperModule,
+    HomePageRoutingModule,
+    CorePipesModule,
+    NgIconsModule.withIcons({ lucideSearch, lucideMapPin, lucideShoppingCart, lucideChevronsRight, lucideChevronRight })
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, ImageViewPage]
 })
-export class HomePageModule {}
+export class HomPageModule {}

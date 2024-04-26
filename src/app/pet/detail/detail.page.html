@@ -1,0 +1,338 @@
+<ion-header mode="ios" class="common-header bg-white">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Detail Pet</ion-title>
+</ion-header>
+<ion-content class="bg-main" [fullscreen]="true">
+  <div class="top">
+    <div class="swiper swiper-pet">
+      <div class="swiper-wrapper wrapper-pet">
+        <div *ngIf="loading" class="swiper-slide">
+          <ion-skeleton-text
+            [animated]="true"
+            style="
+              width: 100%;
+              height: 454px;
+              border-radius: 0 0 15px 15px;
+              margin-bottom: 10px;
+              margin-top: -3px;
+            "
+          ></ion-skeleton-text>
+        </div>
+        <ng-container *ngIf="!loading && data">
+          <div
+            class="swiper-slide"
+            *ngFor="let image of data.images | convertArray"
+          >
+            <img [src]="image | imgCld" />
+          </div>
+        </ng-container>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+
+    <div *ngIf="!loading" class="rating">
+      <span>{{ data.rating }}</span>
+      <ion-icon name="star" class="star"></ion-icon>
+    </div>
+  </div>
+
+  <!-- Image preview -->
+  <div class="previews ion-margin">
+    <swiper [slidesPerView]="4.5" [spaceBetween]="10" [pagination]="true">
+      <ng-container *ngIf="loading">
+        <ng-template swiperSlide *ngFor="let val of loop(4)">
+          <div class="img-preview ion-activatable">
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 100%; height: 100%; border-radius: 10px; margin: 0"
+            ></ion-skeleton-text>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="!loading">
+        <ng-template
+          swiperSlide
+          *ngFor="let image of data.images | convertArray; let i = index"
+        >
+          <div
+            (click)="moveSlide(i)"
+            class="img-preview active ion-activatable"
+            [class.active]="activeIndex == i"
+          >
+            <ion-ripple-effect></ion-ripple-effect>
+            <div class="overlay" *ngIf="activeIndex !== i"></div>
+            <img [src]="image | imgCld" />
+          </div>
+        </ng-template>
+      </ng-container>
+    </swiper>
+  </div>
+
+  <ng-container *ngIf="!loading && data; else loader">
+    <div class="ion-padding-start ion-padding-end ion-padding-bottom">
+      <!-- Title -->
+      <div class="title">
+        <h6 class="name">{{ data.name }}</h6>
+        <div class="summary">
+          <div class="price">
+            <p>
+              <ng-container *ngIf="!data.discount_type"
+                >{{ data.price | currencyID }}</ng-container
+              >
+              <ng-container *ngIf="data.discount_type == 'amount'"
+                >{{ data.price - data.discount_amount | currencyID
+                }}</ng-container
+              >
+              <ng-container *ngIf="data.discount_type == 'percent'"
+                >{{ data.price - (data.price * (data.discount_percent / 100)) |
+                currencyID }}</ng-container
+              >
+            </p>
+            <p *ngIf="data.discount_type" class="price-original">
+              {{ data.price | currencyID }}
+            </p>
+            <div *ngIf="data.discount_type" class="badge-discount">
+              <ng-container *ngIf="data.discount_type == 'percent'">
+                {{ data.discount_percent }}%
+              </ng-container>
+              <ng-container *ngIf="data.discount_type == 'amount'">
+                {{ (data.discount_amount / data.price) * 100 | number : '1.2-2'
+                }}%
+              </ng-container>
+            </div>
+          </div>
+          <small class="sold"> Terjual {{ totalSold }} Ekor </small>
+        </div>
+      </div>
+
+      <div *ngIf="!data.stock" class="alert danger">
+        <span>Stok Pet Habis</span>
+      </div>
+
+      <!-- Shop -->
+      <div class="shop">
+        <div
+          class="detail"
+          [routerLink]="'/shop/detail/' + data.shop_id"
+          routerDirection="forward"
+        >
+          <img
+            class="avatar"
+            [src]="data?.shop?.user?.profile_image ? (data?.shop?.user?.profile_image | imgCld) : 'assets/images/avatar.svg'"
+          />
+          <div class="name">
+            <h6>
+              {{ data.shop.name }}
+              <ng-icon
+                *ngIf="data.shop.is_verified"
+                size="18"
+                name="saxTickCircleBulk"
+              ></ng-icon>
+            </h6>
+            <p class="ion-text-capitalize">
+              {{ data.shop.city.replace('KABUPATEN', '').toLowerCase() }}
+            </p>
+          </div>
+        </div>
+        <div (click)="onChat(data)" class="chat ion-activatable">
+          <ng-icon size="25" name="saxMessageBold"></ng-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+        <img class="accent" src="assets/accent-1.svg" />
+      </div>
+
+      <!-- Detail -->
+      <div class="detail ion-margin-top">
+        <h6 class="heading">Detail</h6>
+        <ion-row class="ion-margin-top">
+          <ion-col size="4">
+            <div class="summary">
+              <span>Gender</span>
+              <h6>{{ data.gender == 'male' ? 'Jantan' : 'Betina' }}</h6>
+            </div>
+          </ion-col>
+          <ion-col size="4">
+            <div class="summary">
+              <span>Umur</span>
+              <h6>{{ data.age }}</h6>
+            </div>
+          </ion-col>
+          <ion-col size="4">
+            <div class="summary">
+              <span>Berat</span>
+              <h6>{{ data.weight }} Kg</h6>
+            </div>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+
+    <div class="description ion-padding">
+      <h6 class="heading">Deskripsi</h6>
+      <iframe
+        *ngIf="data.description_url"
+        width="100%"
+        height="315"
+        allowscriptaccess="always"
+        src="https://www.youtube.com/embed/3u3EHJuf4Mg?si=EUc_UcZmWfeFbycm"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+
+      <div class="desc-section">
+        <p>{{ data.description }}</p>
+      </div>
+
+      <div class="mt-40px">
+        <h6 class="heading">Review</h6>
+        <ng-container *ngIf="data.reviews.length; else noReview">
+          <ion-list class="review">
+            <ion-item *ngFor="let d of data.reviews">
+              <ion-row>
+                <ion-col size="2">
+                  <ion-avatar class="ion-margin-top">
+                    <img
+                      alt="Silhouette of a person's head"
+                      [src]="d.user.profile_image ? (d.user.profile_image | imgCld) : 'assets/images/avatar.svg'"
+                    />
+                  </ion-avatar>
+                </ion-col>
+                <ion-col size="10">
+                  <div class="ion-padding-top">
+                    <h6 class="fullname">{{ d.user.fullname }}</h6>
+                    <star-rating
+                      class="ion-margin-bottom"
+                      size="medium"
+                      [rating]="d.rating"
+                      staticColor="ok"
+                      [readOnly]="true"
+                    ></star-rating>
+                    <div class="review-section">
+                      <p>{{ d.review }}</p>
+                    </div>
+                    <ion-row *ngIf="d.images">
+                      <ion-col
+                        *ngFor="let image of d.images | convertArray"
+                        size="4"
+                      >
+                        <div
+                          (click)="viewImage(image)"
+                          class="preview-img ion-activatable"
+                        >
+                          <img [src]="image | imgCld" />
+                          <ion-ripple-effect></ion-ripple-effect>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-list>
+          <div
+            (click)="seeAll()"
+            class="view-all ion-text-center ion-margin-vertical ion-activatable"
+          >
+            <span> Lihat Semua </span>
+            <ng-icon size="18" name="lucideChevronsRight"></ng-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+        </ng-container>
+      </div>
+
+      <ng-template #noReview>
+        <div class="ion-padding ion-text-center not-found">
+          <img src="assets/illustrations/no-review.svg" />
+          <h4>Belum Ada Review</h4>
+        </div>
+      </ng-template>
+    </div>
+  </ng-container>
+</ion-content>
+<ion-toolbar slot="end">
+  <div class="toolbar-inner">
+    <ion-button
+      style="width: 100%; margin-right: 10px"
+      mode="ios"
+      expand="block"
+      color="primary"
+      shape="round"
+      [disabled]="loading || formLoading || !data?.stock "
+    >
+      <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+      <span *ngIf="!formLoading"
+        >{{ !data?.stock ? 'Stok Pet Kosong' : 'Beli Sekarang' }}</span
+      >
+    </ion-button>
+    <div (click)="addFav(data?.id)" class="add-fav ion-activatable">
+      <ion-icon
+        color="danger"
+        [name]=" !data?.favourite ? 'heart-outline' : 'heart'"
+      ></ion-icon>
+      <ion-ripple-effect></ion-ripple-effect>
+    </div>
+  </div>
+</ion-toolbar>
+
+<ng-template #loader>
+  <div class="loader">
+    <div class="ion-margin">
+      <h3>
+        <ion-skeleton-text
+          [animated]="true"
+          style="width: 100%; height: 15px; border-radius: 10px"
+        ></ion-skeleton-text>
+      </h3>
+
+      <div style="display: flex; justify-content: space-between">
+        <ion-skeleton-text
+          [animated]="true"
+          style="width: 40%; height: 15px; border-radius: 10px"
+        ></ion-skeleton-text>
+        <ion-skeleton-text
+          [animated]="true"
+          style="width: 20%; height: 15px; border-radius: 10px"
+        ></ion-skeleton-text>
+      </div>
+
+      <ion-skeleton-text
+        class="ion-margin-vertical"
+        [animated]="true"
+        style="width: 100%; height: 70px; border-radius: 15px"
+      ></ion-skeleton-text>
+    </div>
+
+    <ion-row class="ion-margin">
+      <ion-col size="3">
+        <ion-skeleton-text
+          [animated]="true"
+          style="width: 100%; height: 70px; border-radius: 10px"
+        ></ion-skeleton-text>
+      </ion-col>
+      <ion-col size="3">
+        <ion-skeleton-text
+          [animated]="true"
+          style="width: 100%; height: 70px; border-radius: 10px"
+        ></ion-skeleton-text>
+      </ion-col>
+      <ion-col size="3">
+        <ion-skeleton-text
+          [animated]="true"
+          style="width: 100%; height: 70px; border-radius: 10px"
+        ></ion-skeleton-text>
+      </ion-col>
+      <ion-col size="3">
+        <ion-skeleton-text
+          [animated]="true"
+          style="width: 100%; height: 70px; border-radius: 10px"
+        ></ion-skeleton-text>
+      </ion-col>
+    </ion-row>
+  </div>
+</ng-template>

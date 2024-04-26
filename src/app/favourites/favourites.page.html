@@ -1,0 +1,183 @@
+<ion-header class="common-header bg-white">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Favorit </ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding bg-main">
+  <ng-container *ngIf="!loading; else loader">
+    <div class="fav-section" *ngIf="data.length">
+      <ng-container *ngFor="let d of data; let i = index">
+        <div class="shop shop-in-fav ion-no-margin ion-no-radius-top pr-10px">
+          <div class="detail">
+            <img
+              class="avatar"
+              [src]="d.shop.user.profile_image ? (d.shop.user.profile_image | imgCld) : 'assets/images/avatar.svg'"
+            />
+            <div class="name">
+              <h6>
+                {{ d.shop.name }}
+                <ng-icon
+                  *ngIf="d.shop.is_verified"
+                  size="18"
+                  name="saxTickCircleBulk"
+                ></ng-icon>
+              </h6>
+              <p class="ion-text-capitalize">
+                {{ d.shop.city.replace('KABUPATEN', '').toLowerCase() }}, {{
+                d.shop.province.toLowerCase() }}
+              </p>
+            </div>
+          </div>
+          <ion-checkbox
+            (ionChange)="onCheckedAll(i)"
+            mode="ios"
+            [(ngModel)]="d.checked_all"
+          ></ion-checkbox>
+        </div>
+        <ion-card
+          *ngFor="let pet of d.pets; let i2 = index"
+          class="card-vertical"
+        >
+          <ion-card-content>
+            <div class="inner">
+              <img
+                class="thumb-img"
+                [src]="(pet.images | firstArray) | imgCld"
+              />
+              <div class="right">
+                <div class="top with-action">
+                  <div>
+                    <h6 class="name">{{ pet.name }}</h6>
+                    <p class="price ion-text-bold">Rp. 3.500.000</p>
+                  </div>
+                  <ion-checkbox
+                    (ionChange)="onChecked(i, i2)"
+                    [(ngModel)]="pet.checked"
+                    mode="ios"
+                  ></ion-checkbox>
+                </div>
+                <div class="bottom">
+                  <div class="detail" [routerLink]="'/pet/detail/'">
+                    <div class="rating">
+                      <span>{{ pet.rating }}</span>
+                      <ion-icon name="star" class="star"></ion-icon>
+                    </div>
+                  </div>
+                  <div class="action">
+                    <div
+                      (click)="onDelete(pet.id)"
+                      class="add-fav ion-activatable ion-no-margin"
+                    >
+                      <ion-icon
+                        name="trash-outline"
+                        size="20"
+                        color="danger"
+                      ></ion-icon>
+                      <ion-ripple-effect></ion-ripple-effect>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+        <div
+          *ngIf="d.selected_pet"
+          class="summary ion-border-bottom ion-padding-bottom"
+        >
+          <ion-row>
+            <ion-col size="12">
+              <ion-button
+                mode="ios"
+                expand="block"
+                color="primary"
+                shape="round"
+                (click)="checkOut()"
+              >
+                <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+                <span *ngIf="!formLoading"
+                  >Check Out
+                  <span class="ion-text-bold"
+                    >({{ d.selected_pet }})</span
+                  ></span
+                >
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ng-container>
+    </div>
+    <div class="empty-state ion-text-center" *ngIf="!data.length">
+      <img src="assets/illustrations/empty-fav.svg" class="ion-margin-top" />
+      <h6>Peliharaan Favorit Masih Kosong</h6>
+      <p>Yuk tambahkan peliharaan favorit dan bawa pulang sekarang !</p>
+    </div>
+  </ng-container>
+</ion-content>
+
+<ng-template #loader>
+  <ng-container *ngFor="let val of loop(2)">
+    <ion-item
+      class="ion-margin-bottom"
+      lines="none"
+      style="--background: transparent"
+    >
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text
+          style="border-radius: 100px"
+          [animated]="true"
+        ></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+        <p>
+          <ion-skeleton-text
+            [animated]="true"
+            style="width: 60%; border-radius: 10px"
+          ></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text
+            [animated]="true"
+            style="width: 30%; border-radius: 10px"
+          ></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-card *ngFor="let i of loop(2)" class="card-vertical">
+      <ion-card-content>
+        <ion-item class="loader" lines="none">
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              <ion-skeleton-text
+                [animated]="true"
+                style="width: 80%"
+              ></ion-skeleton-text>
+            </h3>
+            <p style="margin-bottom: 15px">
+              <ion-skeleton-text
+                [animated]="true"
+                style="width: 60%"
+              ></ion-skeleton-text>
+            </p>
+            <div style="display: flex; justify-content: space-between">
+              <ion-skeleton-text
+                [animated]="true"
+                style="width: 40%"
+              ></ion-skeleton-text>
+              <ion-skeleton-text
+                [animated]="true"
+                style="width: 20%"
+              ></ion-skeleton-text>
+            </div>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ng-template>

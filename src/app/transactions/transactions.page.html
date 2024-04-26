@@ -1,0 +1,74 @@
+<ion-header class="common-header bg-white">
+  <div
+    routerLink="/home"
+    routerDirection="back"
+    slot="start"
+    class="back left ion-activatable"
+  >
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Transaksi</ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding bg-main">
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <h6 *ngIf="rows.length" class="ion-text-bold">Daftar Transaksi</h6>
+  <ng-template #loader>
+    <ion-skeleton-text
+      animated
+      style="margin-top: 20px; height: 10%"
+    ></ion-skeleton-text>
+    <ion-skeleton-text animated style="height: 10%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="height: 10%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="height: 10%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="height: 10%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="height: 10%"></ion-skeleton-text>
+  </ng-template>
+
+  <div *ngIf="!loading; else loader">
+    <ion-card *ngIf="rows.length">
+      <ion-card-content class="ion-no-padding">
+        <ion-list mode="ios" class="ion-no-padding">
+          <ion-item
+            [routerLink]="'/transactions/detail/' + row.id"
+            routerDirection="forward"
+            button
+            class="item"
+            lines="none"
+            *ngFor="let row of rows"
+          >
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col size="12">
+                  <h6>{{ row.code }}</h6>
+                  <span>{{ row.date | date: 'dd/MM/YYYY'}}</span>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    <ion-infinite-scroll
+      threshold="5%"
+      (ionInfinite)="loadData($event)"
+      *ngIf="!loading && rows.length"
+    >
+      <ion-infinite-scroll-content loadingSpinner="crescent">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+    <div
+      *ngIf="!rows.length"
+      class="ion-padding ion-text-center not-found"
+      style="margin-top: 200px"
+    >
+      <img src="assets/illustrations/no-buys.svg" />
+      <h4>Transaksi Kosong</h4>
+    </div>
+  </div>
+</ion-content>

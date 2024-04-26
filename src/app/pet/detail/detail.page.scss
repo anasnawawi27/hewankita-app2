@@ -1,0 +1,208 @@
+pet-detail{
+    .top{
+        position: relative;
+
+        .rating{
+            display: flex;
+            align-items: center;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            z-index: 2;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 8px;
+
+            span{
+                color: #818181;
+                font-weight: 600;
+                display: inline-block;
+                margin-right: 5px;
+                font-size: 15px;
+            }
+
+            .star{
+                color: #ffe34f;
+            }
+        }
+    }
+
+    .previews{
+        .img-preview{
+            height: 50px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+
+            .overlay{
+                width: 100%;
+                height: 50px;
+                position: absolute;
+                background: #00000033;
+                border-radius: 10px;
+            }
+            img{
+                width: 100%;
+                height: 50px;
+                border-radius: 10px;
+                object-fit: cover;
+            }
+
+            &.active{
+                border: 1px solid #6FE287;
+                border-radius: 10px;
+            }
+        }
+    }
+
+    .title{
+        .name{
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .summary{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .price{
+                display: flex;
+                align-items: center;
+                p{
+                    margin: 10px 0;
+                    font-size: 14px;
+                    color: var(--ion-color-primary);
+                    font-weight: 600;
+                }
+
+                .price-original{
+                    font-size: 13px;
+                    margin: 0 10px;
+                    color: #b1b1b1;
+                    text-decoration: line-through;
+                }
+
+                .badge-discount{
+                    font-size: 12px;
+                    font-weight: 600;
+                    padding: 5px 7px;
+                    background: #FADCDC;
+                    color: var(--ion-color-danger);
+                    display: block;
+                    height: fit-content;
+                    border-radius: 5px;
+                  }
+            }
+
+            .sold{
+                color: #aaa8a8;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .swiper-pagination{
+        text-align: right!important;
+        padding-right: 10px!important;
+    }
+
+    .detail{
+        .heading{
+            margin: 0;
+            font-weight: 600;
+            font-size: 17px;
+        }
+
+        .summary{
+            padding: 10px;
+            background: #F0F8FF;
+            text-align: center;
+            border-radius: 10px;
+
+            span{
+                display: block;
+                margin-bottom: 5px;
+                font-size: 12px;
+                font-weight: 600;
+                color: #818181;
+            }
+
+            h6{
+                margin: 0;
+                font-weight: 600;
+                font-size: 14px;
+                color: var(--ion-color-primary);
+            }
+        }
+
+    }
+
+    .description{
+        background: white;
+
+        .heading{
+            margin: 0;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .desc-section{
+            color: #818181;
+            font-size: 13px;
+            text-align: justify;
+            line-height: 20px;
+        }
+    }
+
+    ion-toolbar{
+        padding: 5px;
+        --background: white;
+        box-shadow: 0px -1px 8.6px #a2a2a282;
+
+        .toolbar-inner{
+            display: flex; 
+            width: 100%;
+
+            .add-fav{
+                position: relative;
+                overflow: hidden;
+                background: white;
+                width: 40px;
+                height: 40px;
+                margin: auto 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 10px;
+                box-shadow: 0px 5px 5px 0px #00000014;
+
+                ion-icon{
+                    font-size: 20px
+                }
+            }
+        }
+    }
+
+}
+
+.input-wrapper{
+    display: block!important;
+}
+
+.swiper-wrapper.wrapper-pet{
+    height: 454px!important;
+
+    .swiper-slide{
+        img{
+            width: 100%;
+            height: 454px;
+            object-fit: cover;
+        }
+    }
+}
+
+.swiper.swiper-pet.swiper-initialized.swiper-horizontal.swiper-backface-hidden{
+    border-radius: 0 0 15px 15px !important;
+}
+

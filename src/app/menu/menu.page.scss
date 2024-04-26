@@ -1,0 +1,109 @@
+app-menu{
+    .menu-header{
+        position: relative;
+        color: white;
+
+        ion-avatar{
+            position: relative;
+            z-index: 2;
+            margin: 0 auto;
+            border: 2.5px solid white;
+        }
+
+        .user{
+            position: relative;
+            z-index: 2;
+            margin-bottom: 20px;
+
+            h6{
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 0;
+            }
+
+            p{
+                margin-top: 10px;
+            }
+        }
+
+        .btn-shop{
+            position: relative;
+            z-index: 1;
+            width: fit-content;
+            margin: 0 auto;
+            background: #013F79;
+            padding: 14px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+
+            span{
+                display: block;
+                margin-left: 10px;
+            }
+        }
+
+        .bg-accent{
+            width: 100%;
+            height: 450px;
+            background-color: var(--ion-color-primary);
+            position: absolute;
+            top: -200px;
+            border-radius: 100px;
+            transform: rotate(83deg);
+        }
+    }
+
+    .menu-list{
+        margin-top: 80px;
+
+        .title{
+            margin: 10px 15px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        ion-list{
+            ion-item{
+                .icon-section{
+                    padding: 10px;
+                    background: #EDEDED;
+                    color: #818181;
+                    border-radius: 15px;
+                    text-align: center;
+                }
+
+                ion-label{
+                    font-family: Gilroy!important;
+                    color: #818181!important;
+                    font-weight: 600;
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+
+    .version{
+        font-size: 16px;
+        font-weight: 600;
+        color: #818181;
+        margin: 10px;
+    }
+
+    .logout{
+        display: flex;
+        justify-content: end;
+        text-decoration: none;
+        align-items: center;
+        color: var(--ion-color-danger);
+        font-weight: 600;
+        font-size: 16px;
+        margin: 5px 10px;
+
+        span{
+            display: block;
+            margin-right: 10px;
+        }
+    }
+}

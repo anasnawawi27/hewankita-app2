@@ -1,0 +1,76 @@
+<ion-header class="common-header header-transparent">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Menu</ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="menu-header">
+    <ion-avatar>
+      <img
+        [src]="user.profile_image ? (user.profile_image | imgCld) : 'assets/images/avatar.svg'"
+      />
+    </ion-avatar>
+    <div class="user ion-text-center">
+      <h6>{{ user.fullname }}</h6>
+      <p>{{ user.email }}</p>
+    </div>
+    <div
+      [routerLink]="!user.shop ? '/shop/form' : '/shop/detail/' + user.shop.id"
+      class="btn-shop ion-activatable"
+    >
+      <ng-icon size="20" name="lucideStore"></ng-icon>
+      <span> {{ !user.shop ? 'Buka Toko' : 'Toko Saya' }} </span>
+      <ion-ripple-effect></ion-ripple-effect>
+    </div>
+    <div class="bg-accent"></div>
+  </div>
+  <div class="menu-list">
+    <h6 class="title">Akun</h6>
+    <ion-list mode="ios" [inset]="true">
+      <ion-item [button]="true">
+        <div slot="start" class="icon-section">
+          <ng-icon size="20" name="heroUser"></ng-icon>
+        </div>
+        <ion-label>Profil</ion-label>
+      </ion-item>
+      <ion-item [button]="true">
+        <div slot="start" class="icon-section">
+          <ng-icon size="20" name="heroUser"></ng-icon>
+        </div>
+        <ion-label>Alamat</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <h6 class="title">Admin</h6>
+    <ion-list mode="ios" [inset]="true">
+      <ion-item [button]="true">
+        <div slot="start" class="icon-section">
+          <ng-icon size="20" name="heroUser"></ng-icon>
+        </div>
+        <ion-label>Pet Shop</ion-label>
+      </ion-item>
+      <ion-item [button]="true">
+        <div slot="start" class="icon-section">
+          <ng-icon size="20" name="heroUser"></ng-icon>
+        </div>
+        <ion-label>Pengaturan</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+<ion-toolbar slot="end">
+  <ion-row>
+    <ion-col size="6">
+      <h6 class="version">Versi v.1.0.0</h6>
+    </ion-col>
+    <ion-col (click)="onLogout()" size="6" class="ion-text-right">
+      <a class="logout" href="javascript:void(0)">
+        <span>Logout</span>
+        <ng-icon size="25" name="lucideLogOut"></ng-icon>
+      </a>
+    </ion-col>
+  </ion-row>
+</ion-toolbar>

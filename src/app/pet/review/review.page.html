@@ -1,0 +1,77 @@
+<ion-header class="common-header bg-white">
+  <div (click)="dismiss()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Review</ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="!loading; else loader">
+    <ion-list class="review">
+      <ion-item *ngFor="let d of data">
+        <ion-row>
+          <ion-col size="2">
+            <ion-avatar class="ion-margin-top">
+              <img
+                alt="Silhouette of a person's head"
+                [src]="d.user.profile_image ? (d.user.profile_image | imgCld) : 'assets/images/avatar.svg'"
+              />
+            </ion-avatar>
+          </ion-col>
+          <ion-col size="10">
+            <div class="ion-padding-top">
+              <h6 class="fullname">{{ d.user.fullname }}</h6>
+              <star-rating
+                class="ion-margin-bottom"
+                size="medium"
+                [rating]="d.rating"
+                staticColor="ok"
+                [readOnly]="true"
+              ></star-rating>
+              <div class="review-section">
+                <p>{{ d.review }}</p>
+              </div>
+              <ion-row *ngIf="d.images">
+                <ion-col *ngFor="let image of d.images | convertArray" size="4">
+                  <div
+                    (click)="viewImage(image)"
+                    class="preview-img ion-activatable"
+                  >
+                    <img [src]="image | imgCld" />
+                    <ion-ripple-effect></ion-ripple-effect>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+
+    <ion-infinite-scroll
+      threshold="5%"
+      (ionInfinite)="loadData($event)"
+      *ngIf="!loading && data.length"
+    >
+      <ion-infinite-scroll-content loadingSpinner="crescent">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+</ion-content>
+
+<ng-template #loader>
+  <ion-skeleton-text
+    animated
+    style="margin-top: 20px; height: 10%"
+  ></ion-skeleton-text>
+  <ion-skeleton-text animated style="height: 10%"></ion-skeleton-text>
+  <ion-skeleton-text animated style="height: 10%"></ion-skeleton-text>
+  <ion-skeleton-text animated style="height: 10%"></ion-skeleton-text>
+  <ion-skeleton-text animated style="height: 10%"></ion-skeleton-text>
+  <ion-skeleton-text animated style="height: 10%"></ion-skeleton-text>
+</ng-template>

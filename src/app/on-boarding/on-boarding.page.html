@@ -1,0 +1,23 @@
+<ion-header></ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding ion-text-center">
+  <div class="img-section">
+    <img src="assets/illustrations/on-boarding.svg" />
+  </div>
+  <div class="text-section">
+    <h6>Temukan Peliharaan Impianmu</h6>
+    <p>Bergabung dan temukan peliharaan terbaik favoritmu</p>
+  </div>
+  <div class="gradient"></div>
+</ion-content>
+<ion-toolbar slot="end">
+  <ion-button
+    [routerLink]="'/auth/login'"
+    mode="ios"
+    expand="block"
+    color="primary"
+    shape="round"
+  >
+    Lanjutkan
+  </ion-button>
+</ion-toolbar>

@@ -1,0 +1,37 @@
+app-verification{
+
+    .heading{
+        margin: 25px 0;
+
+        h3{
+            margin: 0;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        p{
+            font-size: 15px;
+            line-height: 25px;
+            color: #818181;
+            font-weight: 600;
+        }
+    }
+
+    .count-down{
+        h2{
+            font-weight: 600;
+            color: var(--ion-color-primary);
+            font-size: 20px;
+        }
+    }
+
+    .resend{
+        margin: 20px 0 0 0;
+        font-size: 15px;
+        font-weight: 600;
+    
+        a{
+            text-decoration: none;
+        }
+    }
+}

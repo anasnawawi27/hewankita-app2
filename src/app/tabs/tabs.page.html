@@ -1,0 +1,88 @@
+<ion-tabs mode="ios">
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="home" href="/home">
+      <div [class.tab-active]="currentUrl == 'home'">
+        <div>
+          <ng-icon
+            size="23"
+            strokeWidth="1.5"
+            name="heroHome"
+            [color]="currentUrl == 'home' ? 'white' : '#004D95'"
+          ></ng-icon>
+        </div>
+        <ion-label *ngIf="currentUrl == 'home'" class="tab-text"
+          >Beranda</ion-label
+        >
+      </div>
+    </ion-tab-button>
+    <ion-tab-button tab="favourites" href="/favourites">
+      <div [class.tab-active]="currentUrl == 'favourites'">
+        <div>
+          <ng-icon
+            size="23"
+            strokeWidth="1.5"
+            name="heroHeart"
+            [color]="currentUrl == 'favourites' ? 'white' : '#004D95'"
+          ></ng-icon>
+        </div>
+        <ion-label *ngIf="currentUrl == 'favourites'" class="tab-text"
+          >Favorit</ion-label
+        >
+      </div>
+    </ion-tab-button>
+    <ion-tab-button tab="chats" href="/chats">
+      <div [class.tab-active]="currentUrl == 'chats'">
+        <div>
+          <ng-icon
+            size="23"
+            strokeWidth="1.5"
+            name="heroChatBubbleOvalLeftEllipsis"
+            [color]="currentUrl == 'chats' ? 'white' : '#004D95'"
+          ></ng-icon>
+          <span
+            *ngIf="unseenCount"
+            class="unseen"
+            style="
+              position: absolute;
+              background: var(--ion-color-danger);
+              color: white;
+              font-weight: 600;
+              font-size: 10px;
+              width: 18px;
+              height: 18px;
+              line-height: 20px;
+              border-radius: 100px;
+              right: 10px;
+            "
+            >{{ unseenCount }}</span
+          >
+        </div>
+        <ion-label *ngIf="currentUrl == 'chats'" class="tab-text"
+          >Pesan</ion-label
+        >
+      </div>
+    </ion-tab-button>
+    <ion-tab-button tab="transactions" href="/transactions">
+      <div [class.tab-active]="currentUrl == 'transactions'">
+        <div>
+          <ng-icon
+            size="23"
+            strokeWidth="1.5"
+            name="lucideShoppingBag"
+            [color]="currentUrl == 'transactions' ? 'white' : '#004D95'"
+          ></ng-icon>
+        </div>
+        <ion-label *ngIf="currentUrl == 'transactions'" class="tab-text"
+          >Pembelian</ion-label
+        >
+      </div>
+    </ion-tab-button>
+    <ion-tab-button tab="menu" href="/menu">
+      <ion-avatar>
+        <img
+          [src]="user.profile_image ? (user.profile_image | imgCld) : 'assets/images/avatar.svg'"
+        />
+      </ion-avatar>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

@@ -1,0 +1,227 @@
+<ion-header class="common-header">
+  <div (click)="dismiss()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Check Out</ion-title>
+</ion-header>
+
+<ion-content class="bg-main">
+  <div class="ion-padding">
+    <h6 class="heading">Pengiriman</h6>
+    <ion-card
+      (click)="!selectedAddress ? showFormAddress() : showAddressList()"
+      class="address ion-activatable"
+    >
+      <ion-card-content>
+        <div class="inner">
+          <div *ngIf="selectedAddress">
+            <small class="label">Alamat</small>
+            <div class="current-address">
+              <ng-icon size="20" name="saxLocationBulk"></ng-icon>
+              <h6>
+                {{ selectedAddress.label }} - {{ selectedAddress.receiver_name
+                }}
+              </h6>
+            </div>
+            <p>{{ selectedAddress.address }}</p>
+          </div>
+          <h6 *ngIf="!selectedAddress">Tambah Alamat</h6>
+          <ng-icon size="20" name="lucideChevronRight"></ng-icon>
+        </div>
+      </ion-card-content>
+      <ion-ripple-effect></ion-ripple-effect>
+    </ion-card>
+
+    <div class="ion-margin-top">
+      <h6 class="heading ion-margin-top">Detail Pembelian</h6>
+      <ion-card *ngFor="let pet of pets; let i = index" class="card-vertical">
+        <ion-card-content>
+          <div class="inner">
+            <img
+              class="thumb-img check-out"
+              [src]="(pet.images | firstArray) | imgCld"
+            />
+            <div class="right">
+              <div class="top with-action">
+                <div>
+                  <h6 class="name">{{ pet.name }}</h6>
+                  <div class="price">
+                    <p>
+                      <ng-container *ngIf="!pet.discount_type"
+                        >{{ pet.price | currencyID }}</ng-container
+                      >
+                      <ng-container *ngIf="pet.discount_type == 'amount'"
+                        >{{ pet.price - pet.discount_amount | currencyID
+                        }}</ng-container
+                      >
+                      <ng-container *ngIf="pet.discount_type == 'percent'"
+                        >{{ pet.price - (pet.price * (pet.discount_percent /
+                        100)) | currencyID }}</ng-container
+                      >
+                    </p>
+                    <p *ngIf="pet.discount_type" class="price-original">
+                      {{ pet.price | currencyID }}
+                    </p>
+                    <div
+                      *ngIf="pet.discount_type"
+                      style="padding: 3px 5px !important"
+                      class="badge-discount"
+                    >
+                      <ng-container *ngIf="pet.discount_type == 'percent'">
+                        {{ pet.discount_percent }}%
+                      </ng-container>
+                      <ng-container *ngIf="pet.discount_type == 'amount'">
+                        {{ (pet.discount_amount / pet.price) * 100 | number :
+                        '1.2-2' }}%
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  (click)="pets.length == 1 ? showToast() : onRemove(pet.id)"
+                  class="remove ion-activatable"
+                >
+                  <ng-icon name="heroTrash"></ng-icon>
+                  <ion-ripple-effect></ion-ripple-effect>
+                </div>
+              </div>
+              <div class="bottom">
+                <div class="qty">
+                  <div (click)="minus(i)" class="min ion-activatable">
+                    <ng-icon name="heroMinus"></ng-icon>
+                    <ion-ripple-effect></ion-ripple-effect>
+                  </div>
+                  <div class="total-qty">{{ pet.quantity }}</div>
+                  <div (click)="add(i)" class="add ion-activatable">
+                    <ng-icon name="heroPlus"></ng-icon>
+                    <ion-ripple-effect></ion-ripple-effect>
+                  </div>
+                </div>
+                <div class="price-qty">
+                  <h6>{{ pet.total_price | currencyID }}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div class="summary-price">
+      <div>
+        <p class="ion-no-margin">Total Harga</p>
+        <h6 class="ion-no-margin ion-text-bold">
+          {{ totalPrice | currencyID }}
+        </h6>
+      </div>
+      <div>
+        <p class="ion-no-margin">Biaya Layanan ({{ res.service_fee }})</p>
+        <h6 class="ion-no-margin ion-text-bold">
+          {{ serviceFee | currencyID }}
+        </h6>
+      </div>
+    </div>
+  </div>
+
+  <div class="customer-service-section">
+    <h6>
+      Total Harga Yang Tertera <br />
+      Belum Termasuk Ongkos Kirim
+    </h6>
+    <p>Tanyakan Ongkos kirim ke Admin Kami</p>
+    <div (click)="onChooseAdmin()" class="chat-admin ion-activatable">
+      <ng-icon size="20" name="saxMessageTextOutline"></ng-icon>
+      <span>Chat Admin</span>
+      <ion-ripple-effect></ion-ripple-effect>
+    </div>
+
+    <img class="accent" src="assets/accent-2.svg" />
+    <img class="admin-illustration" src="assets/customer-service.svg" />
+  </div>
+</ion-content>
+<ion-toolbar class="toolbar-total" slot="end">
+  <ion-row>
+    <ion-col class="total-temp" [size]="7">
+      <p>Total Sementara</p>
+      <h6>{{ grandTotal | currencyID }}</h6>
+    </ion-col>
+    <ion-col [size]="5">
+      <ion-button
+        style="width: 100%; margin-right: 10px"
+        mode="ios"
+        expand="block"
+        color="primary"
+        shape="round"
+        (click)="onProcess()"
+        [disabled]="formLoading"
+      >
+        <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+        <span *ngIf="!formLoading">Proses</span>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-toolbar>
+
+<ng-template #loader>
+  <div class="loader">
+    <ion-skeleton-text
+      [animated]="true"
+      *ngFor="let val of createArray(10)"
+      style="
+        width: 100%;
+        height: 50px;
+        border-radius: 15px;
+        margin-bottom: 10px;
+      "
+    ></ion-skeleton-text>
+  </div>
+</ng-template>
+
+<ion-modal mode="ios" [isOpen]="openModalAddress">
+  <ng-template>
+    <ion-header class="common-header bg-white">
+      <ion-title>Pilih Alamat</ion-title>
+      <div
+        slot="end"
+        (click)="openModalAddress = false"
+        class="back right ion-activatable"
+      >
+        <ng-icon name="heroXMark"></ng-icon>
+        <ion-ripple-effect></ion-ripple-effect>
+      </div>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list *ngIf="!componentLoading; else loader">
+        <ion-item
+          class="ion-activatable"
+          *ngFor="let address of addresses"
+          (click)="
+          selectedAddress = address;
+          openModalAddress = false"
+        >
+          <div class="address-option">
+            <span
+              *ngIf="address.main_address"
+              class="badge success ion-margin-bottom"
+              >Alamat Utama</span
+            >
+            <div class="address-item">
+              <ng-icon size="20" name="saxLocationBulk"></ng-icon>
+              <h6>{{ address.label }} - {{ address.receiver_name }}</h6>
+            </div>
+            <p class="address-house">{{ address.address }}</p>
+          </div>
+          <ng-icon
+            *ngIf="address.id == selectedAddress.id"
+            name="heroCheckCircleSolid"
+            size="20"
+            color="#47C571"
+            slot="end"
+          ></ng-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

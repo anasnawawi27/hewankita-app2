@@ -1,0 +1,812 @@
+<ion-header class="common-header bg-white">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Detail Transaksi</ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="bg-main ion-padding">
+  <ng-container *ngIf="!loading; else loader">
+    <div
+      class="alert {{ status[data.transaction.current_process_sort].className }} ion-margin-bottom"
+    >
+      <ng-icon
+        *ngIf="status[data.transaction.current_process_sort].type == 'danger'"
+        size="20"
+        name="lucideAlertCircle"
+      ></ng-icon>
+      <ng-icon
+        *ngIf="status[data.transaction.current_process_sort].type == 'waiting'"
+        size="20"
+        name="lucideClock"
+      ></ng-icon>
+      <ng-icon
+        *ngIf="status[data.transaction.current_process_sort].type == 'success'"
+        size="20"
+        name="lucideCheckCircle2"
+      ></ng-icon>
+      {{ status[data.transaction.current_process_sort].label }}
+    </div>
+    <div *ngIf="data.transaction.current_process_sort == 8">
+      <img
+        style="
+          object-fit: cover;
+          object-position: center;
+          height: 100px;
+          width: 100%;
+        "
+        src="assets/gif/on-delivery.gif"
+      />
+    </div>
+
+    <div
+      *ngIf="user.id !== data.transaction.shop.user_id"
+      class="shop shop-in-fav ion-no-margin ion-no-radius-top pr-10px"
+    >
+      <div class="detail">
+        <img
+          class="avatar"
+          [src]="data.transaction.shop.user.profile_image ? (data.transaction.shop.user.profile_image  | imgCld) : 'assets/images/avatar.svg'"
+        />
+        <div class="name">
+          <h6>
+            {{ data.transaction.shop.name }}
+            <ng-icon
+              *ngIf="data.transaction.shop.is_verified"
+              size="18"
+              name="saxTickCircleBulk"
+            ></ng-icon>
+          </h6>
+          <p style="color: #818181" class="ion-text-capitalize">
+            {{ data.transaction.shop.city.replace('KABUPATEN', '').toLowerCase()
+            }}, {{ data.transaction.shop.province.toLowerCase() }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <ion-card
+      *ngFor="let d of data.detail; let i = index"
+      class="card-vertical"
+    >
+      <ion-card-content>
+        <div class="inner">
+          <img
+            class="thumb-img check-out"
+            [src]="(d.pet.images | firstArray) | imgCld"
+          />
+          <div class="right">
+            <div class="top with-action">
+              <div>
+                <h6 class="name">{{ d.pet.name }}</h6>
+                <div class="price">
+                  <p>{{ d.original_price | currencyID }}</p>
+                  <p *ngIf="d.discount_type" class="price-original">
+                    {{ d.original_price | currencyID }}
+                  </p>
+                  <div
+                    *ngIf="d.discount_type"
+                    style="padding: 3px 5px !important"
+                    class="badge-discount"
+                  >
+                    <ng-container *ngIf="d.discount_type == 'percent'">
+                      {{ d.discount_percent }}%
+                    </ng-container>
+                    <ng-container *ngIf="d.discount_type == 'amount'">
+                      {{ (d.discount_amount / d.original_price) * 100 | number :
+                      '1.2-2' }}%
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bottom">
+              <div class="qty">
+                <div class="total-qty ion-no-margin-horizontal">
+                  {{ d.quantity }} Ekor
+                </div>
+              </div>
+              <div class="price-qty">
+                <h6>{{ d.total_price | currencyID }}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="summary-price">
+      <div>
+        <p class="ion-no-margin">Total Harga</p>
+        <h6 class="ion-no-margin ion-text-bold">
+          {{ data.transaction.total_price | currencyID }}
+        </h6>
+      </div>
+      <div>
+        <p class="ion-no-margin">
+          Biaya Layanan ({{ data.transaction.fee_percent }})
+        </p>
+        <h6 class="ion-no-margin ion-text-bold">
+          {{ data.transaction.service_fee | currencyID }}
+        </h6>
+      </div>
+      <div
+        class="flex-center"
+        *ngIf="![2, 3].includes(data.transaction.current_process_sort)"
+      >
+        <p class="ion-no-margin">Biaya Ongkir</p>
+        <small
+          *ngIf="data.transaction.current_process_sort == 1 && user.level == 'user' && !data.transaction.shipping_cost"
+          class="ion-text-primary"
+          >Sedang Diproses Admin</small
+        >
+        <small
+          *ngIf="data.transaction.current_process_sort == 1 && user.level == 'admin' && !data.transaction.shipping_cost"
+          class="ion-text-primary"
+          >Perlu Diproses Admin</small
+        >
+
+        <h6
+          *ngIf="![2, 3].includes(data.transaction.current_process_sort) && data.transaction.shipping_cost"
+          class="ion-no-margin ion-text-bold"
+        >
+          {{ data.transaction.shipping_cost | currencyID }}
+        </h6>
+      </div>
+      <div
+        *ngIf="data.transaction.is_verified && data.transaction.shipping_cost"
+        class="border-top ion-no-margin ion-padding-top"
+      >
+        <p class="ion-no-margin">Total Bayar</p>
+        <h6 class="ion-no-margin ion-text-bold">
+          {{ data.transaction.grand_total | currencyID }}
+        </h6>
+      </div>
+    </div>
+
+    <div
+      *ngIf="data.transaction.current_process_sort == 1 && user.level == 'user'"
+      class="alert primary d-block ion-margin-top"
+    >
+      <span class="d-block ft-13">Mohon Tunggu</span>
+      <p class="ft-12">
+        Pesanan & ongkirmu sedang diproses admin. Silahkan lakukan pembayaran
+        setelah pesanan selesai diproses admin.
+      </p>
+    </div>
+
+    <ion-card
+      mode="ios"
+      class="bank"
+      *ngIf="data.transaction.current_process_sort == 4"
+    >
+      <ion-card-content>
+        <p class="ion-text-primary ion-text-bold ion-margin-bottom">
+          Rekening Pembayaran
+        </p>
+        <div class="flex ion-margin-top">
+          <div class="section">
+            <div class="logo ion-margin-end">
+              <img [src]="bankLogo" />
+            </div>
+            <div>
+              <h6 class="ion-text-bold">No Rek. {{ bankAccountNum }}</h6>
+              <h6 class="ion-text-bold">A/n An. {{ bankAccountName }}</h6>
+            </div>
+          </div>
+          <!-- <div class="timer">
+            <h5 class="ft-13 font-weight-bold ion-text-bold">Bayar Sebelum</h5>
+            <div class="time">
+              <ng-icon size="17" name="lucideTimer"></ng-icon>
+              <h4 class="ion-text-primary ion-text-bold">00:56:10</h4>
+            </div>
+          </div> -->
+          <div
+            *ngIf="user.level == 'user'"
+            (click)="copyToClipboard(bankAccountNum)"
+            class="copy-btn ion-activatable"
+          >
+            <ng-icon name="lucideCopy"></ng-icon>
+            <span>Salin</span>
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div
+      class="pet-received ion-margin-bottom ion-margin-top"
+      *ngIf="user.id == data.transaction.user_id && data.transaction.current_process_sort == 9"
+    >
+      <img src="assets/illustrations/pet-received.png" />
+      <div>
+        <h6>Peliharaanmu sudah sampai !</h6>
+      </div>
+
+      <div class="accent-1"></div>
+      <div class="accent-2"></div>
+      <div class="accent-3"></div>
+    </div>
+
+    <!-- <div
+      *ngIf="paymentImage.file || [4,5].includes(data.transaction.current_process_sort)"
+      class="input ion-margin-bottom ion-padding-bottom ion-margin-top"
+    >
+      <ion-label class="input-title">Bukti Pembayaran</ion-label>
+      <ion-row>
+        <ion-col *ngIf="paymentImage.file" size="3">
+          <div (click)="viewImage(paymentImage)" class="preview-img">
+            <div
+              *ngIf="data.transaction.current_process_sort == 4 && user.level == 'user'"
+              (click)="paymentImage.file = null"
+              class="remove"
+            >
+              <ng-icon name="heroXMarkSolid"></ng-icon>
+            </div>
+            <img
+              [src]="paymentImage.cloud ? (paymentImage.file | imgCld) : paymentImage.file"
+            />
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+        </ion-col>
+        <ion-col size="3" *ngIf="!paymentImage.file && user.level == 'user'">
+          <div
+            (click)="presentActionSheet()"
+            class="add-multiple-photo ion-activatable"
+          >
+            <ng-icon size="25" name="lucidePlus"></ng-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+        </ion-col>
+        <div
+          class="alert danger"
+          *ngIf="!paymentImage.file && user.level == 'admin'"
+        >
+          <ng-icon size="20" name="lucideAlertCircle"></ng-icon>
+          <span>Bukti bayar belum diupload customer</span>
+        </div>
+      </ion-row>
+    </div> -->
+
+    <div class="heading ion-margin-top">
+      <ng-icon size="20" name="saxLocationBulk"></ng-icon>
+      <h6>Pengiriman</h6>
+    </div>
+    <ion-row class="ion-margin-top ion-margin-bottom ion-padding-bottom">
+      <ion-col size="5">
+        <p class="ion-text-bold ft-14 ion-no-margin">Penerima</p>
+      </ion-col>
+      <ion-col size="7">
+        <p class="ft-14 ion-no-margin">
+          {{ data.transaction.address.receiver_name }}
+        </p>
+      </ion-col>
+      <ion-col size="5">
+        <p class="ion-text-bold ft-14 ion-no-margin">No Hp. Penerima</p>
+      </ion-col>
+      <ion-col size="7">
+        <p class="ft-14 ion-no-margin">
+          {{ data.transaction.address.receiver_phone }}
+        </p>
+      </ion-col>
+      <ion-col size="5">
+        <p class="ion-text-bold ft-14 ion-no-margin">Alamat Lengkap</p>
+      </ion-col>
+      <ion-col size="7">
+        <p class="ft-14 ion-no-margin">
+          {{ data.transaction.address.address }}
+        </p>
+      </ion-col>
+    </ion-row>
+    <div
+      *ngIf="data.transaction.note"
+      class="input ion-margin-bottom ion-padding-bottom ion-margin-top"
+    >
+      <ion-label class="input-title">Catatan</ion-label>
+      <ion-row>
+        <div class="alert secondary">
+          <ng-icon size="20" name="lucideAlertCircle"></ng-icon>
+          <span>{{ data.transaction.note }}</span>
+        </div>
+      </ion-row>
+    </div>
+
+    <ion-row>
+      <ion-col size="6">
+        <div
+          *ngIf="paymentImage.file || [4,5].includes(data.transaction.current_process_sort)"
+          class="input ion-margin-bottom ion-padding-bottom ion-margin-top"
+        >
+          <ion-label class="input-title">Bukti Pembayaran</ion-label>
+          <div
+            class="alert danger"
+            *ngIf="!paymentImage.file && user.level == 'admin'"
+          >
+            <ng-icon size="20" name="lucideAlertCircle"></ng-icon>
+            <span>Belum diupload</span>
+          </div>
+          <ion-row>
+            <ion-col *ngIf="paymentImage.file" size="12">
+              <div (click)="viewImage(paymentImage)" class="preview-img">
+                <div
+                  *ngIf="data.transaction.current_process_sort == 4 && user.level == 'user'"
+                  (click)="paymentImage.file = null"
+                  class="remove"
+                  style="right: -10px !important"
+                >
+                  <ng-icon name="heroXMarkSolid"></ng-icon>
+                </div>
+                <img
+                  style="height: 100px !important; width: 100% !important"
+                  [src]="paymentImage.cloud ? (paymentImage.file | imgCld) : paymentImage.file"
+                />
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </ion-col>
+            <ion-col
+              size="12"
+              *ngIf="!paymentImage.file && user.level == 'user'"
+            >
+              <div
+                (click)="presentActionSheet('payment')"
+                class="add-multiple-photo ion-activatable"
+              >
+                <ng-icon size="25" name="lucidePlus"></ng-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+      <ion-col size="6">
+        <div
+          *ngIf="deliveredImage.file || [8, 9].includes(data.transaction.current_process_sort)"
+          class="input ion-margin-bottom ion-padding-bottom ion-margin-top"
+        >
+          <ion-label class="input-title">Bukti Penerimaan</ion-label>
+          <div
+            class="alert danger"
+            *ngIf="!deliveredImage.file && user.level !== 'shop'"
+          >
+            <ng-icon size="20" name="lucideAlertCircle"></ng-icon>
+            <span>Belum diupload</span>
+          </div>
+          <ion-row>
+            <ion-col *ngIf="deliveredImage.file" size="12">
+              <div (click)="viewImage(deliveredImage)" class="preview-img">
+                <div
+                  *ngIf="data.transaction.current_process_sort == 8 && user.level == 'shop'"
+                  (click)="paymentImage.file = null"
+                  class="remove"
+                  style="right: -10px !important"
+                >
+                  <ng-icon name="heroXMarkSolid"></ng-icon>
+                </div>
+                <img
+                  style="height: 100px !important; width: 100% !important"
+                  [src]="deliveredImage.cloud ? (deliveredImage.file | imgCld) : deliveredImage.file"
+                />
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </ion-col>
+            <ion-col
+              size="12"
+              *ngIf="!deliveredImage.file && user.level == 'shop'"
+            >
+              <div
+                (click)="presentActionSheet('delivery')"
+                class="add-multiple-photo ion-activatable"
+              >
+                <ng-icon size="25" name="lucidePlus"></ng-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <div class="review" *ngIf="data.transaction.current_process_sort == 9">
+      <ng-container
+        *ngIf="user.id == data.transaction.user_id; else noCurrentUser"
+      >
+        <div class="ion-text-center">
+          <h3>Kasih rating yuk!</h3>
+        </div>
+        <star-rating
+          style="width: 100% !important"
+          class="ion-margin-bottom"
+          size="large"
+          [rating]="rating"
+          staticColor="ok"
+          (starClickChange)="onClickRating($event)"
+        ></star-rating>
+
+        <h6 style="margin-top: 30px">Review</h6>
+        <div class="input ion-margin-top ion-margin-bottom">
+          <ion-item class="input-outline ion-no-margin" lines="none">
+            <ion-textarea
+              [autoGrow]="true"
+              [(ngModel)]="review"
+              placeholder="Contoh: Peliharaan menggemaskan"
+            >
+            </ion-textarea>
+          </ion-item>
+        </div>
+        <h6 style="margin-top: 30px">Foto</h6>
+        <ion-row class="ion-margin-bottom">
+          <ion-col *ngFor="let image of reviewImages; let i = index" size="3">
+            <div
+              (click)="viewImage(image)"
+              class="preview-img"
+              style="overflow: visible !important"
+            >
+              <div (click)="reviewImages.splice(i, 1)" class="remove">
+                <ng-icon name="heroXMarkSolid"></ng-icon>
+              </div>
+              <img [src]="image.cloud ? (image.file | imgCld) : image.file" />
+            </div>
+          </ion-col>
+
+          <ion-col size="3">
+            <div
+              (click)="presentActionSheet('review')"
+              class="add-multiple-photo ion-activatable"
+            >
+              <ng-icon size="25" name="lucidePlus"></ng-icon>
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-button
+          [disabled]="!rating || reviewLoading"
+          (click)="onSendReview()"
+          mode="ios"
+          expand="block"
+        >
+          <ion-spinner *ngIf="reviewLoading" name="crescent"></ion-spinner>
+          <span *ngIf="!reviewLoading">Kirim</span></ion-button
+        >
+      </ng-container>
+      <ng-template #noCurrentUser>
+        <div class="ion-text-center">
+          <h3>Penilaian Buyer</h3>
+        </div>
+
+        <ng-container *ngIf="rating; else noReview">
+          <star-rating
+            style="width: 100%"
+            class="ion-margin-bottom"
+            size="large"
+            [rating]="rating"
+            staticColor="ok"
+            [readOnly]="true"
+          ></star-rating>
+
+          <div
+            *ngIf="review"
+            class="review-box"
+            style="
+              padding: 10px;
+              background: #ececec;
+              border-left: 2px solid #a5a5a5;
+              font-size: 15px;
+              color: #818181;
+              font-weight: 600;
+            "
+          >
+            {{ review }}
+          </div>
+
+          <h6 style="margin-top: 30px">Foto</h6>
+          <ion-row class="ion-margin-bottom">
+            <ion-col *ngFor="let image of reviewImages; let i = index" size="3">
+              <div
+                (click)="viewImage(image)"
+                class="preview-img"
+                style="overflow: visible !important"
+              >
+                <img [src]="image.cloud ? (image.file | imgCld) : image.file" />
+              </div>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+      </ng-template>
+    </div>
+
+    <ng-template #noReview>
+      <div class="ion-padding ion-text-center not-found">
+        <img src="assets/illustrations/no-review.svg" />
+        <h4>Belum Ada Review</h4>
+      </div>
+    </ng-template>
+  </ng-container>
+</ion-content>
+<ng-container
+  *ngIf="!loading && ![2, 3].includes(data?.transaction?.current_process_sort)"
+>
+  <ion-toolbar
+    *ngIf="data.transaction.current_process_sort == 1 && user.level == 'admin'"
+    class="common-toolbar"
+    slot="end"
+  >
+    <ion-row>
+      <ion-col size="6">
+        <ion-button
+          mode="ios"
+          expand="block"
+          color="danger"
+          fill="outline"
+          shape="round"
+          (click)="cancelMessage = 'Pesanan akan dibatalkan!'; cancelType = 'verification_order_failed'; openModal2  = true"
+          >Batalkan
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button
+          mode="ios"
+          expand="block"
+          color="primary"
+          shape="round"
+          (click)="openModal = true"
+          >Verifikasi
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+  <ion-toolbar
+    *ngIf="data.transaction.current_process_sort == 1 && user.level == 'user'"
+    class="common-toolbar"
+    slot="end"
+  >
+    <ion-button
+      mode="ios"
+      expand="block"
+      color="danger"
+      fill="outline"
+      shape="round"
+      (click)="cancelMessage = 'Pesanan akan dibatalkan!'; cancelType = 'cancel_order_customer'; openModal2 = true"
+      >Batalkan Pesanan
+    </ion-button>
+  </ion-toolbar>
+  <ion-toolbar
+    *ngIf="data.transaction.current_process_sort == 4 && user.level == 'user'"
+    class="common-toolbar"
+    slot="end"
+  >
+    <ion-button
+      mode="ios"
+      expand="block"
+      color="primary"
+      shape="round"
+      (click)="onUpload()"
+      [disabled]="formLoading || !paymentImage.file"
+    >
+      <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+      <span *ngIf="!formLoading">Upload Pembayaran</span>
+    </ion-button>
+  </ion-toolbar>
+  <ion-toolbar
+    *ngIf="data.transaction.current_process_sort == 5 && user.level == 'admin'"
+    class="common-toolbar"
+    slot="end"
+  >
+    <ion-row>
+      <ion-col size="6">
+        <ion-button
+          mode="ios"
+          expand="block"
+          color="danger"
+          fill="outline"
+          shape="round"
+          (click)="cancelMessage = 'Tolak Pembayaran Transaksi'; cancelType = 'verification_payment_failed'; openModal2 = true"
+          >Reject Pembayaran
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button
+          mode="ios"
+          expand="block"
+          color="primary"
+          shape="round"
+          (click)="onVerifyPayment()"
+          >Approve Pembayaran
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+  <ion-toolbar
+    *ngIf="[7, 8].includes(data.transaction.current_process_sort) && user.level == 'shop'"
+    class="common-toolbar"
+    slot="end"
+  >
+    <ion-button
+      *ngIf="data.transaction.current_process_sort == 7"
+      mode="ios"
+      expand="block"
+      color="primary"
+      shape="round"
+      (click)="onSendPet()"
+      [disabled]="formLoading"
+    >
+      <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+      <span *ngIf="!formLoading">Pet Dalam Proses Pengiriman</span>
+    </ion-button>
+    <ion-button
+      *ngIf="data.transaction.current_process_sort == 8"
+      mode="ios"
+      expand="block"
+      color="primary"
+      shape="round"
+      (click)="onUploadDelivered()"
+      [disabled]="formLoading || !deliveredImage.file"
+    >
+      <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+      <span *ngIf="!formLoading">Pet Sudah Sampai</span>
+    </ion-button>
+  </ion-toolbar>
+</ng-container>
+
+<ng-template #loader>
+  <ion-item
+    class="ion-margin-bottom"
+    lines="none"
+    style="--background: transparent"
+  >
+    <ion-thumbnail slot="start">
+      <ion-skeleton-text
+        style="border-radius: 100px"
+        [animated]="true"
+      ></ion-skeleton-text>
+    </ion-thumbnail>
+    <ion-label>
+      <p>
+        <ion-skeleton-text
+          [animated]="true"
+          style="width: 60%; border-radius: 10px"
+        ></ion-skeleton-text>
+      </p>
+      <p>
+        <ion-skeleton-text
+          [animated]="true"
+          style="width: 30%; border-radius: 10px"
+        ></ion-skeleton-text>
+      </p>
+    </ion-label>
+  </ion-item>
+  <ion-card *ngFor="let i of loop(2)" class="card-vertical">
+    <ion-card-content>
+      <ion-item class="loader" lines="none">
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 80%"
+            ></ion-skeleton-text>
+          </h3>
+          <p style="margin-bottom: 15px">
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 60%"
+            ></ion-skeleton-text>
+          </p>
+          <div style="display: flex; justify-content: space-between">
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 40%"
+            ></ion-skeleton-text>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 20%"
+            ></ion-skeleton-text>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-skeleton-text
+    [animated]="true"
+    style="width: 100%; height: 100px; margin-top: 20px; border-radius: 10px"
+  ></ion-skeleton-text>
+
+  <ion-row class="ion-margin-top">
+    <ng-container *ngFor="let i of loop(3)">
+      <ion-col size="4"
+        ><ion-skeleton-text
+          [animated]="true"
+          style="width: 100%; border-radius: 10px"
+        ></ion-skeleton-text
+      ></ion-col>
+      <ion-col size="8"
+        ><ion-skeleton-text
+          [animated]="true"
+          style="width: 100%; border-radius: 10px"
+        ></ion-skeleton-text
+      ></ion-col>
+    </ng-container>
+  </ion-row>
+</ng-template>
+
+<ion-modal
+  [isOpen]="openModal"
+  [initialBreakpoint]="0.3"
+  (didDismiss)="openModal = false"
+>
+  <ng-template>
+    <ion-content class="ion-padding">
+      <h5 style="font-size: 16px; font-weight: 600; color: #818181">
+        Ongkos Kirim
+      </h5>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input
+          [(ngModel)]="shippingCost"
+          [maskito]="maskOptions"
+          [maskitoElement]="maskPredicate"
+          placeholder="Biaya Pengiriman"
+        ></ion-input>
+      </ion-item>
+      <ion-row class="ion-margin-top">
+        <ion-col size="12">
+          <ion-button
+            mode="ios"
+            expand="block"
+            color="primary"
+            shape="round"
+            (click)="onProcess('verification_order_success')"
+            [disabled]="formLoading || cancelLoading || !shippingCost"
+          >
+            <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+            <span *ngIf="!formLoading">Submit</span>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal
+  [isOpen]="openModal2"
+  [initialBreakpoint]="0.3"
+  (didDismiss)="openModal2 = false"
+>
+  <ng-template>
+    <ion-content class="ion-padding">
+      <h5 style="font-size: 16px; font-weight: 600; color: #818181">Note</h5>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input
+          type="text"
+          placeholder="Catatan"
+          [(ngModel)]="note"
+        ></ion-input>
+      </ion-item>
+      <div
+        *ngIf="!note && formSubmitted"
+        class="alert danger ion-margin-bottom"
+      >
+        Note wajib diisi
+      </div>
+      <ion-row class="ion-margin-top">
+        <ion-col size="12">
+          <ion-button
+            mode="ios"
+            expand="block"
+            color="danger"
+            fill="outline"
+            shape="round"
+            [disabled]="formLoading || cancelLoading || !note"
+            (click)="onCancel()"
+          >
+            <ion-spinner *ngIf="cancelLoading" name="crescent"></ion-spinner>
+            <span *ngIf="!cancelLoading">Lanjutkan</span>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-content>
+  </ng-template>
+</ion-modal>

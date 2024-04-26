@@ -1,0 +1,369 @@
+<ion-header class="common-header bg-white">
+  <div class="ion-padding-horizontal ion-padding-vertical flex-between">
+    <div
+      slot="end"
+      (click)="back()"
+      class="back position-relative top-auto ion-activatable"
+    >
+      <ng-icon name="lucideChevronLeft"></ng-icon>
+      <ion-ripple-effect></ion-ripple-effect>
+    </div>
+
+    <ion-item
+      (click)="showResult = false; widthSearchInputClass = ''"
+      class="input-outline ion-no-margin w-70"
+      [class.w-70]="keyword || widthSearchInputClass"
+      [class.w-85]="!keyword && !widthSearchInputClass"
+      lines="none"
+    >
+      <ion-input
+        #inputSearch
+        [(ngModel)]="keyword"
+        type="text"
+        placeholder="Cari Peliharaan"
+      ></ion-input>
+      <div
+        *ngIf="keyword"
+        (click)="keyword = ''"
+        slot="end"
+        class="remove-input ion-activatable"
+      >
+        <ng-icon color="white" name="heroXMarkSolid"></ng-icon>
+        <ion-ripple-effect></ion-ripple-effect>
+      </div>
+      <ng-icon
+        *ngIf="!keyword"
+        slot="end"
+        size="18"
+        name="lucideSearch"
+      ></ng-icon>
+    </ion-item>
+
+    <div class="position-relative" *ngIf="showResult">
+      <div
+        slot="end"
+        (click)="openFilter = true"
+        class="action-header primary position-relative top-auto ion-activatable"
+      >
+        <ng-icon size="24" name="heroAdjustmentsHorizontal"></ng-icon>
+        <ion-ripple-effect></ion-ripple-effect>
+      </div>
+      <span
+        *ngIf="(type || categories.length) && filtering"
+        class="dot-filter"
+      ></span>
+    </div>
+    <div
+      *ngIf="!showResult && keyword"
+      (click)="onSearch()"
+      class="action-header primary position-relative top-auto ion-activatable"
+      slot="end"
+    >
+      <ng-icon size="24" name="lucideSearch"></ng-icon>
+      <ion-ripple-effect></ion-ripple-effect>
+    </div>
+  </div>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="bg-main">
+  <ng-container *ngIf="!showResult">
+    <div class="last-searching" *ngIf="keywordHistories.length">
+      <div class="ion-padding">
+        <h6>Pencarian Terakhir</h6>
+      </div>
+      <ion-list
+        *ngFor="let history of keywordHistories"
+        mode="md"
+        class="ion-no-padding"
+        (click)="keyword = history; onSearch()"
+      >
+        <ion-item button="true" lines="full">
+          <ion-label>{{ history }}</ion-label>
+        </ion-item>
+      </ion-list>
+      <div class="remove-all-history-search ion-text-center">
+        <a href="javascript:void(0)" (click)="clearHistory()"
+          >Hapus Riwayat Pencarian</a
+        >
+      </div>
+    </div>
+
+    <div *ngIf="latestSeen.length" class="last-seen ion-padding ion-margin-top">
+      <h6>Terakhir dilihat</h6>
+
+      <ion-row class="ion-margin-top" mode="ios">
+        <ion-col *ngFor="let last of latestSeen" size="6">
+          <ion-card
+            (click)="onViewdetail(last)"
+            class="card-horizontal ion-activatable"
+          >
+            <ion-card-content>
+              <div class="top">
+                <img [src]="last.images | firstArray | imgCld" />
+              </div>
+              <div>
+                <div class="inner">
+                  <h6 class="name">{{ last.name }}</h6>
+                </div>
+              </div>
+            </ion-card-content>
+            <ion-ripple-effect></ion-ripple-effect>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="showResult">
+    <div class="ion-padding">
+      <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+      <div
+        *ngIf="(type || categories.length) && filtering"
+        class="filter-summary"
+      >
+        <div class="filter-display">
+          <span *ngIf="type == 'cheapest'" class="item-display"
+            >Harga Paling Murah</span
+          >
+          <span *ngIf="type == 'latest'" class="item-display"
+            >Baru Ditambahkan</span
+          >
+          <span *ngIf="type == 'with_discount'" class="item-display"
+            >Dengan Diskon</span
+          >
+          <span class="item-display" *ngIf="categories.length > 1"
+            >{{ categories.length }} Kategori</span
+          >
+          <span class="item-display" *ngIf="categories.length == 1"
+            >{{ categories[0].name }}</span
+          >
+        </div>
+      </div>
+
+      <div
+        *ngIf="!loading"
+        class="flex-center heading-section ion-margin-top ion-margin-bottom"
+      >
+        <ng-icon size="20" name="lucideSearch"></ng-icon>
+        <h5>Menampilkan {{ totalData }} Hasil Pencarian</h5>
+      </div>
+
+      <ion-list
+        [style]="!data.length ? 'background:transparent': ''"
+        class="result"
+      >
+        <ng-container *ngIf="!loading; else loader">
+          <ion-row *ngIf="data.length">
+            <ion-col size="6" *ngFor="let d of data; let i = index">
+              <ion-card class="card-horizontal">
+                <ion-card-content>
+                  <div class="top">
+                    <img
+                      (click)="onViewdetail(d)"
+                      [src]="(d.images | firstArray) | imgCld"
+                    />
+                    <div
+                      (click)="addFav(d.id, i)"
+                      class="add-fav ion-activatable"
+                    >
+                      <ion-icon
+                        color="danger"
+                        [name]=" !d.favourite ? 'heart-outline' : 'heart'"
+                      ></ion-icon>
+                      <ion-ripple-effect></ion-ripple-effect>
+                    </div>
+                  </div>
+                  <div (click)="onViewdetail(d)">
+                    <div class="inner">
+                      <h6 class="name">{{ d.name }}</h6>
+                      <div class="price-section mt-10px">
+                        <div>
+                          <p class="price">
+                            <ng-container *ngIf="!d.discount_type"
+                              >{{ d.price | currencyID }}</ng-container
+                            >
+                            <ng-container *ngIf="d.discount_type == 'amount'"
+                              >{{ d.price - d.discount_amount | currencyID
+                              }}</ng-container
+                            >
+                            <ng-container *ngIf="d.discount_type == 'percent'"
+                              >{{ d.price - (d.price * (d.discount_percent /
+                              100)) | currencyID }}</ng-container
+                            >
+                          </p>
+                          <p *ngIf="d.discount_type" class="price-original">
+                            {{ d.price | currencyID }}
+                          </p>
+                        </div>
+                        <div
+                          *ngIf="d.discount_type == 'percent'"
+                          class="badge-discount"
+                        >
+                          {{ d.discount_percent }}%
+                        </div>
+                      </div>
+                    </div>
+                    <div class="bottom">
+                      <div class="location">
+                        <ng-icon class="map-icon" name="lucideMapPin"></ng-icon>
+                        <span class="ion-text-capitalize"
+                          >{{ d.shop.city.replace('KABUPATEN',
+                          '').replace('KOTA', '').toLowerCase() }}</span
+                        >
+                      </div>
+                      <div class="rating">
+                        <span>{{ d.rating }}</span>
+                        <ion-icon name="star" class="star"></ion-icon>
+                      </div>
+                    </div>
+                  </div>
+                  <ion-button
+                    class="ion-margin-top buy ion-text-capitalize"
+                    size="small"
+                    expand="block"
+                    [disabled]="d.formLoading"
+                    (click)="checkOut(d.id, i, 'latest')"
+                  >
+                    <ion-spinner
+                      *ngIf="d.formLoading"
+                      name="crescent"
+                    ></ion-spinner>
+                    <span *ngIf="!d.formLoading">Beli</span>
+                  </ion-button>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+
+          <div *ngIf="!data.length">
+            <ng-container [ngTemplateOutlet]="empty"></ng-container>
+          </div>
+        </ng-container>
+      </ion-list>
+      <ion-infinite-scroll threshold="5%" (ionInfinite)="loadData($event)">
+        <ion-infinite-scroll-content loadingSpinner="crescent">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </div>
+  </ng-container>
+
+  <ion-modal
+    #filterModal
+    class="filter-modal"
+    [isOpen]="openFilter"
+    [backdropDismiss]="false"
+    [showBackdrop]="false"
+  >
+    <ng-template>
+      <ion-content class="ion-padding">
+        <div class="ion-padding-vertical">
+          <h6>Urutkan</h6>
+        </div>
+        <ion-list mode="md" class="ion-no-padding ion-margin-bottom">
+          <ion-item
+            *ngFor="let filter of filterOptions"
+            (click)="type = filter.value"
+            button="true"
+            lines="full"
+          >
+            <ion-label [class.active]="type == filter.value"
+              >{{ filter.label }}</ion-label
+            >
+            <ng-icon
+              *ngIf="type == filter.value"
+              slot="end"
+              size="20"
+              color="#004D95"
+              name="lucideCheck"
+            ></ng-icon>
+          </ion-item>
+        </ion-list>
+
+        <div class="ion-padding-vertical">
+          <h6>Kategory</h6>
+        </div>
+
+        <div class="filter-category">
+          <span
+            (click)="onSelectCategory(option)"
+            *ngFor="let option of categoryOptions"
+            [class.active]="categoryIds.includes(option.id)"
+            class="option-category ion-activatable active"
+            >{{ option.name }}
+            <ion-ripple-effect></ion-ripple-effect>
+          </span>
+        </div>
+      </ion-content>
+      <ion-toolbar slot="end" class="common-toolbar">
+        <ion-row>
+          <ion-col size="6">
+            <ion-button
+              mode="ios"
+              expand="block"
+              fill="outline"
+              color="danger"
+              shape="round"
+              (click)="filtering = false; type = ''; categories = []; categoryIds = []; onSearch(); openFilter = false"
+            >
+              Reset
+            </ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button
+              (click)="filtering = true; onSearch(); openFilter = false"
+              mode="ios"
+              expand="block"
+              color="primary"
+              shape="round"
+            >
+              Filter
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-toolbar>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<ng-template #loader>
+  <ion-row>
+    <ion-col size="6" *ngFor="let val of loop(6)">
+      <ion-card class="card-horizontal">
+        <ion-card-content>
+          <div class="loader">
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+            </ion-thumbnail>
+
+            <h3>
+              <ion-skeleton-text
+                [animated]="true"
+                style="width: 80%; margin-top: 15px"
+              ></ion-skeleton-text>
+            </h3>
+            <p style="margin: 10px 0">
+              <ion-skeleton-text
+                [animated]="true"
+                style="width: 60%"
+              ></ion-skeleton-text>
+            </p>
+
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 100%; margin-top: 20px"
+            ></ion-skeleton-text>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ng-template>
+
+<ng-template #empty>
+  <div class="ion-padding ion-text-center not-found">
+    <img src="assets/illustrations/empty.svg" />
+    <h4>Data Tidak Ditemukan</h4>
+  </div>
+</ng-template>

@@ -1,0 +1,261 @@
+<ion-header mode="ios" class="common-header header-transparent bg-primary">
+  <div
+    (click)="back()"
+    style="background: transparent !important"
+    slot="start"
+    class="back left ion-activatable"
+  >
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title style="padding-left: 55px; padding-right: 0px">
+    <ion-item
+      style="padding-left: 0; --ion-item-background: transparent"
+      lines="none"
+    >
+      <ion-thumbnail
+        slot="start"
+        style="border-radius: 50%; width: 40px; height: 40px"
+      >
+        <img
+          style="border-radius: 50%; width: 40px; height: 40px"
+          [src]="data.heading.profile_image ? (data.heading.profile_image | imgCld) : 'assets/images/avatar.svg'"
+        />
+      </ion-thumbnail>
+      <div>
+        <h6 style="font-size: 17px; font-weight: 600; margin: 0; color: white">
+          {{ data.heading.name }}
+        </h6>
+      </div>
+    </ion-item>
+  </ion-title>
+</ion-header>
+
+<ion-content
+  style="overflow: hidden"
+  #content
+  [fullscreen]="true"
+  class="ion-padding bg-main bg-chat"
+>
+  <div
+    *ngIf="loading"
+    class="ion-padding ion-text-center"
+    style="margin-top: 300px"
+  >
+    <ion-spinner
+      color="secondary"
+      name="circles"
+      style="width: 50px; height: 50px"
+    ></ion-spinner>
+  </div>
+  <section
+    *ngIf="!loading"
+    class="chat-app-window"
+    style="overflow-x: hidden; overflow-y: hidden"
+  >
+    <div class="chats">
+      <div
+        *ngFor="let d of chats; let i = index"
+        class="chat"
+        isOnScreen
+        (isIntersecting)="i + 1 == chats.length ? isIntersecting($event, i, d) : null"
+        [isContinuous]="true"
+        [class.chat-left]="user.id !== d.user_id"
+      >
+        <div class="chat-body">
+          <div class="chat-content shadow-none">
+            <ion-card *ngIf="d.pet" class="card-horizontal shadow-none">
+              <ion-card-content>
+                <div class="top">
+                  <img
+                    [routerLink]="'/pet/detail/' + d.pet.id"
+                    [src]="(d.pet.images | firstArray) | imgCld"
+                  />
+                </div>
+                <div [routerLink]="'/pet/detail/' + d.pet.id">
+                  <div class="inner">
+                    <h6 class="name">{{ d.pet.name }}</h6>
+                    <div class="price-section mt-10px">
+                      <div>
+                        <p class="price">
+                          <ng-container *ngIf="!d.pet.discount_type"
+                            >{{ d.pet.price | currencyID }}</ng-container
+                          >
+                          <ng-container *ngIf="d.pet.discount_type == 'amount'"
+                            >{{ d.pet.price - d.pet.discount_amount | currencyID
+                            }}</ng-container
+                          >
+                          <ng-container *ngIf="d.pet.discount_type == 'percent'"
+                            >{{ d.pet.price - (d.pet.price *
+                            (d.pet.discount_percent / 100)) | currencyID
+                            }}</ng-container
+                          >
+                        </p>
+                        <p *ngIf="d.pet.discount_type" class="price-original">
+                          {{ d.pet.price | currencyID }}
+                        </p>
+                      </div>
+                      <div
+                        *ngIf="d.pet.discount_type == 'percent'"
+                        class="badge-discount"
+                      >
+                        {{ d.pet.discount_percent }}%
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ion-card-content>
+            </ion-card>
+
+            <!-- <div
+              class="flex-center ion-border-bottom ion-padding-vertical ion-margin-bottom"
+            >
+              <div>
+                <ion-thumbnail slot="start" style="border-radius: 10px">
+                  <img
+                    style="border-radius: 10px"
+                    src="assets/images/dummy-image.png"
+                  />
+                </ion-thumbnail>
+              </div>
+              <div class="ion-margin-start">
+                <h6
+                  style="
+                    font-size: 17px;
+                    font-weight: 600;
+                    margin-top: 0;
+                    color: #636363;
+                  "
+                >
+                  User 1
+                </h6>
+                <p style="margin: 0; font-size: 15px; color: #818181">
+                  Lorem ipsum dolor sit amet consectetum wlll hwhhwhhw hwhwhhw
+                  ghwhwhhw
+                </p>
+              </div>
+            </div> -->
+            <div class="ion-padding">
+              <p class="font-small-5 mb-1 text-secondary-darken">
+                {{ d.message }}
+              </p>
+              <small
+                class="float-right flex-center ion-margin-bottom text-secondary-light font-small-2"
+                >{{ d.created_at | date: 'HH:mm'}} &nbsp;
+
+                <ng-container *ngIf="user.id == d.user_id">
+                  <ng-icon
+                    size="18"
+                    [color]=" d.seen ? '#2dd36f' : '#818181'"
+                    class="float-right"
+                    name="heroCheckCircleMini"
+                  ></ng-icon>
+                </ng-container>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</ion-content>
+<ion-toolbar slot="end" style="padding: 8px" class="common-toolbar">
+  <ion-card
+    *ngIf="pet"
+    class="card-vertical shadow-none"
+    style="border: 1px solid #eeeeee"
+  >
+    <ion-card-content>
+      <div class="inner">
+        <img class="thumb-img" [src]="(pet.images | firstArray) | imgCld" />
+        <div class="right">
+          <div class="top">
+            <h6 class="name">{{ pet.name }}</h6>
+            <div class="price">
+              <p>
+                <ng-container *ngIf="!pet.discount_type"
+                  >{{ pet.price | currencyID }}</ng-container
+                >
+                <ng-container *ngIf="pet.discount_type == 'amount'"
+                  >{{ pet.price - pet.discount_amount | currencyID
+                  }}</ng-container
+                >
+                <ng-container *ngIf="pet.discount_type == 'percent'"
+                  >{{ pet.price - (pet.price * (pet.discount_percent / 100)) |
+                  currencyID }}</ng-container
+                >
+              </p>
+              <p *ngIf="pet.discount_type" class="price-original">
+                {{ pet.price | currencyID }}
+              </p>
+              <div
+                *ngIf="pet.discount_type"
+                style="padding: 3px 5px !important"
+                class="badge-discount"
+              >
+                <ng-container *ngIf="pet.discount_type == 'percent'">
+                  {{ pet.discount_percent }}%
+                </ng-container>
+                <ng-container *ngIf="pet.discount_type == 'amount'">
+                  {{ (pet.discount_amount / pet.price) * 100 | number : '1.2-2'
+                  }}%
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-row>
+    <!-- <ion-col size="1.5" class="ion-text-center">
+      <ion-buttons (click)="showEmojiPicker = !showEmojiPicker">
+        <ion-button class="ion-text-center">
+          <ion-icon
+            slot="icon-only"
+            *ngIf="!showEmojiPicker"
+            name="happy"
+          ></ion-icon>
+          <ion-icon
+            slot="icon-only"
+            *ngIf="showEmojiPicker"
+            name="w-keyboard"
+          ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-col>
+    <ion-col size="8.7"> -->
+    <ion-col size="10">
+      <ion-item lines="none" class="message">
+        <ion-textarea
+          class="message-text"
+          placeholder="Tulis sesuatu"
+          [autoGrow]="true"
+          [(ngModel)]="message"
+        >
+        </ion-textarea>
+      </ion-item>
+    </ion-col>
+    <ion-col size="1.5">
+      <div class="send ion-activatable" (click)="onSend()">
+        <div *ngIf="!formLoading">
+          <ng-icon size="20" name="lucideSendHorizontal"></ng-icon>
+        </div>
+        <ion-spinner
+          *ngIf="formLoading"
+          name="circular"
+          color="light"
+          style="width: 25px; height: 25px"
+        ></ion-spinner>
+        <ion-ripple-effect></ion-ripple-effect>
+      </div>
+    </ion-col>
+  </ion-row>
+  <!-- <ionic-emoji-picker-angular
+    color="light"
+    (getEmoji)="getEmoji($event)"
+    [hide]="showEmojiPicker"
+    height="300px"
+  ></ionic-emoji-picker-angular> -->
+</ion-toolbar>

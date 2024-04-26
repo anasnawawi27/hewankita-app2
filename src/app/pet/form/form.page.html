@@ -1,0 +1,317 @@
+<ion-header class="common-header bg-white">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>{{ !isEdit ? 'Tambah' : 'Edit' }} Pet</ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="form-section">
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Nama Pet / Judul</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input [type]="'text'" [(ngModel)]="name"></ion-input>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !name"
+      >
+        <span>Nama Wajib Diisi</span>
+      </small>
+    </div>
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Deskripsi</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-textarea [autoGrow]="true" [(ngModel)]="description">
+        </ion-textarea>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !description"
+      >
+        <span>Deskripsi Wajib Diisi</span>
+      </small>
+    </div>
+    <div class="input">
+      <ion-label class="input-title">URL Deskripsi</ion-label>
+      <ion-item class="input-outline" lines="none">
+        <ion-input [type]="'text'" [(ngModel)]="description_url"></ion-input>
+      </ion-item>
+    </div>
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Gender</ion-label>
+      <ion-radio-group
+        class="flex-radio"
+        [allowEmptySelection]="true"
+        [(ngModel)]="gender"
+      >
+        <ion-radio labelPlacement="end" value="male" class="mr-20px"
+          >Jantan</ion-radio
+        ><br />
+        <ion-radio labelPlacement="end" value="female">Betina</ion-radio><br />
+      </ion-radio-group>
+    </div>
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Umur</ion-label>
+      <ion-row>
+        <ion-col size="8">
+          <ion-item class="input-outline ion-no-margin" lines="none">
+            <ion-input [type]="'number'" [(ngModel)]="age"></ion-input>
+          </ion-item>
+          <small
+            class="ion-text-danger d-block mt-10px font-13"
+            *ngIf="formSubmitted && !age"
+          >
+            <span>Umur Wajib Diisi</span>
+          </small>
+        </ion-col>
+        <ion-col size="4">
+          <ion-radio-group [allowEmptySelection]="true" [(ngModel)]="ageType">
+            <ion-radio labelPlacement="end" value="Tahun" class="mr-20px"
+              >Tahun</ion-radio
+            ><br />
+            <ion-radio labelPlacement="end" value="Bulan">Bulan</ion-radio
+            ><br />
+          </ion-radio-group>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Berat</ion-label>
+      <ion-row>
+        <ion-col size="8">
+          <ion-item class="input-outline ion-no-margin" lines="none">
+            <ion-input [type]="'number'" [(ngModel)]="weight"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="4" class="flex-center">
+          <ion-label class="ion-text-bold">Kg</ion-label>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div
+      id="modal-category"
+      class="input ion-margin-bottom"
+      (click)="getCategories()"
+    >
+      <ion-label class="input-title">Kategori</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input
+          [type]="'text'"
+          [(ngModel)]="selectedCategory.name"
+        ></ion-input>
+        <ng-icon size="20" name="lucideChevronDown"></ng-icon>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !selectedCategory.id"
+      >
+        <span>Kategori Wajib Diisi</span>
+      </small>
+    </div>
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Foto Pet</ion-label>
+      <ion-row>
+        <ion-col *ngFor="let image of images; let i = index" size="3">
+          <div class="preview-img">
+            <div (click)="removeImage(i)" class="remove">
+              <ng-icon name="heroXMarkSolid"></ng-icon>
+            </div>
+            <img
+              [src]="image.type == 'edit' ? (image.file | imgCld) : image.file"
+            />
+          </div>
+        </ion-col>
+        <ion-col size="3">
+          <div
+            (click)="onChoosePhoto()"
+            class="add-multiple-photo ion-activatable"
+          >
+            <ng-icon size="25" name="lucidePlus"></ng-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+        </ion-col>
+      </ion-row>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !images.length"
+      >
+        <span>Gambar Wajib Diisi</span>
+      </small>
+    </div>
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Harga</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input
+          [maskito]="maskOptions"
+          [maskitoElement]="maskPredicate"
+          [(ngModel)]="price"
+        ></ion-input>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13 ion-margin-bottom"
+        *ngIf="formSubmitted && !price"
+      >
+        <span>Harga Wajib Diisi</span>
+      </small>
+      <ion-row>
+        <ion-col size="5" class="flex-center" style="height: 55px">
+          <ion-toggle
+            mode="ios"
+            [(ngModel)]="withDiscount"
+            color="success"
+            labelPlacement="start"
+            >Diskon</ion-toggle
+          >
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="withDiscount">
+        <ion-col size="8">
+          <ion-item class="input-outline ion-no-margin" lines="none">
+            <ion-input
+              *ngIf="discountType == 'percent'"
+              placeholder="Potongan (%)"
+              [type]="'number'"
+              [(ngModel)]="discountPercent"
+            ></ion-input>
+            <ion-input
+              *ngIf="discountType == 'amount'"
+              placeholder="Potongan (Rp)"
+              [(ngModel)]="discountAmount"
+              [maskito]="maskOptions"
+              [maskitoElement]="maskPredicate"
+            ></ion-input>
+          </ion-item>
+          <small
+            class="ion-text-danger d-block mt-10px font-13 ion-margin-bottom"
+            *ngIf="formSubmitted && withDiscount && discountType == 'percent' && !discountPercent"
+          >
+            <span>Persenan Diskon Wajib Diisi</span>
+          </small>
+          <small
+            class="ion-text-danger d-block mt-10px font-13 ion-margin-bottom"
+            *ngIf="formSubmitted && withDiscount && discountType !== 'percent' && !discountAmount"
+          >
+            <span>Jumlah Diskon Wajib Diisi</span>
+          </small>
+        </ion-col>
+        <ion-col size="4">
+          <ion-radio-group
+            [allowEmptySelection]="true"
+            [(ngModel)]="discountType"
+          >
+            <ion-radio labelPlacement="end" value="percent" class="mr-20px"
+              >Persen</ion-radio
+            ><br />
+            <ion-radio labelPlacement="end" value="amount">Jumlah</ion-radio
+            ><br />
+          </ion-radio-group>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Stok Pet</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input type="number" [(ngModel)]="stock"></ion-input>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13 ion-margin-bottom"
+        *ngIf="formSubmitted && !stock"
+      >
+        <span>Stok Pet Wajib Diisi</span>
+      </small>
+    </div>
+
+    <div class="input">
+      <ion-label class="input-title">Tags</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <tag-input
+          [(ngModel)]="tags"
+          placeholder="+ Tag"
+          secondaryPlaceholder="Tambah Tag Baru"
+        ></tag-input>
+      </ion-item>
+      <small style="line-height: 20px" class="d-block mt-10px ion-text-grey"
+        >Berfungsi mempermudah pencarian. ( Tekan Enter untuk menambahkan Tag
+        )</small
+      >
+    </div>
+
+    <ion-toggle
+      mode="ios"
+      class="ion-margin-bottom ion-margin-top"
+      [(ngModel)]="display"
+      color="success"
+      labelPlacement="start"
+      >Tampilkan</ion-toggle
+    >
+  </div>
+</ion-content>
+<ion-toolbar class="common-toolbar" slot="end">
+  <ion-button
+    (click)="onSave()"
+    mode="ios"
+    expand="block"
+    color="primary"
+    shape="round"
+    [disabled]="formLoading"
+  >
+    <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+    <span *ngIf="!formLoading">Simpan</span>
+  </ion-button>
+</ion-toolbar>
+
+<ion-modal trigger="modal-category" #modalCategory>
+  <ng-template>
+    <ion-header class="common-header">
+      <ion-toolbar>
+        <ion-title>Pilih Kategori</ion-title>
+        <div
+          slot="end"
+          (click)="modalCategory.dismiss()"
+          class="back right ion-activatable"
+        >
+          <ng-icon name="heroXMarkSolid"></ng-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list *ngIf="!componentLoading; else loader">
+        <ion-item
+          class="ion-activatable"
+          *ngFor="let category of categories"
+          (click)="
+          selectedCategory = category;
+          modalCategory.dismiss()"
+        >
+          <ion-label>{{ category.name }}</ion-label>
+          <ng-icon
+            *ngIf="category.id == selectedCategory.id"
+            name="heroCheckCircleSolid"
+            size="20"
+            color="#47C571"
+          ></ng-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ng-template #loader>
+  <div class="loader" #loader>
+    <ion-skeleton-text
+      [animated]="true"
+      *ngFor="let val of createArray(10)"
+      style="
+        width: 100%;
+        height: 50px;
+        border-radius: 15px;
+        margin-bottom: 10px;
+      "
+    ></ion-skeleton-text>
+  </div>
+</ng-template>

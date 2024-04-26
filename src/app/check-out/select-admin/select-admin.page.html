@@ -1,0 +1,91 @@
+<ion-content class="ion-padding">
+  <h6 *ngIf="!loading && data.length">Pilih Admin</h6>
+  <ion-list mode="md" *ngIf="!loading; else loader">
+    <ion-item
+      (click)="onSelectAdmin(d)"
+      *ngFor="let d of data"
+      [button]="true"
+      lines="full"
+    >
+      <ion-avatar aria-hidden="true" slot="start">
+        <img
+          alt="avatar"
+          [src]="d.profile_image ? (d.profile_image | imgCld: 100:100) : 'assets/images/avatar.svg'"
+        />
+      </ion-avatar>
+      <div>
+        <ion-label class="name">{{ d.fullname }}</ion-label>
+        <div class="level">{{ d.level }}</div>
+      </div>
+    </ion-item>
+  </ion-list>
+  <ng-template #loader>
+    <ion-list mode="md">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <p>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 60%"
+            ></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 30%"
+            ></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <p>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 60%"
+            ></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 30%"
+            ></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <p>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 60%"
+            ></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 30%"
+            ></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-template>
+
+  <div
+    *ngIf="!loading && !data.length"
+    class="ion-padding ion-text-center not-found"
+  >
+    <img src="assets/illustrations/not-found.png" />
+    <h4>Data Kosong</h4>
+  </div>
+</ion-content>

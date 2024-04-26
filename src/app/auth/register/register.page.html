@@ -1,0 +1,81 @@
+<ion-header> </ion-header>
+<ion-content mode="ios" class="ion-padding" [fullscreen]="true">
+  <div class="heading">
+    <h3>Registrasi Akun</h3>
+    <p>Inputkan data diri anda</p>
+  </div>
+
+  <ion-item class="input-outline" lines="none">
+    <ng-icon size="18" name="lucideCircleUserRound"></ng-icon>
+    <ion-input
+      type="text"
+      placeholder="Nama Lengkap"
+      [(ngModel)]="fullname"
+    ></ion-input>
+  </ion-item>
+  <ion-item class="input-outline" lines="none">
+    <ng-icon size="18" name="lucideSmartphone"></ng-icon>
+    <ion-input
+      type="text"
+      placeholder="No Handphone"
+      [(ngModel)]="phone_number"
+    ></ion-input>
+  </ion-item>
+  <ion-item class="input-outline" lines="none">
+    <ng-icon size="18" name="lucideMail"></ng-icon>
+    <ion-input type="text" placeholder="Email" [(ngModel)]="email"></ion-input>
+  </ion-item>
+  <ion-item class="input-outline" lines="none">
+    <ng-icon size="18" name="lucideLock"></ng-icon>
+    <ion-input
+      [type]="showPassword ? 'text' : 'password'"
+      placeholder="Password"
+      [(ngModel)]="password"
+    ></ion-input>
+
+    <ng-icon
+      slot="end"
+      size="20"
+      (click)="showPassword = !showPassword"
+      [name]="showPassword ? 'heroEyeSlashMini' : 'heroEyeMini'"
+    ></ng-icon>
+  </ion-item>
+  <ion-item class="input-outline" lines="none">
+    <ng-icon size="18" name="lucideLockKeyhole"></ng-icon>
+    <ion-input
+      [type]="showConfirmPassword ? 'text' : 'password'"
+      placeholder="Konfirmasi Password"
+      [(ngModel)]="confirm_password"
+    ></ion-input>
+
+    <ng-icon
+      slot="end"
+      size="20"
+      (click)="showConfirmPassword = !showConfirmPassword"
+      [name]="showConfirmPassword ? 'heroEyeSlashMini' : 'heroEyeMini'"
+    ></ng-icon>
+  </ion-item>
+
+  <div
+    *ngIf="password !== confirm_password && confirm_password && password"
+    class="alert danger ion-margin-bottom"
+  >
+    Konfirmasi Password Tidak Sama
+  </div>
+
+  <ion-button
+    shape="round"
+    (click)="onSubmit()"
+    [disabled]="formLoading"
+    expand="block"
+  >
+    <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+    <span *ngIf="!formLoading">Daftar</span>
+  </ion-button>
+
+  <div class="ion-text-center">
+    <p class="login">
+      Sudah punya akun ? <a [routerLink]="'/auth/login'">Login</a>
+    </p>
+  </div>
+</ion-content>

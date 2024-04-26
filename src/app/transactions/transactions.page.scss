@@ -1,0 +1,35 @@
+app-transactions{
+    ion-skeleton-text{
+        border-radius: 10px;
+    }
+    ion-card {
+        box-shadow: none;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 15px;
+  
+        ion-item.item {
+  
+          h6 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #6e6e6e;
+            margin-bottom: 8px;
+          }
+  
+          span {
+            font-size: 13px;
+            color: #a8a8a8;
+            font-weight: 600;
+          }
+  
+          &:not(:last-child) {
+            border-bottom: 0.5px solid #dcdcdc;
+          }
+        }
+  
+        ion-item::part(native) {
+          padding-inline-start: 10px !important;
+        }
+      }
+}

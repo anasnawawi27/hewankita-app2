@@ -1,0 +1,45 @@
+<ion-header></ion-header>
+<ion-content mode="ios" class="ion-padding" [fullscreen]="true">
+  <div class="heading">
+    <h3>Selamat Datang</h3>
+    <p>Silahkan login dengan akun anda !</p>
+  </div>
+
+  <ion-item class="input-outline" lines="none">
+    <ng-icon size="18" name="lucideMail"></ng-icon>
+    <ion-input type="text" placeholder="Email" [(ngModel)]="email"></ion-input>
+  </ion-item>
+  <ion-item class="input-outline" lines="none">
+    <ng-icon size="18" name="lucideUnlockKeyhole"></ng-icon>
+    <ion-input
+      [type]="showPassword ? 'text' : 'password'"
+      placeholder="Password"
+      [(ngModel)]="password"
+    ></ion-input>
+    <ng-icon
+      slot="end"
+      size="20"
+      (click)="showPassword = !showPassword"
+      [name]="showPassword ? 'heroEyeSlashMini' : 'heroEyeMini'"
+    ></ng-icon>
+  </ion-item>
+
+  <div class="ion-text-right">
+    <a class="forgot-pass" href="javascript:void(0)">Lupa Password ?</a>
+  </div>
+
+  <ion-button
+    shape="round"
+    [disabled]="formLoading"
+    expand="block"
+    (click)="onSubmit()"
+  >
+    <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+    <span *ngIf="!formLoading">Login</span>
+  </ion-button>
+  <div class="ion-text-center">
+    <p class="register">
+      Belum punya akun ? <a [routerLink]="'/auth/register'">Daftar</a>
+    </p>
+  </div>
+</ion-content>

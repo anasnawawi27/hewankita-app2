@@ -1,20 +1,490 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
+<ion-header class="common-header ion-padding">
+  <div routerLink="/search" class="search">
+    <ng-icon name="lucideSearch"></ng-icon>
+    <span>Cari Peliharaan</span>
+  </div>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding bg-main">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <!-- Banner -->
+  <!-- <swiper [slidesPerView]="1.5" [spaceBetween]="5" [pagination]="true">
+    <ng-template swiperSlide>
+      <ion-card>
+        <ion-card-content class="ion-no-padding">
+          <ion-img
+            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
+            alt="The Wisconsin State Capitol building in Madison, WI at night"
+          ></ion-img>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+    <ng-template swiperSlide>
+      <ion-card>
+        <ion-card-content class="ion-no-padding">
+          <ion-img
+            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
+            alt="The Wisconsin State Capitol building in Madison, WI at night"
+          ></ion-img>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+    <ng-template swiperSlide>
+      <ion-card>
+        <ion-card-content class="ion-no-padding">
+          <ion-img
+            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
+            alt="The Wisconsin State Capitol building in Madison, WI at night"
+          ></ion-img>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+    <ng-template swiperSlide>
+      <ion-card>
+        <ion-card-content class="ion-no-padding">
+          <ion-img
+            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
+            alt="The Wisconsin State Capitol building in Madison, WI at night"
+          ></ion-img>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+    <ng-template swiperSlide>
+      <ion-card>
+        <ion-card-content class="ion-no-padding">
+          <ion-img
+            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
+            alt="The Wisconsin State Capitol building in Madison, WI at night"
+          ></ion-img>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+    <ng-template swiperSlide>
+      <ion-card>
+        <ion-card-content class="ion-no-padding">
+          <ion-img
+            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
+            alt="The Wisconsin State Capitol building in Madison, WI at night"
+          ></ion-img>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+    <ng-template swiperSlide>
+      <ion-card>
+        <ion-card-content class="ion-no-padding">
+          <ion-img
+            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
+            alt="The Wisconsin State Capitol building in Madison, WI at night"
+          ></ion-img>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+  </swiper> -->
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div class="categories ion-margin-vertical">
+    <swiper [slidesPerView]="4.5" [spaceBetween]="10">
+      <ng-container *ngIf="!loading1; else loaderSegment">
+        <ng-template swiperSlide>
+          <div
+            (click)="category = 'all'; onClickCategory()"
+            class="segment ion-activatable"
+            [class.active]="category == 'all'"
+          >
+            Semua
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+        </ng-template>
+        <ng-template swiperSlide *ngFor="let val of categories">
+          <div
+            (click)="category = val.id; onClickCategory()"
+            class="segment ion-activatable"
+            [class.active]="category == val.id"
+          >
+            {{ val.name }}
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+        </ng-template>
+      </ng-container>
+
+      <ng-template #loaderSegment>
+        <ng-template swiperSlide *ngFor="let val of loop(4)">
+          <ion-skeleton-text
+            [animated]="true"
+            style="width: 100%; height: 40px; border-radius: 50px"
+          ></ion-skeleton-text>
+        </ng-template>
+      </ng-template>
+    </swiper>
   </div>
+
+  <ng-container *ngIf="!loading2; else loaderVertical">
+    <ng-container *ngIf="petsByCategory.length; else empty">
+      <ion-card
+        *ngFor="let pet of petsByCategory; let i = index"
+        class="card-vertical"
+      >
+        <ion-card-content>
+          <div class="inner">
+            <img
+              [routerLink]="'/pet/detail/' + pet.id"
+              class="thumb-img"
+              [src]="(pet.images | firstArray) | imgCld"
+            />
+            <div class="right">
+              <div class="top" [routerLink]="'/pet/detail/' + pet.id">
+                <h6 class="name">{{ pet.name }}</h6>
+                <div class="price">
+                  <p>
+                    <ng-container *ngIf="!pet.discount_type"
+                      >{{ pet.price | currencyID }}</ng-container
+                    >
+                    <ng-container *ngIf="pet.discount_type == 'amount'"
+                      >{{ pet.price - pet.discount_amount | currencyID
+                      }}</ng-container
+                    >
+                    <ng-container *ngIf="pet.discount_type == 'percent'"
+                      >{{ pet.price - (pet.price * (pet.discount_percent / 100))
+                      | currencyID }}</ng-container
+                    >
+                  </p>
+                  <p *ngIf="pet.discount_type" class="price-original">
+                    {{ pet.price | currencyID }}
+                  </p>
+                  <div
+                    *ngIf="pet.discount_type"
+                    style="padding: 3px 5px !important"
+                    class="badge-discount"
+                  >
+                    <ng-container *ngIf="pet.discount_type == 'percent'">
+                      {{ pet.discount_percent }}%
+                    </ng-container>
+                    <ng-container *ngIf="pet.discount_type == 'amount'">
+                      {{ (pet.discount_amount / pet.price) * 100 | number :
+                      '1.2-2' }}%
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+              <div class="bottom">
+                <div class="detail" [routerLink]="'/pet/detail/' + pet.id">
+                  <div class="rating">
+                    <span>{{ pet.rating }}</span>
+                    <ion-icon name="star" class="star"></ion-icon>
+                  </div>
+                  <div class="location">
+                    <ng-icon class="map-icon" name="lucideMapPin"></ng-icon>
+                    <span class="ion-text-capitalize"
+                      >{{ pet.shop.city.replace('KABUPATEN', '').replace('KOTA',
+                      '').toLowerCase() }}</span
+                    >
+                  </div>
+                </div>
+                <div class="action">
+                  <div
+                    (click)="addFav(pet.id, i, 'category')"
+                    class="add-fav ion-activatable"
+                  >
+                    <ion-icon
+                      color="danger"
+                      [name]=" !pet.favourite ? 'heart-outline' : 'heart'"
+                    ></ion-icon>
+                    <ion-ripple-effect></ion-ripple-effect>
+                  </div>
+                  <div
+                    (click)="checkOut(pet.id, i, 'category')"
+                    class="buy-icon-only ion-activatable"
+                  >
+                    <ng-icon
+                      *ngIf="!pet.formLoading"
+                      name="lucideShoppingCart"
+                    ></ng-icon>
+                    <ion-spinner
+                      *ngIf="pet.formLoading"
+                      name="crescent"
+                    ></ion-spinner>
+                    <ion-ripple-effect></ion-ripple-effect>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+  </ng-container>
+
+  <div
+    *ngIf="!loading2 && petsByCategory.length"
+    (click)="seeAll(category)"
+    class="view-all ion-text-center ion-activatable"
+  >
+    <span> Lihat Semua </span>
+    <ng-icon size="18" name="lucideChevronsRight"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+
+  <div class="heading-section ion-margin-bottom">
+    <h6>Ditambahkan Terbaru</h6>
+    <a *ngIf="!loading3 && petsLatestAdd.length" (click)="seeAll('latest')"
+      >Lihat Semua <ng-icon name="lucideChevronRight"></ng-icon
+    ></a>
+  </div>
+  <swiper class="ion-margin-top" [slidesPerView]="1.5" [spaceBetween]="20">
+    <ng-container *ngIf="!loading3; else horizontalLoader">
+      <ng-template swiperSlide *ngFor="let pet of petsLatestAdd; let i = index">
+        <ion-card class="card-horizontal">
+          <ion-card-content>
+            <div class="top">
+              <img
+                [routerLink]="'/pet/detail/' + pet.id"
+                [src]="(pet.images | firstArray) | imgCld"
+              />
+              <div
+                (click)="addFav(pet.id, i, 'latest')"
+                class="add-fav ion-activatable"
+              >
+                <ion-icon
+                  color="danger"
+                  [name]=" !pet.favourite ? 'heart-outline' : 'heart'"
+                ></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </div>
+            <div [routerLink]="'/pet/detail/' + pet.id">
+              <div class="inner">
+                <h6 class="name">{{ pet.name }}</h6>
+                <div class="price-section mt-10px">
+                  <div>
+                    <p class="price">
+                      <ng-container *ngIf="!pet.discount_type"
+                        >{{ pet.price | currencyID }}</ng-container
+                      >
+                      <ng-container *ngIf="pet.discount_type == 'amount'"
+                        >{{ pet.price - pet.discount_amount | currencyID
+                        }}</ng-container
+                      >
+                      <ng-container *ngIf="pet.discount_type == 'percent'"
+                        >{{ pet.price - (pet.price * (pet.discount_percent /
+                        100)) | currencyID }}</ng-container
+                      >
+                    </p>
+                    <p *ngIf="pet.discount_type" class="price-original">
+                      {{ pet.price | currencyID }}
+                    </p>
+                  </div>
+                  <div
+                    *ngIf="pet.discount_type == 'percent'"
+                    class="badge-discount"
+                  >
+                    {{ pet.discount_percent }}%
+                  </div>
+                </div>
+              </div>
+              <div class="bottom">
+                <div class="location">
+                  <ng-icon class="map-icon" name="lucideMapPin"></ng-icon>
+                  <span class="ion-text-capitalize"
+                    >{{ pet.shop.city.replace('KABUPATEN', '').replace('KOTA',
+                    '').toLowerCase() }}</span
+                  >
+                </div>
+                <div class="rating">
+                  <span>{{ pet.rating }}</span>
+                  <ion-icon name="star" class="star"></ion-icon>
+                </div>
+              </div>
+            </div>
+            <ion-button
+              class="ion-margin-top buy ion-text-capitalize"
+              size="small"
+              expand="block"
+              [disabled]="pet.formLoading"
+              (click)="checkOut(pet.id, i, 'latest')"
+            >
+              <ion-spinner
+                *ngIf="pet.formLoading"
+                name="crescent"
+              ></ion-spinner>
+              <span *ngIf="!pet.formLoading">Beli</span>
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ng-template>
+    </ng-container>
+  </swiper>
+  <ng-container
+    *ngIf="!loading3 && !petsLatestAdd.length"
+    [ngTemplateOutlet]="empty"
+  ></ng-container>
+
+  <div class="heading-section ion-margin-bottom">
+    <h6>Paling Murah</h6>
+    <a *ngIf="!loading4 && petsCheapest.length" (click)="seeAll('cheapest')"
+      >Lihat Semua <ng-icon name="lucideChevronRight"></ng-icon
+    ></a>
+  </div>
+  <swiper class="ion-margin-top" [slidesPerView]="1.5" [spaceBetween]="20">
+    <ng-container *ngIf="!loading4; else loaderVertical">
+      <ng-template swiperSlide *ngFor="let pet of petsCheapest; let i = index">
+        <ion-card class="card-horizontal">
+          <ion-card-content>
+            <div class="top">
+              <img
+                [routerLink]="'/pet/detail/' + pet.id"
+                [src]="(pet.images | firstArray) | imgCld"
+              />
+              <div
+                (click)="addFav(pet.id, i, 'cheapest')"
+                class="add-fav ion-activatable"
+              >
+                <ion-icon
+                  color="danger"
+                  [name]=" !pet.favourite ? 'heart-outline' : 'heart'"
+                ></ion-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </div>
+            <div [routerLink]="'/pet/detail/' + pet.id">
+              <div class="inner">
+                <h6 class="name">{{ pet.name }}</h6>
+                <div class="price-section mt-10px">
+                  <div>
+                    <p class="price">
+                      <ng-container *ngIf="!pet.discount_type"
+                        >{{ pet.price | currencyID }}</ng-container
+                      >
+                      <ng-container *ngIf="pet.discount_type == 'amount'"
+                        >{{ pet.price - pet.discount_amount | currencyID
+                        }}</ng-container
+                      >
+                      <ng-container *ngIf="pet.discount_type == 'percent'"
+                        >{{ pet.price - (pet.price * (pet.discount_percent /
+                        100)) | currencyID }}</ng-container
+                      >
+                    </p>
+                    <p *ngIf="pet.discount_type" class="price-original">
+                      {{ pet.price | currencyID }}
+                    </p>
+                  </div>
+                  <div
+                    *ngIf="pet.discount_type == 'percent'"
+                    class="badge-discount"
+                  >
+                    {{ pet.discount_percent }}%
+                  </div>
+                </div>
+              </div>
+              <div class="bottom">
+                <div class="location">
+                  <ng-icon class="map-icon" name="lucideMapPin"></ng-icon>
+                  <span class="ion-text-capitalize"
+                    >{{ pet.shop.city.replace('KABUPATEN', '').replace('KOTA',
+                    '').toLowerCase() }}</span
+                  >
+                </div>
+                <div class="rating">
+                  <span>{{ pet.rating }}</span>
+                  <ion-icon name="star" class="star"></ion-icon>
+                </div>
+              </div>
+            </div>
+            <ion-button
+              class="ion-margin-top buy ion-text-capitalize"
+              size="small"
+              expand="block"
+              [disabled]="pet.formLoading"
+              (click)="checkOut(pet.id, i, 'cheapest')"
+            >
+              <ion-spinner
+                *ngIf="pet.formLoading"
+                name="crescent"
+              ></ion-spinner>
+              <span *ngIf="!pet.formLoading">Beli</span>
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ng-template>
+    </ng-container>
+  </swiper>
+  <ng-container
+    *ngIf="!loading4 && !petsCheapest.length"
+    [ngTemplateOutlet]="empty"
+  ></ng-container>
 </ion-content>
+
+<ng-template #empty>
+  <div class="ion-padding ion-text-center not-found">
+    <img src="assets/illustrations/not-found.png" />
+    <h4>Data Kosong</h4>
+  </div>
+</ng-template>
+
+<ng-template #horizontalLoader>
+  <ng-template swiperSlide *ngFor="let val of loop(3)">
+    <ion-card class="card-horizontal">
+      <ion-card-content>
+        <div class="loader">
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </ion-thumbnail>
+
+          <h3>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 80%; margin-top: 15px"
+            ></ion-skeleton-text>
+          </h3>
+          <p style="margin: 10px 0">
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 60%"
+            ></ion-skeleton-text>
+          </p>
+
+          <ion-skeleton-text
+            [animated]="true"
+            style="width: 100%; margin-top: 20px"
+          ></ion-skeleton-text>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ng-template>
+
+<ng-template #loaderVertical>
+  <ion-card class="card-vertical" *ngFor="let val of loop(5)">
+    <ion-card-content>
+      <ion-item class="loader" lines="none">
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 80%"
+            ></ion-skeleton-text>
+          </h3>
+          <p style="margin-bottom: 15px">
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 60%"
+            ></ion-skeleton-text>
+          </p>
+          <div style="display: flex; justify-content: space-between">
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 40%"
+            ></ion-skeleton-text>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 20%"
+            ></ion-skeleton-text>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ng-template>

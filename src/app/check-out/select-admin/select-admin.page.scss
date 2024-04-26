@@ -1,0 +1,25 @@
+app-select-admin{
+    ion-skeleton-text {
+        --border-radius: 9999px;
+      }
+    
+      .name {
+        font-size: 15px;
+        font-weight: 500;
+        font-weight: 600;
+        color: #818181;
+      }
+    
+      .level {
+        margin-top: 5px;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: capitalize;
+        color: var(--ion-color-primary);
+        margin-bottom: 10px;
+      }
+
+      ion-avatar{
+        margin-bottom: 20px;
+      }
+}

@@ -1,0 +1,32 @@
+app-favourites{
+    .empty-state{
+        margin: 100px 0;
+    }
+
+    h6{
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    p{
+        color: #818181;
+        line-height: 25px;
+    }
+
+    .total-price{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        p{
+            margin: 0 0 5px 0;
+            font-size: 15px;
+        }
+
+        h6{
+            font-size: 17px;
+            margin: 0;
+            font-weight: 600;
+        }
+    }
+}

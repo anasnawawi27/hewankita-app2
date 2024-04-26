@@ -1,0 +1,173 @@
+pet-check-out{
+
+    .heading{
+        margin: 0 0 10px 0;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .address{
+        margin: 0;
+        box-shadow: none;
+
+        &::before {
+            content:'';
+            background: url('../../assets/address-accent.svg');
+            background-repeat: no-repeat;
+            height: 100%;
+            width: 33px;
+            position: absolute;
+        }
+
+        ion-card-content{
+            padding: 15px 15px 15px 20px;
+
+            .inner{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .label{
+                display: block;
+                margin-bottom: 5px;
+                font-size: 13px;
+                color: #787878;
+                font-weight: 600;
+            }
+
+            .current-address{
+                display: flex;
+                align-items: center;
+
+                ng-icon{
+                    color: var(--ion-color-primary);
+                }
+
+                h6{
+                    font-size: 15px;
+                    margin-left: 5px;
+                    font-weight: 600;
+                }
+            }
+
+            p{
+                margin-top: 5px;
+                color: #9a9a9a;
+                width: 300px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+    }
+
+    .customer-service-section{
+        background: var(--ion-color-primary);
+        margin-top: -50px;
+        position: relative;
+        z-index: 0;
+        padding: 60px 15px 15px 15px;
+        color: white;
+        overflow: hidden;
+
+        h6{
+            margin: 0;
+            font-weight: 600;
+            font-size: 17px;
+            line-height: 28px;
+        }
+
+        p{
+            margin: 10px 0 20px 0;
+            font-size: 14px;
+        }
+
+        .chat-admin{
+            width: fit-content;
+            background: white;
+            color: var(--ion-color-primary);
+            padding: 10px;
+            display: flex;
+            font-weight: 600;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 5;
+
+            span{
+                display: inline-block;
+                margin-left: 10px;
+                font-size: 15px;
+            }
+        }
+
+        .accent{
+            position: absolute;
+            bottom: -70px;
+            left: -35px;
+        }
+
+        .admin-illustration{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+    }
+
+    .toolbar-total{
+        padding: 0 5px;
+        --background: white;
+        box-shadow: 0px -1px 8.6px #a2a2a282;
+
+        .total-temp{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            p{
+                margin: 0 0 10px 0;
+                font-size: 14px;
+            }
+
+            h6{
+                margin: 0;
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+.address-option{
+    .address-item{
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+
+        ng-icon{
+            color: var(--ion-color-primary);
+        }
+
+        h6{
+            font-size: 15px;
+            margin: 5px;
+            font-weight: 600;
+        }
+    }
+
+    .address-house{
+        margin-top: 5px;
+        color: #9a9a9a;
+        width: 300px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+    .badge-discount{
+        padding: 3px 5px!important;
+    }
+}

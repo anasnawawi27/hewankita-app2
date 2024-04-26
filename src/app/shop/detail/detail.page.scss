@@ -1,0 +1,113 @@
+app-shop-detail{
+    ng-icon{
+        transform: rotate(0);
+        transition: all 0.3s linear;
+        &.rotate{
+            transform: rotate(-180deg);
+        }
+    }
+    .shop-detail-section {
+
+        background: white;
+        border-radius: 0 0 10px 10px;
+        transition: all .5s ease-in-out;
+        height: auto;
+        overflow: hidden;
+
+        &.slide-up{
+
+            transition: all .5s ease-in-out;
+            height: 0!important
+        }
+
+        
+        h6{
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .description, .address{
+            font-size: 14px;
+            color: #818181;
+            line-height: 22px;
+            text-align: justify;
+        }
+    }
+
+
+    .img-galery{
+        width: 100px;
+        height: 80px;
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+        img{
+            width: 100px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+    }
+
+    .swiper-wrapper{
+        height: 110px!important;
+    }
+
+    .swiper-pagination{
+        position: absolute!important;
+        bottom: 0!important;
+        text-align: right!important;
+    }
+
+    // .slide-up, .slide-down {
+    //     overflow:hidden;
+    //     transition: all .5s linear;
+    // }
+    // .slide-up > .shop-detail-section, .slide-down > .shop-detail-section {
+    //     transform: translateY(-100%);
+    //     transition: .4s ease-in-out;
+    //     overflow:hidden;
+    // }
+    // .slide-down > .shop-detail-section {            
+    //     transform: translateY(0);
+    //     overflow:hidden;
+    // } 
+
+    // .slide-up{
+    //     height:  0;
+    // }
+    // .slide-down{
+    //     height:  fit-content;
+    // }
+
+    .heading{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h5{
+            margin: 15px 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .add-pet{
+            --border-radius: 10px!important;
+            --padding-top: 10px!important;
+            --padding-bottom: 10px!important;
+            --color: #818181!important;
+            --background:  #E7E7E7!important;
+            --ripple-color: #DFDFDF;
+            --background-activated: #DFDFDF;
+            --background-focused: #DFDFDF;
+            font-size: 15px;
+            font-weight: 600;
+
+            &:hover{
+                --background:  #DFDFDF!important;
+            }
+        }
+    }
+
+}
