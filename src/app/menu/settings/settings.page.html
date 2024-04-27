@@ -1,0 +1,168 @@
+<ion-header class="common-header bg-white">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Pengaturan</ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ng-container *ngIf="!loading; else loader">
+    <div class="form-section">
+      <ion-item
+        mode="ios"
+        (click)="openModalBank = true"
+        *ngIf="input.bank_account && input.bank_account_logo"
+        button
+        lines="full"
+        class="ion-margin-bottom ion-padding-vertical"
+      >
+        <img
+          width="70"
+          class="ion-margin-end"
+          [src]="input.bank_account_logo"
+        />
+        <ion-label class="ion-text-bold">{{ input.bank_account }}</ion-label>
+      </ion-item>
+
+      <div
+        *ngIf="!input.bank_account && !input.bank_account_logo"
+        class="input ion-margin-bottom"
+        (click)="openModalBank = true"
+      >
+        <ion-label class="input-title">Bank</ion-label>
+        <ion-item class="input-outline ion-no-margin" lines="none">
+          <ion-input type="text"></ion-input>
+          <ng-icon size="20" name="lucideChevronDown"></ng-icon>
+        </ion-item>
+        <small
+          class="ion-text-danger d-block mt-10px font-13"
+          *ngIf="formSubmitted && !input.bank_account"
+        >
+          <span>Bank Wajib Diisi</span>
+        </small>
+      </div>
+
+      <div class="input ion-margin-bottom">
+        <ion-label class="input-title">No Rekening</ion-label>
+        <ion-item class="input-outline ion-no-margin" lines="none">
+          <ion-input
+            [type]="'text'"
+            [(ngModel)]="input.bank_account_number"
+          ></ion-input>
+        </ion-item>
+        <small
+          class="ion-text-danger d-block mt-10px font-13"
+          *ngIf="formSubmitted && !input.bank_account_number"
+        >
+          <span>No Rekening Wajib Diisi</span>
+        </small>
+      </div>
+
+      <div class="input ion-margin-bottom">
+        <ion-label class="input-title">Atas Nama</ion-label>
+        <ion-item class="input-outline ion-no-margin" lines="none">
+          <ion-input
+            [type]="'text'"
+            [(ngModel)]="input.bank_account_name"
+          ></ion-input>
+        </ion-item>
+        <small
+          class="ion-text-danger d-block mt-10px font-13"
+          *ngIf="formSubmitted && !input.bank_account_name"
+        >
+          <span>Atas Nama Wajib Diisi</span>
+        </small>
+      </div>
+
+      <div class="input ion-margin-bottom">
+        <ion-label class="input-title">Service Fee (%)</ion-label>
+        <ion-item class="input-outline ion-no-margin" lines="none">
+          <ion-input
+            [type]="'number'"
+            [(ngModel)]="input.service_fee"
+          ></ion-input>
+        </ion-item>
+        <small
+          class="ion-text-danger d-block mt-10px font-13"
+          *ngIf="formSubmitted && !input.service_fee"
+        >
+          <span>Service Fee Wajib Diisi</span>
+        </small>
+      </div>
+    </div>
+  </ng-container>
+</ion-content>
+<ion-toolbar class="common-toolbar" slot="end">
+  <ion-button
+    (click)="onSave()"
+    mode="ios"
+    expand="block"
+    color="primary"
+    shape="round"
+    [disabled]="formLoading"
+  >
+    <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+    <span *ngIf="!formLoading">Simpan</span>
+  </ion-button>
+</ion-toolbar>
+
+<ng-template #loader>
+  <div class="ion-padding ion-text-center" style="margin-top: 300px">
+    <ion-spinner
+      color="secondary"
+      name="circles"
+      style="width: 50px; height: 50px"
+    ></ion-spinner>
+  </div>
+</ng-template>
+
+<ion-modal [isOpen]="openModalBank">
+  <ng-template>
+    <ion-header class="common-header bg-white">
+      <ion-toolbar>
+        <ion-title>Pilih Bank</ion-title>
+        <div
+          slot="end"
+          (click)="openModalBank = false"
+          class="back right ion-activatable"
+        >
+          <ng-icon name="heroXMarkSolid"></ng-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+        <div class="ion-padding-horizontal">
+          <ion-item class="input-outline" lines="none">
+            <ion-input
+              type="text"
+              placeholder="Cari Bank"
+              (keyup)="onSearchBank($event)"
+            ></ion-input>
+            <ng-icon size="20" name="lucideSearch"></ng-icon>
+          </ion-item>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-item
+          class="ion-activatable"
+          *ngFor="let bank of bankOptions"
+          (click)="
+          input.bank_account= bank.name;
+          input.bank_account_logo = bank.image;
+          openModalBank = false
+          "
+        >
+          <ion-label>{{ bank.name }}</ion-label>
+          <ng-icon
+            *ngIf="bank.name == input.bank_account"
+            name="heroCheckCircleSolid"
+            size="20"
+            color="#47C571"
+          ></ng-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

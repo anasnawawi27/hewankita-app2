@@ -46,17 +46,39 @@
 
     <h6 class="title">Admin</h6>
     <ion-list mode="ios" [inset]="true">
-      <ion-item [button]="true">
+      <ion-item
+        routerLink="/menu/shop"
+        routerDirection="forward"
+        [button]="true"
+      >
         <div slot="start" class="icon-section">
           <ng-icon size="20" name="heroUser"></ng-icon>
         </div>
         <ion-label>Pet Shop</ion-label>
       </ion-item>
-      <ion-item [button]="true">
-        <div slot="start" class="icon-section">
-          <ng-icon size="20" name="heroUser"></ng-icon>
+      <ion-item
+        routerLink="/menu/categories"
+        routerDirection="forward"
+        [button]="true"
+      >
+        <div class="flex-center">
+          <div slot="start" class="icon-section">
+            <ng-icon size="20" name="lucideTags"></ng-icon>
+          </div>
+          <ion-label>Kategori</ion-label>
         </div>
-        <ion-label>Pengaturan</ion-label>
+      </ion-item>
+      <ion-item
+        routerLink="/menu/settings"
+        routerDirection="forward"
+        [button]="true"
+      >
+        <div class="flex-center">
+          <div slot="start" class="icon-section">
+            <ng-icon size="20" name="lucideSettings"></ng-icon>
+          </div>
+          <ion-label>Pengaturan</ion-label>
+        </div>
       </ion-item>
     </ion-list>
   </div>

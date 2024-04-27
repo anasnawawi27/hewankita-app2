@@ -26,6 +26,7 @@ import { heroCheckCircleMini } from '@ng-icons/heroicons/mini';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { SelectAdminPageModule } from './check-out/select-admin/select-admin.module';
 import { CheckOutPageModule } from './check-out/check-out.module';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
 const config: SocketIoConfig = { url: 'http://localhost:4040/', options: { transports: ['websocket']} };
 
@@ -44,6 +45,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4040/', options: { trans
     AppRoutingModule, 
     HttpClientModule, 
     CorePipesModule,
+    PickerComponent,
     NgIconsModule.withIcons({ 
       lucideChevronLeft, 
       lucideChevronRight, 

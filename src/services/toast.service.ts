@@ -46,6 +46,16 @@ export class ToastService {
      this.toast.warning(message, { duration, style });
   }
 
+  loading(message: string, style: any = {}) {
+    if(!Object.keys(style).length) style = this.style
+
+     this.toast.loading(message, {id: 'loading', style });
+  }
+
+  close(id: string){
+    this.toast.close(id)
+  }
+
   handleError(err: any){
       if (err?.error?.message) {
         if (_.isArray(err.error.message)) {

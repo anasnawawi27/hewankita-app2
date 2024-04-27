@@ -1,0 +1,173 @@
+<ion-header class="common-header bg-white">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Kategori</ion-title>
+</ion-header>
+
+<ion-content mode="md" [fullscreen]="true" class="ion-padding bg-main">
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <h6 *ngIf="rows.length" class="ion-text-bold">Daftar Kategori</h6>
+  <ng-template #loader>
+    <ion-skeleton-text
+      class="loader-list"
+      animated
+      style="margin-top: 20px; height: 10%"
+    ></ion-skeleton-text>
+    <ion-skeleton-text
+      class="loader-list"
+      animated
+      style="height: 10%"
+    ></ion-skeleton-text>
+    <ion-skeleton-text
+      class="loader-list"
+      animated
+      style="height: 10%"
+    ></ion-skeleton-text>
+    <ion-skeleton-text
+      class="loader-list"
+      animated
+      style="height: 10%"
+    ></ion-skeleton-text>
+    <ion-skeleton-text
+      class="loader-list"
+      animated
+      style="height: 10%"
+    ></ion-skeleton-text>
+    <ion-skeleton-text
+      class="loader-list"
+      animated
+      style="height: 10%"
+    ></ion-skeleton-text>
+  </ng-template>
+
+  <div *ngIf="!loading; else loader">
+    <!-- <emoji-mart
+      [include]="['nature']"
+      [useButton]="true"
+      [showPreview]="false"
+      [enableSearch]="false"
+    ></emoji-mart> -->
+
+    <ion-card class="common-list" *ngIf="rows.length">
+      <ion-card-content class="ion-no-padding">
+        <ion-list mode="ios" class="ion-no-padding">
+          <ion-item
+            (click)="onEdit(row)"
+            button
+            class="item"
+            lines="none"
+            *ngFor="let row of rows"
+          >
+            <ion-label class="ion-margin-start">{{ row.name }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <div
+      *ngIf="!rows.length"
+      class="ion-padding ion-text-center not-found"
+      style="margin-top: 200px"
+    >
+      <img src="assets/illustrations/empty.svg" />
+      <h4>Data Kosong</h4>
+    </div>
+  </div>
+
+  <ion-fab
+    slot="fixed"
+    vertical="bottom"
+    horizontal="center"
+    (click)="onCreate()"
+  >
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-modal
+  #filterModal
+  [isOpen]="openForm"
+  [initialBreakpoint]="0.5"
+  [backdropDismiss]="false"
+  [mode]="'ios'"
+>
+  <ng-template>
+    <ion-content class="ion-padding">
+      <div (click)="openForm = false" class="back-modal left ion-activatable">
+        <ng-icon name="heroXMark"></ng-icon>
+        <ion-ripple-effect></ion-ripple-effect>
+      </div>
+      <div class="ion-padding-vertical">
+        <h4 class="ion-text-bold">{{ !isEdit ? 'Tambah' : 'Edit'}} Kategori</h4>
+      </div>
+      <div class="form-section">
+        <div class="input ion-margin-bottom">
+          <ion-label class="input-title">Nama</ion-label>
+          <ion-item class="input-outline ion-no-margin" lines="none">
+            <ion-input [type]="'text'" [(ngModel)]="name"></ion-input>
+          </ion-item>
+          <small
+            class="ion-text-danger d-block mt-10px font-13"
+            *ngIf="formSubmitted && !name"
+          >
+            <span>Nama Kategori Wajib Diisi</span>
+          </small>
+        </div>
+      </div>
+      <!-- <ion-row>
+        <ion-col size="12">
+          <ion-button
+            mode="ios"
+            expand="block"
+            color="primary"
+            shape="round"
+            [disabled]="formLoading"
+          >
+            <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+            <span *ngIf="!formLoading">Simpan</span>
+          </ion-button>
+        </ion-col>
+      </ion-row> -->
+    </ion-content>
+    <ion-toolbar
+      slot="end"
+      class="common-toolbar"
+      style="position: absolute; bottom: 50%"
+    >
+      <ion-row>
+        <ion-col size="6" *ngIf="isEdit">
+          <ion-button
+            mode="ios"
+            expand="block"
+            color="danger"
+            shape="round"
+            [disabled]="disabled"
+            (click)="onDelete()"
+          >
+            Hapus
+          </ion-button>
+        </ion-col>
+        <ion-col [size]="!isEdit ? '12' : '6'">
+          <ion-button
+            mode="ios"
+            expand="block"
+            color="primary"
+            shape="round"
+            (click)="onSave()"
+            [disabled]="formLoading || disabled"
+          >
+            <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+            <span *ngIf="!formLoading">Simpan</span>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-toolbar>
+  </ng-template>
+</ion-modal>

@@ -1,17 +1,12 @@
 <ion-header class="common-header bg-white">
-  <div
-    routerLink="/home"
-    routerDirection="back"
-    slot="start"
-    class="back left ion-activatable"
-  >
+  <div (click)="back()" slot="start" class="back left ion-activatable">
     <ng-icon name="lucideChevronLeft"></ng-icon>
     <ion-ripple-effect></ion-ripple-effect>
   </div>
-  <ion-title>Transaksi</ion-title>
+  <ion-title>Pet Shops</ion-title>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding bg-main">
+<ion-content mode="md" [fullscreen]="true" class="ion-padding bg-main">
   <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -55,21 +50,13 @@
       <ion-card-content class="ion-no-padding">
         <ion-list mode="ios" class="ion-no-padding">
           <ion-item
-            [routerLink]="'/transactions/detail/' + row.id"
+            [routerLink]="'/menu/shop/detail/' + row.id"
             routerDirection="forward"
             button
             class="item"
             lines="none"
             *ngFor="let row of rows"
           >
-            <ion-grid>
-              <ion-row class="ion-align-items-center">
-                <ion-col size="12">
-                  <h6>{{ row.code }}</h6>
-                  <span>{{ row.date | date: 'dd/MM/YYYY'}}</span>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
           </ion-item>
         </ion-list>
       </ion-card-content>
@@ -88,8 +75,8 @@
       class="ion-padding ion-text-center not-found"
       style="margin-top: 200px"
     >
-      <img src="assets/illustrations/no-buys.svg" />
-      <h4>Transaksi Kosong</h4>
+      <img src="assets/illustrations/empty.svg" />
+      <h4>Data Kosong</h4>
     </div>
   </div>
 </ion-content>

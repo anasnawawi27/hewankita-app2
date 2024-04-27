@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { MenuPage } from './menu.page';
+import { ShopPage } from './shop/shop.page';
+import { SettingsPage } from './settings/settings.page';
+import { CategoriesPage } from './categories/categories.page';
 
 const routes: Routes = [
   {
@@ -11,6 +14,18 @@ const routes: Routes = [
   {
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'shop',
+    component: ShopPage
+  },
+  {
+    path: 'settings',
+    component: SettingsPage
+  },
+  {
+    path: 'categories',
+    component: CategoriesPage
   }
 ];
 

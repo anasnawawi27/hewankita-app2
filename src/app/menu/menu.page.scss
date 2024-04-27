@@ -66,13 +66,21 @@ app-menu{
 
         ion-list{
             ion-item{
+
                 .icon-section{
                     padding: 10px;
                     background: #EDEDED;
                     color: #818181;
                     border-radius: 15px;
                     text-align: center;
+                    margin: 10px 10px 10px 0;
                 }
+
+                // &::part(native) {
+                //     padding-top: 5px!important;
+                //     padding-bottom: 5px!important;
+                // }
+
 
                 ion-label{
                     font-family: Gilroy!important;
