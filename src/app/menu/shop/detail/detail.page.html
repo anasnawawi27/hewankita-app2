@@ -1,0 +1,128 @@
+<ion-header mode="ios" class="common-header bg-white">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Detail Shop</ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ng-container *ngIf="!loading; else loader">
+    <ion-avatar
+      (click)="data.user.profile_image ? viewImage(data.user.profile_image) : null"
+    >
+      <img
+        [src]="data.user.profile_image ? (data.user.profile_image | imgCld ) :  'assets/images/avatar.svg'"
+      />
+    </ion-avatar>
+
+    <div class="detail-section">
+      <div class="flex-center ion-margin-vertical detail-heading">
+        <ng-icon size="20" name="heroUserCircle"></ng-icon>
+        <h5 class="ft-17 ion-text-bold">Detail Akun</h5>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Nama Lengkap</small>
+        <h6>{{ data.user.fullname }}</h6>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Nama Handphone</small>
+        <h6>{{ data.user.phone_number }}</h6>
+      </div>
+      <div class="detail border-bottom ion-margin-top">
+        <small>Email</small>
+        <h6>{{ data.user.email }}</h6>
+      </div>
+      <hr />
+      <div class="flex-center ion-margin-vertical detail-heading">
+        <ng-icon size="20" name="heroBuildingStorefront"></ng-icon>
+        <h5 class="ft-17 ion-text-bold">Detail Pet Shop</h5>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Nama Pet Shop</small>
+        <h6>{{ data.name }}</h6>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Deskripsi</small>
+        <h6>{{ data.description }}</h6>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Alamat</small>
+        <h6>{{ data.address }}</h6>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Kota</small>
+        <h6>{{ data.city }}</h6>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Provinsi</small>
+        <h6>{{ data.province }}</h6>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Status</small>
+        <div class="flex-center verification" style="margin-bottom: 20px">
+          <ng-icon
+            size="25"
+            [name]="data.is_verified ? 'heroCheckBadgeSolid' : 'heroExclamationCircleSolid'"
+            [color]="data.is_verified ? '#2dd36f' : '#eb445a'"
+          ></ng-icon>
+          <span>{{ !data.is_verified ? 'Belum' : '' }} Diverifikasi</span>
+        </div>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Galeri</small>
+        <swiper
+          *ngIf="data.galleries"
+          class="ion-margin-top wrapper-gallery"
+          [slidesPerView]="3.5"
+          [spaceBetween]="10"
+          [pagination]="true"
+        >
+          <ng-template
+            *ngFor="let gallery of data.galleries | convertArray"
+            swiperSlide
+          >
+            <div
+              (click)="viewImage(gallery)"
+              class="img-galery ion-activatable"
+            >
+              <ion-ripple-effect></ion-ripple-effect>
+              <img [src]="gallery | imgCld" />
+            </div>
+          </ng-template>
+        </swiper>
+        <div *ngIf="!data.galleries" class="alert secondary ion-margin-top">
+          <ng-icon size="20" name="lucideAlertCircle"></ng-icon>
+          <span>Tidak Ada Foto Galeri</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ion-content>
+<ion-toolbar
+  *ngIf="!loading && !data?.is_verified"
+  class="common-toolbar"
+  slot="end"
+>
+  <ion-button
+    (click)="onVerification()"
+    mode="ios"
+    expand="block"
+    color="success"
+    shape="round"
+    [disabled]="formLoading"
+  >
+    <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+    <span *ngIf="!formLoading"> Verifikasi </span>
+  </ion-button>
+</ion-toolbar>
+
+<ng-template #loader>
+  <div class="ion-padding ion-text-center" style="margin-top: 300px">
+    <ion-spinner
+      color="secondary"
+      name="circles"
+      style="width: 50px; height: 50px"
+    ></ion-spinner>
+  </div>
+</ng-template>

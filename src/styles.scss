@@ -1,6 +1,27 @@
 @import '~css-star-rating/css/star-rating.min.css';
 @import '@ctrl/ngx-emoji-mart/picker';
 
+.img-galery{
+    width: 100px;
+    height: 80px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    img{
+        width: 100px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+}
+
+.ft-17{
+    font-size: 17px;
+}
+.border-bottom{
+    border-bottom: 1px solid #e3e3e3;
+}
+
 ion-skeleton-text.loader-list{
     border-radius: 10px;
 }

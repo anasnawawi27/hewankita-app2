@@ -5,6 +5,7 @@ import { MenuPage } from './menu.page';
 import { ShopPage } from './shop/shop.page';
 import { SettingsPage } from './settings/settings.page';
 import { CategoriesPage } from './categories/categories.page';
+import { DetailPage } from './shop/detail/detail.page';
 
 const routes: Routes = [
   {
@@ -20,13 +21,17 @@ const routes: Routes = [
     component: ShopPage
   },
   {
+    path: 'shops/detail/:id',
+    component: DetailPage
+  },
+  {
     path: 'settings',
     component: SettingsPage
   },
   {
     path: 'categories',
     component: CategoriesPage
-  }
+  },
 ];
 
 @NgModule({

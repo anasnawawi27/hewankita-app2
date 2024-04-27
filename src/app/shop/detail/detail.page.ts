@@ -40,9 +40,7 @@ export class DetailPage implements OnInit {
     private toast: ToastService,
     private route: ActivatedRoute,
     private alertController: AlertController,
-    private loadingController: LoadingController,
     private navController: NavController,
-    private modalController: ModalController
   ) {
     this.id = this.route.snapshot.params['id'];
     if(this.id){
@@ -57,8 +55,6 @@ export class DetailPage implements OnInit {
 
   ionViewDidEnter(){
     if(!this.isInit){
-      // this.getDetail();
-      // this.getPets();
       if(localStorage.getItem('reload_page')){
         this.getDetail();
         this.getPets();

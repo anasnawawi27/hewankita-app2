@@ -80,7 +80,12 @@
         *ngFor="let row of rows"
       >
         <ion-card-content class="ion-no-padding">
-          <ion-item lines="none" [button]="true">
+          <ion-item
+            [routerLink]="'/menu/shops/detail/' + row.id"
+            routerDirection="forward"
+            lines="none"
+            [button]="true"
+          >
             <div class="ion-padding-vertical ion-padding-start w-100">
               <div class="flex-center" style="margin-bottom: 20px">
                 <ng-icon
