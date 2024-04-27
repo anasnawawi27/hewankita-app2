@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MenuPageRoutingModule } from './menu-routing.module';
 import { NgIconsModule } from '@ng-icons/core';
-import { heroUser, heroXMark } from '@ng-icons/heroicons/outline';
-import { heroCheckCircleSolid, heroXMarkSolid } from '@ng-icons/heroicons/solid';
-import { lucideChevronLeft, lucideStore, lucideLogOut, lucideChevronDown, lucideSettings, lucideTags } from '@ng-icons/lucide';
+import { heroUser, heroXMark, heroBuildingStorefront, } from '@ng-icons/heroicons/outline';
+import { heroCheckCircleSolid, heroXMarkSolid, heroCheckBadgeSolid, heroExclamationCircleSolid } from '@ng-icons/heroicons/solid';
+import { lucideChevronLeft, lucideStore, lucideLogOut, lucideChevronDown, lucideSettings, lucideTags, lucideMapPin } from '@ng-icons/lucide';
 import { MenuPage } from './menu.page';
 import { CorePipesModule } from 'src/pipes/pipes.module';
 import { ShopPage } from './shop/shop.page';
@@ -20,6 +20,9 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
     IonicModule,
     CorePipesModule,
     NgIconsModule.withIcons({ 
+      heroExclamationCircleSolid,
+      lucideMapPin,
+      heroBuildingStorefront,
       lucideChevronLeft,
       lucideStore,
       lucideLogOut,
@@ -29,7 +32,8 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
       lucideChevronDown,
       lucideSettings,
       lucideTags,
-      heroXMark
+      heroXMark,
+      heroCheckBadgeSolid
     }),
     PickerComponent,
     MenuPageRoutingModule

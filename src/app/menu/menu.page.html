@@ -47,14 +47,16 @@
     <h6 class="title">Admin</h6>
     <ion-list mode="ios" [inset]="true">
       <ion-item
-        routerLink="/menu/shop"
+        routerLink="/menu/shops"
         routerDirection="forward"
         [button]="true"
       >
-        <div slot="start" class="icon-section">
-          <ng-icon size="20" name="heroUser"></ng-icon>
+        <div class="flex-center">
+          <div slot="start" class="icon-section">
+            <ng-icon size="20" name="heroBuildingStorefront"></ng-icon>
+          </div>
+          <ion-label>Pet Shop</ion-label>
         </div>
-        <ion-label>Pet Shop</ion-label>
       </ion-item>
       <ion-item
         routerLink="/menu/categories"

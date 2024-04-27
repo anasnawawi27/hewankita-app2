@@ -5,7 +5,7 @@ import { ApiService } from 'src/services/api.service';
 import { ToastService } from 'src/services/toast.service';
 
 @Component({
-  selector: 'app-shop',
+  selector: 'app-shop-list',
   templateUrl: './shop.page.html',
   styleUrls: ['./shop.page.scss'],
   encapsulation: ViewEncapsulation.None,
@@ -14,13 +14,16 @@ import { ToastService } from 'src/services/toast.service';
 export class ShopPage implements OnInit {
 
   private endpoint: string = 'shop';
-  private params: any = {
+  public params: any = {
     start: 0,
     length: 10,
+    type: 'all'
   };
   public isInit = true;
   public loading = true;
   public totalData: number = 0;
+  public totalVerified: number = 0;
+  public totalUnverified: number = 0;
   public rows: Array<any> = [];
 
   constructor(
@@ -60,6 +63,8 @@ export class ShopPage implements OnInit {
       .then((res) => {
         if (res.statusCode === 200) {
           this.totalData = res.totalData;
+          this.totalVerified = res.totalVerified;
+          this.totalUnverified = res.totalUnverified;
           this.params.start += res.data.length;
           this.rows = this.isInit
             ? res.data

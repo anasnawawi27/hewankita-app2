@@ -16,7 +16,7 @@ const routes: Routes = [
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   },
   {
-    path: 'shop',
+    path: 'shops',
     component: ShopPage
   },
   {
