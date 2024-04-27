@@ -30,11 +30,17 @@
   <div class="menu-list">
     <h6 class="title">Akun</h6>
     <ion-list mode="ios" [inset]="true">
-      <ion-item [button]="true">
-        <div slot="start" class="icon-section">
-          <ng-icon size="20" name="heroUser"></ng-icon>
+      <ion-item
+        routerLink="/menu/profile"
+        routerDirection="forward"
+        [button]="true"
+      >
+        <div class="flex-center">
+          <div slot="start" class="icon-section">
+            <ng-icon size="20" name="heroUser"></ng-icon>
+          </div>
+          <ion-label>Profil</ion-label>
         </div>
-        <ion-label>Profil</ion-label>
       </ion-item>
       <ion-item [button]="true">
         <div slot="start" class="icon-section">

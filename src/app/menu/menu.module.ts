@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MenuPageRoutingModule } from './menu-routing.module';
 import { NgIconsModule } from '@ng-icons/core';
+import { saxEdit2Bold } from '@ng-icons/iconsax/bold';
 import { heroUser, heroXMark, heroBuildingStorefront, heroUserCircle } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid, heroXMarkSolid, heroCheckBadgeSolid, heroExclamationCircleSolid } from '@ng-icons/heroicons/solid';
-import { lucideChevronLeft, lucideStore, lucideLogOut, lucideChevronDown, lucideSettings, lucideTags, lucideMapPin, lucideAlertCircle } from '@ng-icons/lucide';
+import { lucideChevronLeft, lucideStore, lucideLogOut, lucideChevronDown, lucideSettings, lucideTags, lucideMapPin, lucideAlertCircle, lucidePlus } from '@ng-icons/lucide';
 import { MenuPage } from './menu.page';
 import { CorePipesModule } from 'src/pipes/pipes.module';
 import { ShopPage } from './shop/shop.page';
@@ -15,6 +16,7 @@ import { CategoriesPage } from './categories/categories.page';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { DetailPage } from './shop/detail/detail.page';
 import { SwiperModule } from 'swiper/angular';
+import { ProfilePage } from './profile/profile.page';
 
 @NgModule({
   imports: [
@@ -24,6 +26,8 @@ import { SwiperModule } from 'swiper/angular';
     CorePipesModule,
     SwiperModule,
     NgIconsModule.withIcons({ 
+      lucidePlus,
+      saxEdit2Bold,
       lucideAlertCircle,
       heroUserCircle,
       heroExclamationCircleSolid,
@@ -44,6 +48,6 @@ import { SwiperModule } from 'swiper/angular';
     PickerComponent,
     MenuPageRoutingModule
   ],
-  declarations: [MenuPage, ShopPage, DetailPage, SettingsPage, CategoriesPage]
+  declarations: [MenuPage, ProfilePage, ShopPage, DetailPage, SettingsPage, CategoriesPage]
 })
 export class MenuPageModule {}

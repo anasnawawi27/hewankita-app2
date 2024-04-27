@@ -1,18 +1,250 @@
-<ion-header class="common-header bg-white">
+<ion-header mode="ios" class="common-header bg-white">
   <div (click)="back()" slot="start" class="back left ion-activatable">
     <ng-icon name="lucideChevronLeft"></ng-icon>
     <ion-ripple-effect></ion-ripple-effect>
   </div>
-  <ion-title>Profile</ion-title>
+  <ion-title>Detail Shop</ion-title>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <ion-avatar>
-    <img
-      alt="Silhouette of a person's head"
-      [src]="user.profile_image ? (user.profile_image | imgCld ) : 'assets/images/avatar.svg'"
-    />
-  </ion-avatar>
-  <h3>Akun</h3>
-  <h3>Pet Shop</h3>
+  <ng-container *ngIf="!loading; else loader">
+    <ion-avatar
+      (click)="data.profile_image ? viewImage(data.profile_image) : null"
+    >
+      <img
+        [src]="data.profile_image ? (data.profile_image | imgCld ) :  'assets/images/avatar.svg'"
+      />
+    </ion-avatar>
+
+    <div class="detail-section">
+      <div
+        class="flex-center ion-margin-vertical detail-heading"
+        style="justify-content: space-between"
+      >
+        <div class="flex-center">
+          <ng-icon size="20" name="heroUserCircle"></ng-icon>
+          <h5 class="ft-17 ion-text-bold">Detail Akun</h5>
+        </div>
+        <div (click)="showForm()" class="btn-edit ion-activatable">
+          <ng-icon size="20" name="saxEdit2Bold"></ng-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Nama Lengkap</small>
+        <h6>{{ data.fullname }}</h6>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Nama Handphone</small>
+        <h6>{{ data.phone_number }}</h6>
+      </div>
+      <div class="detail border-bottom ion-margin-top">
+        <small>Email</small>
+        <h6>{{ data.email }}</h6>
+      </div>
+      <hr />
+
+      <ng-container *ngIf="data.shop">
+        <div
+          class="flex-center ion-margin-vertical detail-heading"
+          style="justify-content: space-between"
+        >
+          <div class="flex-center">
+            <ng-icon size="20" name="heroBuildingStorefront"></ng-icon>
+            <h5 class="ft-17 ion-text-bold">Detail Pet Shop</h5>
+          </div>
+          <div
+            [routerLink]="'/shop/form/' + data.shop.id"
+            class="btn-edit ion-activatable"
+          >
+            <ng-icon size="20" name="saxEdit2Bold"></ng-icon>
+            <ion-ripple-effect></ion-ripple-effect>
+          </div>
+        </div>
+
+        <div class="detail ion-margin-top">
+          <small>Nama Pet Shop</small>
+          <h6>{{ data.shop.name }}</h6>
+        </div>
+        <div class="detail ion-margin-top">
+          <small>Deskripsi</small>
+          <h6>{{ data.shop.description }}</h6>
+        </div>
+        <div class="detail ion-margin-top">
+          <small>Alamat</small>
+          <h6>{{ data.shop.address }}</h6>
+        </div>
+        <div class="detail ion-margin-top">
+          <small>Kota</small>
+          <h6>{{ data.shop.city }}</h6>
+        </div>
+        <div class="detail ion-margin-top">
+          <small>Provinsi</small>
+          <h6>{{ data.shop.province }}</h6>
+        </div>
+        <div class="detail ion-margin-top">
+          <small>Status</small>
+          <div class="flex-center verification" style="margin-bottom: 20px">
+            <ng-icon
+              size="25"
+              [name]="data.shop.is_verified ? 'heroCheckBadgeSolid' : 'heroExclamationCircleSolid'"
+              [color]="data.shop.is_verified ? '#2dd36f' : '#eb445a'"
+            ></ng-icon>
+            <span
+              >{{ !data.shop.is_verified ? 'Belum' : '' }} Diverifikasi</span
+            >
+          </div>
+        </div>
+        <div class="detail ion-margin-top">
+          <small>Galeri</small>
+          <swiper
+            *ngIf="data.shop.galleries"
+            class="ion-margin-top wrapper-gallery"
+            [slidesPerView]="3.5"
+            [spaceBetween]="10"
+            [pagination]="true"
+          >
+            <ng-template
+              *ngFor="let gallery of data.shop.galleries | convertArray"
+              swiperSlide
+            >
+              <div
+                (click)="viewImage(gallery)"
+                class="img-galery ion-activatable"
+              >
+                <ion-ripple-effect></ion-ripple-effect>
+                <img [src]="gallery | imgCld" />
+              </div>
+            </ng-template>
+          </swiper>
+          <div
+            *ngIf="!data.shop.galleries"
+            class="alert secondary ion-margin-top"
+          >
+            <ng-icon size="20" name="lucideAlertCircle"></ng-icon>
+            <span>Tidak Ada Foto Galeri</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
 </ion-content>
+
+<ng-template #loader>
+  <div class="ion-padding ion-text-center" style="margin-top: 300px">
+    <ion-spinner
+      color="secondary"
+      name="circles"
+      style="width: 50px; height: 50px"
+    ></ion-spinner>
+  </div>
+</ng-template>
+
+<ion-modal
+  [isOpen]="openForm"
+  [initialBreakpoint]="0.7"
+  [backdropDismiss]="false"
+  [mode]="'ios'"
+>
+  <ng-template>
+    <ion-content class="ion-padding">
+      <div (click)="openForm = false" class="back-modal left ion-activatable">
+        <ng-icon name="heroXMark"></ng-icon>
+        <ion-ripple-effect></ion-ripple-effect>
+      </div>
+      <div class="ion-padding-vertical">
+        <h4 class="ion-text-bold">Edit Data Akun</h4>
+      </div>
+      <div class="form-section">
+        <div class="input ion-margin-bottom">
+          <ion-label class="input-title">Nama Lengkap</ion-label>
+          <ion-item class="input-outline ion-no-margin" lines="none">
+            <ion-input [type]="'text'" [(ngModel)]="input.fullname"></ion-input>
+          </ion-item>
+          <small
+            class="ion-text-danger d-block mt-10px font-13"
+            *ngIf="formSubmitted && !input.fullname"
+          >
+            <span>Nama Lengkap Wajib Diisi</span>
+          </small>
+        </div>
+
+        <div class="input ion-margin-bottom">
+          <ion-label class="input-title">Email</ion-label>
+          <ion-item class="input-outline ion-no-margin" lines="none">
+            <ion-input [type]="'text'" [(ngModel)]="input.email"></ion-input>
+          </ion-item>
+          <small
+            class="ion-text-danger d-block mt-10px font-13"
+            *ngIf="formSubmitted && !input.email"
+          >
+            <span>Email Wajib Diisi</span>
+          </small>
+        </div>
+
+        <div class="input ion-margin-bottom">
+          <ion-label class="input-title">No Handphone</ion-label>
+          <ion-item class="input-outline ion-no-margin" lines="none">
+            <ion-input
+              [type]="'text'"
+              [(ngModel)]="input.phone_number"
+            ></ion-input>
+          </ion-item>
+          <small
+            class="ion-text-danger d-block mt-10px font-13"
+            *ngIf="formSubmitted && !input.phone_number"
+          >
+            <span>No Handphone Wajib Diisi</span>
+          </small>
+        </div>
+
+        <div class="input ion-margin-bottom">
+          <ion-label class="input-title">Foto Profil</ion-label>
+          <ion-row>
+            <ion-col *ngIf="image.file" size="3">
+              <div class="preview-img">
+                <div
+                  (click)="image.cloud = false; image.file = null; input.profile_image = ''"
+                  class="remove"
+                >
+                  <ng-icon name="heroXMarkSolid"></ng-icon>
+                </div>
+                <img [src]="image.cloud ? (image.file | imgCld) : image.file" />
+              </div>
+            </ion-col>
+            <ion-col *ngIf="!image.file" size="3">
+              <div
+                (click)="onChooseGallery()"
+                class="add-multiple-photo ion-activatable"
+              >
+                <ng-icon size="25" name="lucidePlus"></ng-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+    </ion-content>
+    <ion-toolbar
+      slot="end"
+      class="common-toolbar"
+      style="position: absolute; bottom: 30%"
+    >
+      <ion-row>
+        <ion-col size="12">
+          <ion-button
+            mode="ios"
+            expand="block"
+            color="primary"
+            shape="round"
+            (click)="onEditAccount()"
+            [disabled]="formLoading"
+          >
+            <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+            <span *ngIf="!formLoading">Simpan</span>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-toolbar>
+  </ng-template>
+</ion-modal>

@@ -68,7 +68,11 @@ app-menu{
             ion-item{
 
                 .icon-section{
-                    padding: 10px;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                     background: #EDEDED;
                     color: #818181;
                     border-radius: 15px;

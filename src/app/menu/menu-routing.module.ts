@@ -6,6 +6,7 @@ import { ShopPage } from './shop/shop.page';
 import { SettingsPage } from './settings/settings.page';
 import { CategoriesPage } from './categories/categories.page';
 import { DetailPage } from './shop/detail/detail.page';
+import { ProfilePage } from './profile/profile.page';
 
 const routes: Routes = [
   {
@@ -14,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+    component: ProfilePage
   },
   {
     path: 'shops',

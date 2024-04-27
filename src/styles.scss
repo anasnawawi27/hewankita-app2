@@ -1,6 +1,21 @@
 @import '~css-star-rating/css/star-rating.min.css';
 @import '@ctrl/ngx-emoji-mart/picker';
 
+.back-modal{
+    width: 40px;
+    float: right;
+    height: 40px;
+    background: white;
+    border-radius: 10px;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 1px 1px 7.8px #a7a7a74f;
+  }
+  
 .img-galery{
     width: 100px;
     height: 80px;

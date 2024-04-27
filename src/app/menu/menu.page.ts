@@ -77,7 +77,7 @@ export class MenuPage implements OnInit {
           localStorage.removeItem('hewanKitaUserMobile');
 
           this.toast.success(res.message);
-          this.navController.navigateForward('/on-boarding');
+          this.navController.navigateForward('/auth/login');
         }
       })
       .then((err) => {
