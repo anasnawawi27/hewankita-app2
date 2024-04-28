@@ -1,6 +1,55 @@
 @import '~css-star-rating/css/star-rating.min.css';
 @import '@ctrl/ngx-emoji-mart/picker';
 
+.btn-remove{
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    box-shadow: 0 5px 4.8px #e3e3e3;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    width: fit-content;
+    float: right;
+    margin-top: 10px!important;
+    color: var(--ion-color-danger)
+}
+
+.address-option{
+    .address-item{
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+
+        ng-icon{
+            color: var(--ion-color-primary);
+        }
+
+        h6{
+            font-size: 15px;
+            margin: 5px;
+            font-weight: 600;
+        }
+    }
+
+    .address-house{
+        margin-top: 5px;
+        color: #9a9a9a;
+        margin-bottom: 15px;
+        font-size: 14px;
+
+            &.ellipsis{
+                width: 300px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    .badge-discount{
+        padding: 3px 5px!important;
+    }
+}
+
 .back-modal{
     width: 40px;
     float: right;

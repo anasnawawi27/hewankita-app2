@@ -57,7 +57,7 @@
       <ion-card-content class="ion-no-padding">
         <ion-list mode="ios" class="ion-no-padding">
           <ion-item
-            (click)="onEdit(row)"
+            (click)="presentActionSheet(row)"
             button
             class="item"
             lines="none"
@@ -141,19 +141,7 @@
       style="position: absolute; bottom: 50%"
     >
       <ion-row>
-        <ion-col size="6" *ngIf="isEdit">
-          <ion-button
-            mode="ios"
-            expand="block"
-            color="danger"
-            shape="round"
-            [disabled]="disabled"
-            (click)="onDelete()"
-          >
-            Hapus
-          </ion-button>
-        </ion-col>
-        <ion-col [size]="!isEdit ? '12' : '6'">
+        <ion-col size="12">
           <ion-button
             mode="ios"
             expand="block"

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/services/api.service';
 import { ToastService } from 'src/services/toast.service';
@@ -30,6 +30,7 @@ export class CategoriesPage implements OnInit {
   public disabled: boolean = false;
 
   constructor(
+    private actionSheetController: ActionSheetController,
     private alertController: AlertController,
     private _apiService: ApiService,
     private toast: ToastService,
@@ -157,6 +158,35 @@ export class CategoriesPage implements OnInit {
       .finally(() => {
         this.loading = false;
       });
+  }
+
+  async presentActionSheet(row: any) {
+    this.id = row.id
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Pilih Action',
+      mode: 'md',
+      buttons: [
+        {
+          text: 'Edit',
+          icon: 'pencil',
+          handler: () => {
+              this.onEdit(row)
+          },
+        },
+        {
+          text: 'Hapus',
+          icon: 'trash',
+          handler: () => {
+            this.onDelete()
+          },
+        },
+        {
+          text: 'Batal',
+          role: 'cancel',
+        },
+      ],
+    });
+    await actionSheet.present();
   }
 
   back(){

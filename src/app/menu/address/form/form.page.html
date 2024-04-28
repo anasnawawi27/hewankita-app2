@@ -1,0 +1,88 @@
+<ion-header class="common-header bg-white">
+  <div (click)="close()" slot="start" class="back left ion-activatable">
+    <ng-icon name="heroXMark"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>{{ !isEdit ? 'Tambah' : 'Edit' }} Alamat</ion-title>
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+  <div class="form-section">
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Label</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input
+          [type]="'text'"
+          [(ngModel)]="label"
+          placeholder="Contoh: Rumah, Rumah Teman"
+        ></ion-input>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !label"
+      >
+        <span>Label Wajib Diisi</span>
+      </small>
+    </div>
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Alamat</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-textarea [autoGrow]="true" [(ngModel)]="address"> </ion-textarea>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !address"
+      >
+        <span>Alamat Wajib Diisi</span>
+      </small>
+    </div>
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Nama Penerima</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input [type]="'text'" [(ngModel)]="receiver_name"></ion-input>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !receiver_name"
+      >
+        <span>Nama Penerima Wajib Diisi</span>
+      </small>
+    </div>
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">No Hp Penerima</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input [type]="'text'" [(ngModel)]="receiver_phone"></ion-input>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !receiver_phone"
+      >
+        <span>No HP Penerima Wajib Diisi</span>
+      </small>
+    </div>
+    <ion-row *ngIf="!props?.main_address">
+      <ion-col size="12" class="flex-center" style="height: 55px">
+        <ion-toggle
+          mode="ios"
+          [(ngModel)]="main_address"
+          color="success"
+          labelPlacement="start"
+          >Jadikan Alamat Utama</ion-toggle
+        >
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
+<ion-toolbar class="common-toolbar" slot="end">
+  <ion-button
+    (click)="onSave()"
+    mode="ios"
+    expand="block"
+    color="primary"
+    shape="round"
+    [disabled]="formLoading"
+  >
+    <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+    <span *ngIf="!formLoading">{{ !isEdit ? 'Simpan' : 'Edit' }}</span>
+  </ion-button>
+</ion-toolbar>

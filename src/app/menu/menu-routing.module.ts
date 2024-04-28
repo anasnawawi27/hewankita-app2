@@ -7,6 +7,7 @@ import { SettingsPage } from './settings/settings.page';
 import { CategoriesPage } from './categories/categories.page';
 import { DetailPage } from './shop/detail/detail.page';
 import { ProfilePage } from './profile/profile.page';
+import { AddressPage } from './address/address.page';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'categories',
     component: CategoriesPage
+  },
+  {
+    path: 'address',
+    component: AddressPage
   },
 ];
 

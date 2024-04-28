@@ -5,9 +5,9 @@ import { IonicModule } from '@ionic/angular';
 import { MenuPageRoutingModule } from './menu-routing.module';
 import { NgIconsModule } from '@ng-icons/core';
 import { saxEdit2Bold } from '@ng-icons/iconsax/bold';
-import { heroUser, heroXMark, heroBuildingStorefront, heroUserCircle } from '@ng-icons/heroicons/outline';
+import { heroUser, heroXMark, heroHome,  heroBuildingStorefront, heroUserCircle } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid, heroXMarkSolid, heroCheckBadgeSolid, heroExclamationCircleSolid } from '@ng-icons/heroicons/solid';
-import { lucideChevronLeft, lucideStore, lucideLogOut, lucideChevronDown, lucideSettings, lucideTags, lucideMapPin, lucideAlertCircle, lucidePlus } from '@ng-icons/lucide';
+import { lucideChevronLeft, lucideTrash2, lucidePhone, lucideStore, lucideLogOut, lucideChevronDown, lucideSettings, lucideTags, lucideMapPin, lucideAlertCircle, lucidePlus } from '@ng-icons/lucide';
 import { MenuPage } from './menu.page';
 import { CorePipesModule } from 'src/pipes/pipes.module';
 import { ShopPage } from './shop/shop.page';
@@ -17,6 +17,8 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { DetailPage } from './shop/detail/detail.page';
 import { SwiperModule } from 'swiper/angular';
 import { ProfilePage } from './profile/profile.page';
+import { AddressPage } from './address/address.page';
+import { FormPage } from './address/form/form.page';
 
 @NgModule({
   imports: [
@@ -26,6 +28,9 @@ import { ProfilePage } from './profile/profile.page';
     CorePipesModule,
     SwiperModule,
     NgIconsModule.withIcons({ 
+      lucideTrash2,
+      lucidePhone,
+      heroHome,
       lucidePlus,
       saxEdit2Bold,
       lucideAlertCircle,
@@ -48,6 +53,6 @@ import { ProfilePage } from './profile/profile.page';
     PickerComponent,
     MenuPageRoutingModule
   ],
-  declarations: [MenuPage, ProfilePage, ShopPage, DetailPage, SettingsPage, CategoriesPage]
+  declarations: [MenuPage, ProfilePage, ShopPage, DetailPage, SettingsPage, CategoriesPage, AddressPage, FormPage]
 })
 export class MenuPageModule {}
