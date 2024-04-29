@@ -54,47 +54,65 @@
           <ion-label>Alamat</ion-label>
         </div>
       </ion-item>
+      <ion-item [button]="true">
+        <div class="flex-center">
+          <div slot="start" class="icon-section">
+            <ng-icon size="20" name="lucideKeyRound"></ng-icon>
+          </div>
+          <ion-label>Ubah Password</ion-label>
+        </div>
+      </ion-item>
     </ion-list>
 
-    <h6 class="title">Admin</h6>
-    <ion-list mode="ios" [inset]="true">
-      <ion-item
-        routerLink="/menu/shops"
-        routerDirection="forward"
-        [button]="true"
-      >
-        <div class="flex-center">
-          <div slot="start" class="icon-section">
-            <ng-icon size="20" name="heroBuildingStorefront"></ng-icon>
+    <ng-container *ngIf="user.level == 'admin'">
+      <h6 class="title">Admin</h6>
+      <ion-list mode="ios" [inset]="true">
+        <ion-item
+          routerLink="/menu/shops"
+          routerDirection="forward"
+          [button]="true"
+        >
+          <div class="flex-center">
+            <div slot="start" class="icon-section">
+              <ng-icon size="20" name="heroBuildingStorefront"></ng-icon>
+            </div>
+            <ion-label>Pet Shop</ion-label>
           </div>
-          <ion-label>Pet Shop</ion-label>
-        </div>
-      </ion-item>
-      <ion-item
-        routerLink="/menu/categories"
-        routerDirection="forward"
-        [button]="true"
-      >
-        <div class="flex-center">
-          <div slot="start" class="icon-section">
-            <ng-icon size="20" name="lucideTags"></ng-icon>
+        </ion-item>
+        <ion-item
+          routerLink="/menu/categories"
+          routerDirection="forward"
+          [button]="true"
+        >
+          <div class="flex-center">
+            <div slot="start" class="icon-section">
+              <ng-icon size="20" name="lucideTags"></ng-icon>
+            </div>
+            <ion-label>Kategori</ion-label>
           </div>
-          <ion-label>Kategori</ion-label>
-        </div>
-      </ion-item>
-      <ion-item
-        routerLink="/menu/settings"
-        routerDirection="forward"
-        [button]="true"
-      >
-        <div class="flex-center">
-          <div slot="start" class="icon-section">
-            <ng-icon size="20" name="lucideSettings"></ng-icon>
+        </ion-item>
+        <ion-item [button]="true">
+          <div class="flex-center">
+            <div slot="start" class="icon-section">
+              <ng-icon size="20" name="lucideGalleryHorizontalEnd"></ng-icon>
+            </div>
+            <ion-label>Banner</ion-label>
           </div>
-          <ion-label>Pengaturan</ion-label>
-        </div>
-      </ion-item>
-    </ion-list>
+        </ion-item>
+        <ion-item
+          routerLink="/menu/settings"
+          routerDirection="forward"
+          [button]="true"
+        >
+          <div class="flex-center">
+            <div slot="start" class="icon-section">
+              <ng-icon size="20" name="lucideSettings"></ng-icon>
+            </div>
+            <ion-label>Pengaturan</ion-label>
+          </div>
+        </ion-item>
+      </ion-list>
+    </ng-container>
   </div>
 </ion-content>
 <ion-toolbar slot="end">

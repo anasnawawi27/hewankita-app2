@@ -6,6 +6,7 @@ import { ToastService } from 'src/services/toast.service';
 import * as moment from 'moment-timezone';
 import * as _ from 'lodash';
 import { ChatService } from 'src/services/chat.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chat-detail',
@@ -35,12 +36,20 @@ export class DetailPage implements OnInit {
   private sender_id: string = ''
   private receiver_id: string = ''
 
+  private chatId: string = '';
+
   constructor(
+    private route: ActivatedRoute,
     private chatService: ChatService,
     private toast: ToastService,
     private modalController: ModalController,
     private navController: NavController
   ) {
+      this.chatId = this.route.snapshot.params['chatId'];
+
+      if(this.chatId){
+        this.getChats(`chat/detail?sender_id=${ this.user.id }&chat_id=${ this.chatId }`)
+      }
    }
 
   ngOnInit() {
@@ -93,14 +102,38 @@ export class DetailPage implements OnInit {
     })
   }
 
-  async getChats(){
+  async getChats(urlParams: string = ''){
     this.loading = true;
-    await fetch(environment.chatUrl + `chat/detail?user_id=${ this.user.id }&sender_id=${ this.sender_id }&receiver_id=${ this.receiver_id }`)
+    await fetch(environment.chatUrl + (urlParams || `chat/detail?user_id=${ this.user.id }&sender_id=${ this.sender_id }&receiver_id=${ this.receiver_id }`))
     .then(response => response.json())
     .then(res => {
         if(res.statusCode == 200){
+
+          if(this.chatId){
+
+            const chat = res.data.heading;
+  
+            let heading = null;
+            this.sender_id= this.user.id
+  
+            if(chat.sender_id == this.user.id){
+              heading = {
+                profile_image: chat.shop.profile_image,
+                name: chat.shop?.shop?.name || chat.shop.fullname,
+              }
+              this.receiver_id = chat.shop.id
+            } else {
+              heading = {
+                profile_image: chat.user.profile_image,
+                name: chat.user.fullname,
+              }
+              this.receiver_id = chat.user.id
+            }
+  
+            this.data.heading = heading
+          }
           this.chats = res.data.messages;
-          this.scrollToBottomOnInit();
+          this.scrollToBottomOnInit()
         }
     } )
     .catch((err) => {

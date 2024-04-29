@@ -1,6 +1,32 @@
 @import '~css-star-rating/css/star-rating.min.css';
 @import '@ctrl/ngx-emoji-mart/picker';
 
+
+ion-segment{
+    border-radius: 20px!important;
+
+    ion-segment-button{
+        margin: 0;
+        padding: 5px;
+        --border-radius: 20px !important;
+        
+
+        &.segment-button-checked{
+            background: var(--ion-color-primary) !important;
+            --indicator-color: var(--ion-color-primary);
+            color: white;
+            font-weight: 600;
+        }
+    }
+  }
+  
+.ft-12{
+    font-size: 12px!important;
+}
+.justify-between{
+    justify-content: space-between;
+}
+
 .btn-remove{
     display: flex;
     align-items: center;
@@ -670,6 +696,11 @@ ion-label{
     align-items: center;
 }
 
+.flex-top{
+    display: flex;
+    align-items: top;
+}
+
 .ion-no-margin{
     margin:0!important
 }
@@ -1115,6 +1146,7 @@ ion-checkbox {
         object-fit: cover;
         position: relative;
         z-index: 2;
+        margin-bottom: -10px;
     }
 
     div{

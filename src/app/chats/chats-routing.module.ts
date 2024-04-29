@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ChatsPage } from './chats.page';
+import { DetailPage } from './detail/detail.page';
 
 const routes: Routes = [
   {
@@ -9,8 +10,8 @@ const routes: Routes = [
     component: ChatsPage
   },
   {
-    path: 'detail',
-    loadChildren: () => import('./detail/detail.module').then( m => m.DetailPageModule)
+    path: 'detail/:chatId',
+    component: DetailPage,
   }
 ];
 

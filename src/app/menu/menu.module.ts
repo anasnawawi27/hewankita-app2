@@ -7,7 +7,7 @@ import { NgIconsModule } from '@ng-icons/core';
 import { saxEdit2Bold } from '@ng-icons/iconsax/bold';
 import { heroUser, heroXMark, heroHome,  heroBuildingStorefront, heroUserCircle } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid, heroXMarkSolid, heroCheckBadgeSolid, heroExclamationCircleSolid } from '@ng-icons/heroicons/solid';
-import { lucideChevronLeft, lucideTrash2, lucidePhone, lucideStore, lucideLogOut, lucideChevronDown, lucideSettings, lucideTags, lucideMapPin, lucideAlertCircle, lucidePlus } from '@ng-icons/lucide';
+import { lucideChevronLeft, lucideImages, lucideGalleryHorizontalEnd, lucideKeyRound, lucideTrash2, lucidePhone, lucideStore, lucideLogOut, lucideChevronDown, lucideSettings, lucideTags, lucideMapPin, lucideAlertCircle, lucidePlus } from '@ng-icons/lucide';
 import { MenuPage } from './menu.page';
 import { CorePipesModule } from 'src/pipes/pipes.module';
 import { ShopPage } from './shop/shop.page';
@@ -27,7 +27,10 @@ import { FormPage } from './address/form/form.page';
     IonicModule,
     CorePipesModule,
     SwiperModule,
-    NgIconsModule.withIcons({ 
+    NgIconsModule.withIcons({
+      lucideImages, 
+      lucideGalleryHorizontalEnd,
+      lucideKeyRound, 
       lucideTrash2,
       lucidePhone,
       heroHome,

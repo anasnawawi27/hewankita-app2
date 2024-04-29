@@ -9,6 +9,36 @@
     <ion-ripple-effect></ion-ripple-effect>
   </div>
   <ion-title>Transaksi</ion-title>
+  <div
+    (click)="onSort()"
+    slot="end"
+    class="action-header right ion-activatable"
+  >
+    <ng-icon
+      color="#004D95"
+      [name]="params.sort == 'desc' ? 'lucideArrowDownNarrowWide' : 'lucideArrowDownWideNarrow'"
+    ></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+
+  <ion-toolbar *ngIf="user?.level == 'shop'" style="padding: 0 10px">
+    <ion-segment
+      mode="ios"
+      [(ngModel)]="params.type"
+      (ngModelChange)="isInit = true; params.start = 0; getList()"
+    >
+      <ion-segment-button value="sold">
+        <ion-label
+          >Penjualan <span *ngIf="!loading">({{ totalSold }})</span></ion-label
+        >
+      </ion-segment-button>
+      <ion-segment-button value="buy">
+        <ion-label
+          >Pembelian <span *ngIf="!loading">({{ totalBuy }})</span></ion-label
+        >
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding bg-main">
@@ -21,59 +51,101 @@
     <ion-skeleton-text
       class="loader-list"
       animated
-      style="margin-top: 20px; height: 10%"
+      style="margin-top: 20px; height: 25%"
     ></ion-skeleton-text>
     <ion-skeleton-text
       class="loader-list"
       animated
-      style="height: 10%"
+      style="height: 25%"
     ></ion-skeleton-text>
     <ion-skeleton-text
       class="loader-list"
       animated
-      style="height: 10%"
-    ></ion-skeleton-text>
-    <ion-skeleton-text
-      class="loader-list"
-      animated
-      style="height: 10%"
-    ></ion-skeleton-text>
-    <ion-skeleton-text
-      class="loader-list"
-      animated
-      style="height: 10%"
-    ></ion-skeleton-text>
-    <ion-skeleton-text
-      class="loader-list"
-      animated
-      style="height: 10%"
+      style="height: 25%"
     ></ion-skeleton-text>
   </ng-template>
 
   <div *ngIf="!loading; else loader">
-    <ion-card class="common-list" *ngIf="rows.length">
-      <ion-card-content class="ion-no-padding">
-        <ion-list mode="ios" class="ion-no-padding">
-          <ion-item
-            [routerLink]="'/transactions/detail/' + row.id"
-            routerDirection="forward"
-            button
-            class="item"
-            lines="none"
-            *ngFor="let row of rows"
-          >
-            <ion-grid>
-              <ion-row class="ion-align-items-center">
-                <ion-col size="12">
-                  <h6>{{ row.code }}</h6>
-                  <span>{{ row.date | date: 'dd/MM/YYYY'}}</span>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+    <ng-container *ngIf="rows.length">
+      <ion-card
+        *ngFor="let row of rows"
+        [routerLink]="'/transactions/detail/' + row.id"
+        routerDirection="forward"
+        class="card-transaction"
+        mode="ios"
+      >
+        <ion-card-content>
+          <ion-item [button]="true" lines="none">
+            <div class="inner-card w-100">
+              <div
+                class="alert {{ status[row.current_process_sort].className }} ion-margin-bottom"
+                style="width: fit-content"
+              >
+                <ng-icon
+                  *ngIf="status[row.current_process_sort].type == 'danger'"
+                  size="20"
+                  name="lucideAlertCircle"
+                ></ng-icon>
+                <ng-icon
+                  *ngIf="status[row.current_process_sort].type == 'waiting'"
+                  size="20"
+                  name="lucideClock"
+                ></ng-icon>
+                <ng-icon
+                  *ngIf="status[row.current_process_sort].type == 'success'"
+                  size="20"
+                  name="lucideCheckCircle2"
+                ></ng-icon>
+                {{ status[row.current_process_sort].label }}
+              </div>
+              <div class="flex-top ion-margin-top">
+                <div class="stack-img">
+                  <div class="front-img">
+                    <img
+                      [src]="(row.details[0].pet.images | firstArray) | imgCld"
+                    />
+                  </div>
+                  <div *ngIf="row.details.length > 1" class="back-img">
+                    <div class="overlay"></div>
+                    <img
+                      [src]="(row.details[1].pet.images | firstArray) | imgCld"
+                    />
+                  </div>
+                </div>
+                <div class="section ion-margin-start">
+                  <div class="ion-margin-bottom">
+                    <small>No Pesanan</small>
+                    <h6>{{ row.code }}</h6>
+                  </div>
+                  <div class="ion-margin-bottom">
+                    <small>Total</small>
+                    <h5>{{ row.grand_total | currencyID }}</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="bottom flex-center justify-between">
+                <div *ngIf="user.level !== 'admin'" class="flex-center">
+                  <ng-icon name="saxPetOutline"></ng-icon>
+                  <span>{{ row.details | countQty }} Ekor Pet</span>
+                </div>
+                <ion-chip *ngIf="user.level == 'admin'">
+                  <ion-avatar>
+                    <img
+                      [src]="row.shop.user.profile_image ? (row.shop.user.profile_image | imgCld) :  'assets/images/avatar.svg'"
+                    />
+                  </ion-avatar>
+                  <ion-label class="ft-12">{{ row.shop.name }}</ion-label>
+                </ion-chip>
+                <div class="flex-center">
+                  <ng-icon name="saxCalendar1Outline"></ng-icon>
+                  <span>{{ row.date | date: 'dd MMM YYYY'}}</span>
+                </div>
+              </div>
+            </div>
           </ion-item>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
     <ion-infinite-scroll
       threshold="5%"
       (ionInfinite)="loadData($event)"
