@@ -37,7 +37,9 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <h6 *ngIf="rows.length" class="ion-text-bold">Daftar Pet Shop</h6>
+  <h6 *ngIf="rows.length" class="ion-text-bold" style="margin-bottom: 0">
+    Daftar Pet Shop
+  </h6>
   <ng-template #loader>
     <ion-skeleton-text
       class="loader-list"
@@ -72,61 +74,72 @@
   </ng-template>
 
   <div *ngIf="!loading; else loader">
-    <div *ngIf="rows.length">
-      <ion-card
-        class="ion-no-margin"
-        style="margin-top: 10px !important; margin-bottom: 10px !important"
-        mode="ios"
-        *ngFor="let row of rows"
-      >
-        <ion-card-content class="ion-no-padding">
-          <ion-item
-            [routerLink]="'/menu/shops/detail/' + row.id"
-            routerDirection="forward"
-            lines="none"
-            [button]="true"
-          >
-            <div class="ion-padding-vertical ion-padding-start w-100">
-              <div class="flex-center" style="margin-bottom: 20px">
-                <ng-icon
-                  size="20"
-                  [name]="row.is_verified ? 'heroCheckBadgeSolid' : 'heroExclamationCircleSolid'"
-                  [color]="row.is_verified ? '#2dd36f' : '#eb445a'"
-                ></ng-icon>
-                <span class="ft-13"
-                  >{{ !row.is_verified ? 'Belum' : '' }} Diverifikasi</span
-                >
-              </div>
-              <div class="flex-center">
-                <ion-avatar
-                  aria-hidden="true"
-                  slot="start"
-                  class="ion-margin-end"
-                >
-                  <img
-                    [src]="row.user.profile_image ? (row.user.profile_image | imgCld) : 'assets/images/avatar.svg'"
-                  />
-                </ion-avatar>
-                <div>
-                  <ion-label class="ion-text-bold">{{ row.name }}</ion-label>
-                  <div class="flex-center">
-                    <ng-icon
-                      class="map-icon"
-                      name="lucideMapPin"
-                      color="#eb445a"
-                    ></ng-icon>
-                    <span class="ion-text-capitalize"
-                      >{{ row.city.replace('KABUPATEN', '').replace('KOTA',
-                      '').toLowerCase() }}</span
-                    >
+    <ion-list [style]="'background:transparent'">
+      <ng-container *ngIf="rows.length">
+        <ion-card
+          class="ion-no-margin"
+          style="margin-top: 10px !important; margin-bottom: 10px !important"
+          mode="ios"
+          *ngFor="let row of rows"
+        >
+          <ion-card-content class="ion-no-padding">
+            <ion-item
+              [routerLink]="'/menu/shops/detail/' + row.id"
+              routerDirection="forward"
+              lines="none"
+              [button]="true"
+            >
+              <div class="ion-padding-vertical ion-padding-start w-100">
+                <div class="flex-center" style="margin-bottom: 20px">
+                  <ng-icon
+                    size="20"
+                    [name]="row.is_verified ? 'heroCheckBadgeSolid' : 'heroExclamationCircleSolid'"
+                    [color]="row.is_verified ? '#2dd36f' : '#eb445a'"
+                  ></ng-icon>
+                  <span class="ft-13"
+                    >{{ !row.is_verified ? 'Belum' : '' }} Diverifikasi</span
+                  >
+                </div>
+                <div class="flex-center">
+                  <ion-avatar
+                    aria-hidden="true"
+                    slot="start"
+                    class="ion-margin-end"
+                  >
+                    <img
+                      [src]="row.user.profile_image ? (row.user.profile_image | imgCld) : 'assets/images/avatar.svg'"
+                    />
+                  </ion-avatar>
+                  <div>
+                    <ion-label class="ion-text-bold">{{ row.name }}</ion-label>
+                    <div class="flex-center">
+                      <ng-icon
+                        class="map-icon"
+                        name="lucideMapPin"
+                        color="#eb445a"
+                      ></ng-icon>
+                      <span class="ion-text-capitalize"
+                        >{{ row.city.replace('KABUPATEN', '').replace('KOTA',
+                        '').toLowerCase() }}</span
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </ion-item>
-        </ion-card-content>
-      </ion-card>
-    </div>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ng-container>
+
+      <div
+        *ngIf="!rows.length"
+        class="ion-padding ion-text-center not-found"
+        style="margin-top: 200px"
+      >
+        <img src="assets/illustrations/empty.svg" />
+        <h4>Data Kosong</h4>
+      </div>
+    </ion-list>
     <ion-infinite-scroll
       threshold="5%"
       (ionInfinite)="loadData($event)"
@@ -135,14 +148,5 @@
       <ion-infinite-scroll-content loadingSpinner="crescent">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
-
-    <div
-      *ngIf="!rows.length"
-      class="ion-padding ion-text-center not-found"
-      style="margin-top: 200px"
-    >
-      <img src="assets/illustrations/empty.svg" />
-      <h4>Data Kosong</h4>
-    </div>
   </div>
 </ion-content>

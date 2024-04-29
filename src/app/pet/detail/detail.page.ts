@@ -11,6 +11,7 @@ import { ModalController, NavController } from '@ionic/angular';
 import { DetailPage as DetailPageChat }  from 'src/app/chats/detail/detail.page';
 import { ImageViewPage } from 'src/app/image-view/image-view.page';
 import { ReviewPage } from '../review/review.page';
+import { StarRatingConfigService } from 'angular-star-rating';
 
 Swiper.use([Navigation, Pagination]);
 
@@ -18,6 +19,7 @@ Swiper.use([Navigation, Pagination]);
   selector: 'pet-detail',
   templateUrl: './detail.page.html',
   styleUrls: ['./detail.page.scss'],
+  providers: [ApiService, StarRatingConfigService],
   encapsulation: ViewEncapsulation.None,
 })
 export class DetailPage implements OnInit {

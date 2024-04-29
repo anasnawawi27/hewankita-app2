@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { StarRatingConfigService } from 'angular-star-rating';
 import { lastValueFrom } from 'rxjs';
 import { ImageViewPage } from 'src/app/image-view/image-view.page';
 import { ApiService } from 'src/services/api.service';
@@ -10,7 +11,7 @@ import { ToastService } from 'src/services/toast.service';
   templateUrl: './review.page.html',
   styleUrls: ['./review.page.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [ApiService]
+  providers: [ApiService, StarRatingConfigService]
 })
 export class ReviewPage implements OnInit {
 

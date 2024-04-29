@@ -1,150 +1,122 @@
 export const banks = [
     {
-      "name": "BANK CIMB NIAGA - (CIMB)",
+      "name": "BANK CIMB NIAGA",
       "image": "assets/images/banks/022.svg"
     },
     {
-      "name": "BANK CIMB NIAGA UNIT USAHA SYARIAH - (CIMB SYARIAH)",
+      "name": "BANK CIMB NIAGA SYARIAH",
       "image": "assets/images/banks/730.svg"
     },
     {
       "name": "BNI SYARIAH",
       "image": "assets/images/banks/427.svg"
     },
-    // {
-    //   "name": "PT. BANK BCA SYARIAH",
-    //   "code": "536"
-    // },
-    // {
-    //   "name": "PT. BANK BUKOPIN",
-    //   "code": "441"
-    // },
-    // {
-    //   "name": "PT. BANK CENTRAL ASIA, TBK - (BCA)",
-    //   "code": "014"
-    // },
-    // {
-    //   "name": "PT. BANK DANAMON INDONESIA",
-    //   "code": "011"
-    // },
-    // {
-    //   "name": "PT. BANK DKI",
-    //   "code": "111"
-    // },
-    // {
-    //   "name": "PT. BANK DBS INDONESIA",
-    //   "code": "046"
-    // },
-    // {
-    //   "name": "PT. BANK HSBC INDONESIA",
-    //   "code": "087"
-    // },
-    // {
-    //   "name": "PT. BANK MANDIRI (PERSERO), TBK",
-    //   "code": "008"
-    // },
-    // {
-    //   "name": "PT. BANK MANDIRI TASPEN POS",
-    //   "code": "564"
-    // },
-    // {
-    //   "name": "PT. BANK MAYBANK INDONESIA, TBK",
-    //   "code": "016"
-    // },
-    // {
-    //   "name": "PT. BANK MAYORA",
-    //   "code": "553"
-    // },
-    // {
-    //   "name": "PT. BANK MEGA, TBK",
-    //   "code": "426"
-    // },
-    // {
-    //   "name": "PT. BANK MUAMALAT INDONESIA, TBK",
-    //   "code": "147"
-    // },
-    // {
-    //   "name": "PT. BANK NEGARA INDONESIA (PERSERO), TBK (BNI)",
-    //   "code": "009"
-    // },
-    // {
-    //   "name": "PT. BANK OCBC NISP, TBK",
-    //   "code": "028"
-    // },
-    // {
-    //   "name": "PT. BANK OCBC NISP, TBK UNIT USAHA SYARIAH",
-    //   "code": "731"
-    // },
-    // {
-    //   "name": "PT. BANK PERMATA, TBK",
-    //   "code": "013"
-    // },
-    // {
-    //   "name": "PT. BANK PERMATA, TBK UNIT USAHA SYARIAH",
-    //   "code": "721"
-    // },
-    // {
-    //   "name": "PT. BANK RAKYAT INDONESIA (PERSERO), TBK (BRI)",
-    //   "code": "002"
-    // },
-    // {
-    //   "name": "PT. BANK RAKYAT INDONESIA AGRONIAGA, TBK",
-    //   "code": "494"
-    // },
-    // {
-    //   "name": "PT. BANK SYARIAH BRI - (BRI SYARIAH)",
-    //   "code": "422"
-    // },
-    // {
-    //   "name": "PT. BANK SYARIAH BUKOPIN",
-    //   "code": "521"
-    // },
-    // {
-    //   "name": "PT. BANK SYARIAH MANDIRI",
-    //   "code": "451"
-    // },
-    // {
-    //   "name": "PT. BANK TABUNGAN NEGARA (PERSERO), TBK (BTN)",
-    //   "code": "200"
-    // },
-    // {
-    //   "name": "PT. BANK TABUNGAN NEGARA (PERSERO), TBK UNIT USAHA SYARIAH",
-    //   "code": "723"
-    // },
-    // {
-    //   "name": "PT. BANK TABUNGAN PENSIUNAN NASIONAL - (BTPN)",
-    //   "code": "213"
-    // },
-    // {
-    //   "name": "PT. BANK TABUNGAN PENSIUNAN NASIONAL SYARIAH - (BTPN Syariah)",
-    //   "code": "547"
-    // },
-    // {
-    //   "name": "PT. BANK WOORI SAUDARA INDONESIA 1906, TBK (BWS)",
-    //   "code": "212"
-    // },
-    // {
-    //   "name": "PT. BANK JABAR BANTEN SYARIAH",
-    //   "code": "425"
-    // },
-    // {
-    //   "name": "PT. BANK PEMBANGUNAN DAERAH BANTEN",
-    //   "code": "137"
-    // },
-    // {
-    //   "name": "PT. BANK CAPITAL INDONESIA",
-    //   "code": "054"
-    // },
-    // {
-    //   "name": "PT. BANK DKI UNIT USAHA SYARIAH",
-    //   "code": "724"
-    // },
-    // {
-    //   "name": "PT. BANK ICBC INDONESIA",
-    //   "code": "164"
-    // },
-    // {
-    //   "name": "PT. BANK JTRUST INDONESIA, TBK",
-    //   "code": "095"
-    // }
+    {
+      "name": "BANK BCA SYARIAH",
+      "image": "assets/images/banks/536.svg"
+    },
+    {
+      "name": "BANK BUKOPIN",
+      "image": "assets/images/banks/441.svg"
+    },
+    {
+      "name": "BANK CENTRAL ASIA",
+      "image": "assets/images/banks/014.svg"
+    },
+    {
+      "name": "BANK DANAMON INDONESIA",
+      "image": "assets/images/banks/011.svg"
+    },
+    {
+      "name": "BANK DKI",
+      "image": "assets/images/banks/111.svg"
+    },
+    {
+      "name": "BANK DBS INDONESIA",
+      "image": "assets/images/banks/046.svg"
+    },
+    {
+      "name": "BANK HSBC INDONESIA",
+      "image": "assets/images/banks/087.svg"
+    },
+    {
+      "name": "BANK MANDIRI",
+      "image": "assets/images/banks/008.svg"
+    },
+    {
+      "name": "BANK MANDIRI TASPEN POS",
+      "image": "assets/images/banks/564.svg"
+    },
+    {
+      "name": "BANK MAYBANK INDONESIA",
+      "image": "assets/images/banks/016.svg"
+    },
+    {
+      "name": "BANK MAYORA",
+      "image": "assets/images/banks/553.svg"
+    },
+    {
+      "name": "BANK MEGA",
+      "image": "assets/images/banks/426.svg"
+    },
+    {
+      "name": "BANK MUAMALAT INDONESIA",
+      "image": "assets/images/banks/147.svg"
+    },
+    {
+      "name": "BANK NEGARA INDONESIA",
+      "image": "assets/images/banks/009.svg"
+    },
+    {
+      "name": "BANK OCBC NISP",
+      "image": "assets/images/banks/028.svg"
+    },
+    {
+      "name": "BANK PERMATA",
+      "image": "assets/images/banks/013.svg"
+    },
+    {
+      "name": "BANK RAKYAT INDONESIA",
+      "image": "assets/images/banks/002.svg"
+    },
+    {
+      "name": "BANK SYARIAH BUKOPIN",
+      "image": "assets/images/banks/521.svg"
+    },
+    {
+      "name": "BANK BTN",
+      "image": "assets/images/banks/200.svg"
+    },
+    {
+      "name": "BANK BTN SYARIAH",
+      "image": "assets/images/banks/723.svg"
+    },
+    {
+      "name": "BANK BTPN",
+      "image": "assets/images/banks/213.svg"
+    },
+    {
+      "name": "BANK BTPN SYARIAH",
+      "image": "assets/images/banks/547.svg"
+    },
+    {
+      "name": "BANK WOORI SAUDARA",
+      "image": "assets/images/banks/212.svg"
+    },
+    {
+      "name": "BANK PEMBANGUNAN DAERAH BANTEN",
+      "image": "assets/images/banks/137.svg"
+    },
+    {
+      "name": "BANK CAPITAL INDONESIA",
+      "image": "assets/images/banks/054.svg"
+    },
+    {
+      "name": "BANK ICBC INDONESIA",
+      "image": "assets/images/banks/164.svg"
+    },
+    {
+      "name": "BANK JTRUST INDONESIA",
+      "image": "assets/images/banks/095.svg"
+    }
   ]
