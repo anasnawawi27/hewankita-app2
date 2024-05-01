@@ -17,7 +17,6 @@ import {
   ImageTransform,
 } from 'ngx-image-cropper';
 
-import { NgxImageCompressService, DOC_ORIENTATION } from 'ngx-image-compress';
 import { Capacitor } from '@capacitor/core';
 import { LoadingController, NavController } from '@ionic/angular';
 import { UploadService } from 'src/services/upload.service';
@@ -75,7 +74,6 @@ export class FormPage implements OnInit {
     private _apiService: ApiService,
     private toast: ToastService,
     private route: ActivatedRoute,
-    private imageCompress: NgxImageCompressService,
     private _uploadService: UploadService,
     private navController: NavController,
     private loadingController: LoadingController
@@ -164,11 +162,6 @@ export class FormPage implements OnInit {
     let imageIds: any = [];
     for (let d of this.images) {
       if(d.type == 'add'){
-        await this.imageCompress
-        .compressFile(d.file, -2 as DOC_ORIENTATION, 70, 50)
-        .then((compressedImage) => {
-          d.file = compressedImage;
-        });
 
       try {
         const upload: any = await this._uploadService.upload(d.file, 'shop_galleries');

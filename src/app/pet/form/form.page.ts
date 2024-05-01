@@ -8,7 +8,6 @@ import { ToastService } from 'src/services/toast.service';
 import { ActivatedRoute } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { UploadService } from 'src/services/upload.service';
-import { DOC_ORIENTATION, NgxImageCompressService } from 'ngx-image-compress';
 import { NavController } from '@ionic/angular';
 
 
@@ -60,7 +59,6 @@ export class FormPage implements OnInit {
   constructor(
     private _apiService: ApiService,
     private _uploadService: UploadService,
-    private imageCompress: NgxImageCompressService,
     private toast: ToastService,
     private route: ActivatedRoute,
     private navController: NavController
@@ -169,11 +167,6 @@ export class FormPage implements OnInit {
     let imageIds: any = [];
     for (let d of this.images) {
       if(d.type == 'add'){
-        await this.imageCompress
-        .compressFile(d.file, -2 as DOC_ORIENTATION, 70, 50)
-        .then((compressedImage) => {
-          d.file = compressedImage;
-        });
 
         try{
           const upload: any = await this._uploadService.upload(d.file, 'pets');

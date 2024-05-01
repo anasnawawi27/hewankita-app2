@@ -1,0 +1,43 @@
+app-banners{
+    ion-chip{
+        background: #efefef;
+      }
+
+      .creator{
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .alert{
+        position: absolute;
+        bottom: -5px;
+        right: 10px;
+        border-radius: 50px;
+        padding: 5px;
+
+        &.danger{
+          background: rgb(243 226 228)!important;
+          color: var(--ion-color-danger)!important;
+        }
+
+        &.success{
+          background: #dcffea !important;
+          color: var(--ion-color-success) !important;
+        }
+
+        ng-icon{
+            margin-right: 0px!important;
+        }
+      }
+
+      .date{
+          color: #b4b4b4;
+
+        span{
+          display: block;
+          margin-left: 5px;
+          font-weight: 600;
+          font-size: 13px;
+        }
+      }
+}

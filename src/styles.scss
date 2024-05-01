@@ -1,6 +1,9 @@
 @import '~css-star-rating/css/star-rating.min.css';
 @import '@ctrl/ngx-emoji-mart/picker';
 
+.ml-5px{
+    margin-left: 5px;
+}
 
 ion-segment{
     border-radius: 20px!important;
@@ -687,6 +690,10 @@ ion-label{
     background: white!important;
 }
 
+.bg-primary{
+    background: var(--ion-color-primary)!important;
+}
+
 .mr-20px{
     margin-right: 20px!important;
 }
@@ -842,11 +849,28 @@ ion-toggle{
         .inner{
             margin-top: 15px;
 
-            .name{
+            .name, .title{
                 font-size: 15px;
                 font-weight: 600;
                 margin-bottom: 5px;
             }
+
+            .title{
+                font-size: 17px;
+            }
+
+            .desc{
+                text-align: justify;
+                line-height: 25px;
+            }
+
+            .ellipsis-text {
+                display: -webkit-box;
+                white-space: normal;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+              }
 
             .price-section{
                 display: flex;

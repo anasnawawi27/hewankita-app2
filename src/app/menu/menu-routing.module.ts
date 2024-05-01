@@ -8,6 +8,8 @@ import { CategoriesPage } from './categories/categories.page';
 import { DetailPage } from './shop/detail/detail.page';
 import { ProfilePage } from './profile/profile.page';
 import { AddressPage } from './address/address.page';
+import { BannersPage } from './banners/banners.page';
+import { FormPage } from './banners/form/form.page';
 
 const routes: Routes = [
   {
@@ -37,6 +39,14 @@ const routes: Routes = [
   {
     path: 'address',
     component: AddressPage
+  },
+  {
+    path: 'banners',
+    component: BannersPage
+  },
+  {
+    path: 'banners/form',
+    component: FormPage
   },
 ];
 

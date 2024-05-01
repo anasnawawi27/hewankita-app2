@@ -4,15 +4,19 @@ import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { ToastService } from './toast.service';
 import { cldConfig } from 'src/config/cloudinary.config';
+import { DOC_ORIENTATION, NgxImageCompressService } from 'ngx-image-compress';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UploadService {
-  constructor(private http: HttpClient, private toastService: ToastService) {}
+  constructor(private http: HttpClient, private toastService: ToastService, private imageCompress: NgxImageCompressService) {}
 
   async upload(image: any, path: string) {
     let formData = new FormData();
+
+    image = await this.imageCompress.compressFile(image, -2 as DOC_ORIENTATION, 70, 50)
+
     formData.append('file', image);
     formData.append('upload_preset', cldConfig.cloud.uploadPreset);
     formData.append('cloud_name', cldConfig.cloud.cloudName);

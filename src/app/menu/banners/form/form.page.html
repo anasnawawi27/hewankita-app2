@@ -1,0 +1,102 @@
+<ion-header class="common-header bg-white">
+  <div (click)="close()" slot="start" class="back left ion-activatable">
+    <ng-icon name="heroXMark"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>{{ !isEdit ? 'Tambah' : 'Edit' }} Alamat</ion-title>
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+  <div class="form-section">
+    <ion-row>
+      <ion-col size="12">
+        <div class="input ion-padding-bottom ion-margin-top">
+          <ion-label class="input-title">Banner</ion-label>
+          <ion-row>
+            <ion-col *ngIf="image.file" size="12">
+              <div (click)="viewImage(image.file)" class="preview-img">
+                <div
+                  (click)="image.file = null"
+                  class="remove"
+                  style="right: -10px !important"
+                >
+                  <ng-icon name="heroXMarkSolid"></ng-icon>
+                </div>
+                <img
+                  style="height: 150px !important; width: 100% !important"
+                  [src]="image.cloud ? (image.file | imgCld) : image.file"
+                />
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </ion-col>
+            <ion-col size="12" *ngIf="!image.file">
+              <div
+                (click)="onChooseGallery()"
+                class="add-multiple-photo ion-activatable"
+              >
+                <ng-icon size="25" name="lucidePlus"></ng-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </ion-col>
+          </ion-row>
+          <small
+            class="ion-text-danger d-block mt-10px font-13"
+            *ngIf="formSubmitted && !image.file"
+          >
+            <span>Gambar Banner Wajib Diisi</span>
+          </small>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Judul</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input [type]="'text'" [(ngModel)]="input.title"></ion-input>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !input.title"
+      >
+        <span>Judul Wajib Diisi</span>
+      </small>
+    </div>
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Deskripsi</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-textarea [autoGrow]="true" [(ngModel)]="input.description">
+        </ion-textarea>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !input.description"
+      >
+        <span>Deskripsi Wajib Diisi</span>
+      </small>
+    </div>
+    <ion-row>
+      <ion-col size="12" class="flex-center" style="height: 55px">
+        <ion-toggle
+          mode="ios"
+          [(ngModel)]="input.display"
+          color="success"
+          labelPlacement="start"
+          >Tampilkan</ion-toggle
+        >
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
+<ion-toolbar class="common-toolbar" slot="end">
+  <ion-button
+    (click)="onSave()"
+    mode="ios"
+    expand="block"
+    color="primary"
+    shape="round"
+    [disabled]="formLoading"
+  >
+    <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+    <span *ngIf="!formLoading">{{ !isEdit ? 'Simpan' : 'Edit' }}</span>
+  </ion-button>
+</ion-toolbar>

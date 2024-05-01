@@ -1,0 +1,112 @@
+<ion-header class="common-header bg-white">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Banner</ion-title>
+  <div
+    (click)="onSort()"
+    slot="end"
+    class="action-header right ion-activatable"
+  >
+    <ng-icon
+      color="#004D95"
+      [name]="params.sort == 'desc' ? 'lucideArrowDownNarrowWide' : 'lucideArrowDownWideNarrow'"
+    ></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding bg-main">
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="!loading; else loader">
+    <ng-container *ngIf="rows.length">
+      <ion-card
+        mode="ios"
+        *ngFor="let row of rows; let i = index"
+        (click)="onEdit(row, i)"
+        class="card-horizontal ion-activatable ion-margin-bottom"
+        style="margin-bottom: 20px"
+      >
+        <ion-card-content>
+          <div class="top">
+            <img [src]="row.image | imgCld" />
+            <div
+              class="alert ion-margin-bottom"
+              [ngClass]="row.display ? 'success' : 'danger'"
+            >
+              <ng-icon
+                size="20"
+                [name]="row.display ? 'akarEyeOpen' : 'akarEyeSlashed'"
+              ></ng-icon>
+            </div>
+          </div>
+          <div>
+            <div class="inner">
+              <h6 class="title">{{ row.title }}</h6>
+              <p class="desc ellipsis-text">{{ row.description }}</p>
+            </div>
+            <div class="creator ion-margin-top">
+              <ion-chip>
+                <ion-avatar>
+                  <img
+                    [src]="row.user.profile_image ? (row.user.profile_image | imgCld) : 'assets/images/avatar.svg'"
+                  />
+                </ion-avatar>
+                <ion-label class="ft-12">{{ row.user.fullname }}</ion-label>
+              </ion-chip>
+              <div class="flex-center date">
+                <ng-icon size="20" name="saxCalendar1Outline"></ng-icon>
+                <span>{{ row.created_at | date: 'dd MMM YYYY HH:mm'}}</span>
+              </div>
+            </div>
+          </div>
+        </ion-card-content>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-card>
+    </ng-container>
+    <ion-infinite-scroll
+      threshold="5%"
+      (ionInfinite)="loadData($event)"
+      *ngIf="!loading && rows.length"
+    >
+      <ion-infinite-scroll-content loadingSpinner="crescent">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+    <div
+      *ngIf="!rows.length"
+      class="ion-padding ion-text-center not-found"
+      style="margin-top: 200px"
+    >
+      <img src="assets/illustrations/empty.svg" />
+      <h4>Banner Kosong</h4>
+    </div>
+  </div>
+</ion-content>
+<ion-fab (click)="onCreate()" vertical="bottom" horizontal="center">
+  <ion-fab-button>
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ng-template #loader>
+  <ion-skeleton-text
+    class="loader-list"
+    animated
+    style="margin-top: 20px; height: 25%"
+  ></ion-skeleton-text>
+  <ion-skeleton-text
+    class="loader-list"
+    animated
+    style="height: 25%"
+  ></ion-skeleton-text>
+  <ion-skeleton-text
+    class="loader-list"
+    animated
+    style="height: 25%"
+  ></ion-skeleton-text>
+</ng-template>

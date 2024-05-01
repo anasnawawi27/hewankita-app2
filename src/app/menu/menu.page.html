@@ -1,4 +1,4 @@
-<ion-header class="common-header header-transparent">
+<ion-header class="common-header header-transparent bg-primary">
   <div (click)="back()" slot="start" class="back left ion-activatable">
     <ng-icon name="lucideChevronLeft"></ng-icon>
     <ion-ripple-effect></ion-ripple-effect>
@@ -91,7 +91,11 @@
             <ion-label>Kategori</ion-label>
           </div>
         </ion-item>
-        <ion-item [button]="true">
+        <ion-item
+          routerLink="/menu/banners"
+          routerDirection="forward"
+          [button]="true"
+        >
           <div class="flex-center">
             <div slot="start" class="icon-section">
               <ng-icon size="20" name="lucideGalleryHorizontalEnd"></ng-icon>

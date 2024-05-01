@@ -5,9 +5,11 @@ import { IonicModule } from '@ionic/angular';
 import { MenuPageRoutingModule } from './menu-routing.module';
 import { NgIconsModule } from '@ng-icons/core';
 import { saxEdit2Bold } from '@ng-icons/iconsax/bold';
+import { saxCalendar1Outline } from '@ng-icons/iconsax/outline';
 import { heroUser, heroXMark, heroHome,  heroBuildingStorefront, heroUserCircle } from '@ng-icons/heroicons/outline';
 import { heroCheckCircleSolid, heroXMarkSolid, heroCheckBadgeSolid, heroExclamationCircleSolid } from '@ng-icons/heroicons/solid';
-import { lucideChevronLeft, lucideImages, lucideGalleryHorizontalEnd, lucideKeyRound, lucideTrash2, lucidePhone, lucideStore, lucideLogOut, lucideChevronDown, lucideSettings, lucideTags, lucideMapPin, lucideAlertCircle, lucidePlus } from '@ng-icons/lucide';
+import { lucideChevronLeft, lucideImages, lucideGalleryHorizontalEnd, lucideKeyRound, lucideTrash2, lucidePhone, lucideStore, lucideLogOut, lucideChevronDown, lucideSettings, lucideTags, lucideMapPin, lucideAlertCircle, lucidePlus, lucideArrowDownNarrowWide, lucideArrowDownWideNarrow } from '@ng-icons/lucide';
+import { akarEyeOpen, akarEyeSlashed } from '@ng-icons/akar-icons'
 import { MenuPage } from './menu.page';
 import { CorePipesModule } from 'src/pipes/pipes.module';
 import { ShopPage } from './shop/shop.page';
@@ -19,6 +21,8 @@ import { SwiperModule } from 'swiper/angular';
 import { ProfilePage } from './profile/profile.page';
 import { AddressPage } from './address/address.page';
 import { FormPage } from './address/form/form.page';
+import { BannersPage } from './banners/banners.page';
+import { FormPage as FormBannerPage }  from './banners/form/form.page';
 
 @NgModule({
   imports: [
@@ -28,6 +32,11 @@ import { FormPage } from './address/form/form.page';
     CorePipesModule,
     SwiperModule,
     NgIconsModule.withIcons({
+      lucideArrowDownNarrowWide, 
+      lucideArrowDownWideNarrow,
+      saxCalendar1Outline,
+      akarEyeOpen, 
+      akarEyeSlashed,
       lucideImages, 
       lucideGalleryHorizontalEnd,
       lucideKeyRound, 
@@ -56,6 +65,6 @@ import { FormPage } from './address/form/form.page';
     PickerComponent,
     MenuPageRoutingModule
   ],
-  declarations: [MenuPage, ProfilePage, ShopPage, DetailPage, SettingsPage, CategoriesPage, AddressPage, FormPage]
+  declarations: [MenuPage, ProfilePage, ShopPage, DetailPage, SettingsPage, CategoriesPage, AddressPage, FormPage, BannersPage, FormBannerPage]
 })
 export class MenuPageModule {}
