@@ -266,6 +266,10 @@ ion-item.input-outline{
     &:focus-within{
         border: 1.5px solid var(--ion-color-primary)!important;
     }
+
+    &.verification-input:focus-within{
+        border: none!important;
+    }
     
 
     ng-icon{

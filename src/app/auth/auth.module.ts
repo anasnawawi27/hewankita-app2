@@ -13,6 +13,7 @@ import { NgIconsModule } from '@ng-icons/core';
 import { lucideChevronLeft, lucideLockKeyhole, lucideSmartphone, lucideCircleUserRound, lucideLock, lucideEye, lucideEyeOff, lucideMail, lucideUnlockKeyhole } from '@ng-icons/lucide';
 import { heroEyeMini, heroEyeSlashMini } from '@ng-icons/heroicons/mini'
 import { VerificationPage } from './verification/verification.page';
+import { ForgotPasswordPage } from './forgot-password/forgot-password.page';
 
 @NgModule({
   imports: [
@@ -35,6 +36,6 @@ import { VerificationPage } from './verification/verification.page';
       lucideChevronLeft,
    }),
   ],
-  declarations: [LoginPage, RegisterPage, VerificationPage],
+  declarations: [LoginPage, RegisterPage, VerificationPage, ForgotPasswordPage],
 })
 export class AuthPageModule {}

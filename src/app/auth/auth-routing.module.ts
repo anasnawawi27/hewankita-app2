@@ -5,6 +5,7 @@ import { LoginPage } from './login/login.page';
 import { RegisterPage } from './register/register.page';
 import { HttpClientModule } from '@angular/common/http';
 import { VerificationPage } from './verification/verification.page';
+import { ForgotPasswordPage } from './forgot-password/forgot-password.page';
 
 const routes: Routes = [
   {
@@ -18,7 +19,7 @@ const routes: Routes = [
   {
     path: 'verification',
     component: VerificationPage
-  }
+  },
 ];
 
 @NgModule({

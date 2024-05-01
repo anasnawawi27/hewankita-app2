@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { ApiService } from 'src/services/api.service';
 import { EncryptionService } from 'src/services/encription.service';
 import { ToastService } from 'src/services/toast.service';
 import { lastValueFrom } from 'rxjs';
 
 import * as _ from  'lodash';
+import { ForgotPasswordPage } from '../forgot-password/forgot-password.page';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ export class LoginPage implements OnInit {
   public formLoading: boolean = false;
 
   constructor(
+    private modalController: ModalController,
     private navController: NavController,
     private _apiService: ApiService,
     private _encryptionService: EncryptionService,
@@ -73,6 +75,15 @@ export class LoginPage implements OnInit {
       .finally(() => {
         this.formLoading = false;
       });
+  }
+
+  async onForgotPassword(){
+    const modal = await this.modalController.create({
+      mode: 'ios',
+      component: ForgotPasswordPage
+    })
+
+    await modal.present();
   }
 
 }
