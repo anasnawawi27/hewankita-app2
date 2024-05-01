@@ -16,46 +16,45 @@
       </div>
     </ion-tab-button>
     <ion-tab-button tab="favourites" href="/favourites">
-      <div [class.tab-active]="currentUrl == 'favourites'">
-        <div>
+      <div
+        [class.tab-active]="currentUrl == 'favourites'"
+        [ngStyle]="{ 'padding-right': currentUrl == 'favourites' && favCount ? '0px' : '0px'}"
+      >
+        <div class="position-relative">
           <ng-icon
             size="23"
             strokeWidth="1.5"
             name="heroHeart"
             [color]="currentUrl == 'favourites' ? 'white' : '#004D95'"
           ></ng-icon>
+          <span
+            *ngIf="favCount && currentUrl !== 'favourites'"
+            class="fav-count"
+            >{{ favCount }}</span
+          >
         </div>
-        <ion-label *ngIf="currentUrl == 'favourites'" class="tab-text"
-          >Favorit</ion-label
+        <ion-label
+          *ngIf="currentUrl == 'favourites'"
+          class="tab-text flex-center"
         >
+          <span> Favorit</span>
+
+          <span *ngIf="favCount" class="fav-count within-tab"
+            >{{ favCount }}</span
+          >
+        </ion-label>
       </div>
     </ion-tab-button>
     <ion-tab-button tab="chats" href="/chats">
       <div [class.tab-active]="currentUrl == 'chats'">
-        <div>
+        <div class="position-relative">
           <ng-icon
             size="23"
             strokeWidth="1.5"
             name="heroChatBubbleOvalLeftEllipsis"
             [color]="currentUrl == 'chats' ? 'white' : '#004D95'"
           ></ng-icon>
-          <span
-            *ngIf="unseenCount"
-            class="unseen"
-            style="
-              position: absolute;
-              background: var(--ion-color-danger);
-              color: white;
-              font-weight: 600;
-              font-size: 10px;
-              width: 18px;
-              height: 18px;
-              line-height: 20px;
-              border-radius: 100px;
-              right: 10px;
-            "
-            >{{ unseenCount }}</span
-          >
+          <span *ngIf="unseenCount" class="unseen">{{ unseenCount }}</span>
         </div>
         <ion-label *ngIf="currentUrl == 'chats'" class="tab-text"
           >Pesan</ion-label

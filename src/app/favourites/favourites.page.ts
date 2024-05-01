@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { AlertController, LoadingController, ModalController, NavController } from '@ionic/angular';
 import { HotToastService } from '@ngxpert/hot-toast';
 import { CheckOutPage } from '../check-out/check-out.page';
+import { FavCountService } from 'src/services/fav-count.service';
 
 @Component({
   selector: 'app-favourites',
@@ -22,6 +23,7 @@ export class FavouritesPage implements OnInit {
   public data: Array<any> = [];
 
   constructor(
+    private favService: FavCountService,
     private _apiService: ApiService,
     private toast: ToastService,
     private modalController: ModalController,
@@ -111,6 +113,7 @@ export class FavouritesPage implements OnInit {
       this._apiService.post('favourite', { type: "delete", pet_id: id })
     ).then((res) => {
       if(res.statusCode == 200){
+        this.favService.setFavCount(res.count)
         this.toast.success('Pet berhasil dihapus!');
         this.getFav();
       }

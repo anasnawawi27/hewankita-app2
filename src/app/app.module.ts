@@ -18,7 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgIconsModule } from '@ng-icons/core';
 import { lucideChevronLeft, lucideChevronRight, lucideSendHorizontal, lucideMapPin } from '@ng-icons/lucide';
-import { saxLocationBulk } from '@ng-icons/iconsax/bulk';
+import { saxLocationBulk, saxTickCircleBulk } from '@ng-icons/iconsax/bulk';
 import { heroTrash, heroPlus, heroMinus, heroXMark, heroAdjustmentsHorizontal } from '@ng-icons/heroicons/outline';
 import { saxMessageTextOutline } from '@ng-icons/iconsax/outline';
 import { heroCheckCircleSolid, heroXMarkSolid } from '@ng-icons/heroicons/solid';
@@ -47,6 +47,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4040/', options: { trans
     CorePipesModule,
     PickerComponent,
     NgIconsModule.withIcons({ 
+      saxTickCircleBulk,
       lucideChevronLeft, 
       lucideChevronRight, 
       saxLocationBulk, 

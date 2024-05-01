@@ -9,7 +9,7 @@ import { ModalController, NavController } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
 import { environment } from 'src/environments/environment';
 import { SearchPage } from '../search/search.page';
-import { EncryptionService } from 'src/services/encription.service';
+import { FavCountService } from 'src/services/fav-count.service';
 
 @Component({
   selector: 'app-home',
@@ -38,7 +38,7 @@ export class HomePage implements OnInit {
   public banner: any;
 
   constructor(
-    private _encryptionService: EncryptionService,
+    private favService: FavCountService,
     private navController: NavController,
     private modalController: ModalController,
     private _apiService: ApiService,
@@ -226,6 +226,8 @@ export class HomePage implements OnInit {
         if(typeParam == 'cheapest'){
           this.petsCheapest[index].favourite = res.data
         }
+
+        this.favService.setFavCount(res.count)
       }
     }).catch((err) => {
       this.toast.handleError(err)
