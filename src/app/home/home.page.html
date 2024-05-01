@@ -9,79 +9,30 @@
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <!-- Banner -->
-  <!-- <swiper [slidesPerView]="1.5" [spaceBetween]="5" [pagination]="true">
-    <ng-template swiperSlide>
-      <ion-card>
+  <swiper
+    class="ion-margin-bottom swiper-banner"
+    *ngIf="banners.length"
+    [slidesPerView]="1.2"
+    [spaceBetween]="5"
+    [pagination]="true"
+  >
+    <ng-template *ngFor="let banner of banners" swiperSlide>
+      <ion-card
+        mode="ios"
+        class="ion-no-margin ion-activatable"
+        style="margin: 10px !important; height: 140px"
+      >
         <ion-card-content class="ion-no-padding">
-          <ion-img
-            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
-            alt="The Wisconsin State Capitol building in Madison, WI at night"
-          ></ion-img>
+          <img
+            [src]="banner.image | imgCld"
+            alt="banner image"
+            style="height: 140px; width: 100%; object-fit: cover"
+          />
         </ion-card-content>
+        <ion-ripple-effect></ion-ripple-effect>
       </ion-card>
     </ng-template>
-    <ng-template swiperSlide>
-      <ion-card>
-        <ion-card-content class="ion-no-padding">
-          <ion-img
-            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
-            alt="The Wisconsin State Capitol building in Madison, WI at night"
-          ></ion-img>
-        </ion-card-content>
-      </ion-card>
-    </ng-template>
-    <ng-template swiperSlide>
-      <ion-card>
-        <ion-card-content class="ion-no-padding">
-          <ion-img
-            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
-            alt="The Wisconsin State Capitol building in Madison, WI at night"
-          ></ion-img>
-        </ion-card-content>
-      </ion-card>
-    </ng-template>
-    <ng-template swiperSlide>
-      <ion-card>
-        <ion-card-content class="ion-no-padding">
-          <ion-img
-            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
-            alt="The Wisconsin State Capitol building in Madison, WI at night"
-          ></ion-img>
-        </ion-card-content>
-      </ion-card>
-    </ng-template>
-    <ng-template swiperSlide>
-      <ion-card>
-        <ion-card-content class="ion-no-padding">
-          <ion-img
-            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
-            alt="The Wisconsin State Capitol building in Madison, WI at night"
-          ></ion-img>
-        </ion-card-content>
-      </ion-card>
-    </ng-template>
-    <ng-template swiperSlide>
-      <ion-card>
-        <ion-card-content class="ion-no-padding">
-          <ion-img
-            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
-            alt="The Wisconsin State Capitol building in Madison, WI at night"
-          ></ion-img>
-        </ion-card-content>
-      </ion-card>
-    </ng-template>
-    <ng-template swiperSlide>
-      <ion-card>
-        <ion-card-content class="ion-no-padding">
-          <ion-img
-            src="https://ionic-docs-demo-v7.vercel.app/assets/madison.jpg"
-            alt="The Wisconsin State Capitol building in Madison, WI at night"
-          ></ion-img>
-        </ion-card-content>
-      </ion-card>
-    </ng-template>
-  </swiper> -->
+  </swiper>
 
   <div class="categories ion-margin-vertical">
     <swiper [slidesPerView]="4.5" [spaceBetween]="10">

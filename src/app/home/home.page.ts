@@ -24,9 +24,11 @@ export class HomePage implements OnInit {
   public loading2: boolean = true;
   public loading3: boolean = true;
   public loading4: boolean = true;
+  public loading5: boolean = true;
 
   public category: string = 'all';
   public categories: Array<any> = [];
+  public banners: Array<any> = [];
 
   public petsByCategory: Array<any> = [];
   public petsLatestAdd: Array<any> = [];
@@ -47,11 +49,6 @@ export class HomePage implements OnInit {
     if (Capacitor.isNativePlatform()) {
       this.oneSignalInit();
     }
-
-    this.getCategories();
-    this.getByCategory();
-    this.getLatestPet();
-    this.getCheapestPet();
   }
 
   oneSignalInit() {
@@ -81,10 +78,29 @@ export class HomePage implements OnInit {
 
   ionViewDidEnter(){
     this.refresh();
+    this.getCategories();
+    this.getByCategory();
+    this.getLatestPet();
+    this.getCheapestPet();
+    this.getBanners()
   }
 
   onClickCategory(){
     this.getByCategory()
+  }
+
+  getBanners(){
+    lastValueFrom(
+      this._apiService.get('banners', {})
+    ).then((res) => {
+      if(res.statusCode == 200){
+        this.banners = res.data;
+      }
+    }).catch((err) => {
+      this.toast.handleError(err)
+    }).finally(() => {
+      this.loading5 = false
+    })
   }
 
   getCategories(){

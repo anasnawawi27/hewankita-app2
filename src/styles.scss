@@ -1,6 +1,12 @@
 @import '~css-star-rating/css/star-rating.min.css';
 @import '@ctrl/ngx-emoji-mart/picker';
 
+.swiper-pagination-bullet.swiper-pagination-bullet-active{
+    width: 20px!important;
+    height: 8px!important;
+    border-radius: 5px!important;
+}
+
 .ml-5px{
     margin-left: 5px;
 }
