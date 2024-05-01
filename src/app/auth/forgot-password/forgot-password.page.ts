@@ -149,6 +149,7 @@ export class ForgotPasswordPage implements OnInit {
   }
 
   onSubmit(){
+
     if (
       !this.email ||
       !this.password ||

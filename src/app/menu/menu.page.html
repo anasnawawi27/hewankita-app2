@@ -54,7 +54,11 @@
           <ion-label>Alamat</ion-label>
         </div>
       </ion-item>
-      <ion-item [button]="true">
+      <ion-item
+        routerLink="/menu/change-password"
+        routerDirection="forward"
+        [button]="true"
+      >
         <div class="flex-center">
           <div slot="start" class="icon-section">
             <ng-icon size="20" name="lucideKeyRound"></ng-icon>

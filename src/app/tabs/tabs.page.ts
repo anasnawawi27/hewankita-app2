@@ -46,10 +46,10 @@ export class TabsPage implements OnDestroy {
   }
 
   ionViewDidEnter(){
-    this.getFavCount();
     this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
-    if(this.user){
+    if(Object.keys(this.user).length){
       this.getUnseen();
+      this.getFavCount();
     }
     this.listenMessages();
   }

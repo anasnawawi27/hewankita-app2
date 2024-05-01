@@ -270,6 +270,10 @@ ion-item.input-outline{
     &.verification-input:focus-within{
         border: none!important;
     }
+
+    .input-wrapper{
+        display: flex !important
+    }
     
 
     ng-icon{
@@ -591,7 +595,9 @@ ion-header.common-header{
     }
 
     box-shadow: 0px 1px 8px 5px #0000000f;
-
+    &.no-shadow{
+        box-shadow: none!important;
+    }
     &.header-transparent{
         box-shadow: none!important;
 

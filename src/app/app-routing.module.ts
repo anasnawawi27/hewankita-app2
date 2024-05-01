@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { CheckOutPageModule } from './check-out/check-out.module';
 import { AuthGuard } from './auth.guard';
 import { SelectAdminPageModule } from './check-out/select-admin/select-admin.module';
+import { GuestGuard } from './guest.guard';
 
 const routes: Routes = [
   {
@@ -25,7 +26,7 @@ const routes: Routes = [
   },
   {
     path: 'transactions',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, GuestGuard],
     loadChildren: () => import('./transactions/transactions.module').then( m => m.TransactionsPageModule)
   },
   {
@@ -34,12 +35,12 @@ const routes: Routes = [
   },
   {
     path: 'chats',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, GuestGuard],
     loadChildren: () => import('./chats/chats.module').then( m => m.ChatsPageModule)
   },
   {
     path: 'menu',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, GuestGuard],
     loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)
   },
   {
@@ -56,11 +57,6 @@ const routes: Routes = [
     path: 'search',
     canActivate: [AuthGuard],
     loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
-  },
-  {
-    path: 'chats',
-    canActivate: [AuthGuard],
-    loadChildren: () => import('./chats/chats-routing.module').then(m => m.ChatsPageRoutingModule)
   },
 ];
 @NgModule({

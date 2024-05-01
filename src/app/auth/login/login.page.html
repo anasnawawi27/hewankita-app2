@@ -1,5 +1,15 @@
-<ion-header></ion-header>
-<ion-content mode="ios" class="ion-padding" [fullscreen]="true">
+<ion-header class="common-header bg-white no-shadow">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+</ion-header>
+<ion-content
+  mode="ios"
+  class="ion-padding"
+  style="--padding-top: 50px"
+  [fullscreen]="true"
+>
   <div class="heading">
     <h3>Selamat Datang</h3>
     <p>Silahkan login dengan akun anda !</p>
@@ -42,9 +52,19 @@
     <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
     <span *ngIf="!formLoading">Login</span>
   </ion-button>
+  <ion-button
+    *ngIf="!isGuest"
+    (click)="continueAsGuest()"
+    class="ion-margin-top"
+    shape="round"
+    color="light"
+    expand="block"
+    >Lanjut Sebagai Guest</ion-button
+  >
   <div class="ion-text-center">
     <p class="register">
-      Belum punya akun ? <a [routerLink]="'/auth/register'">Daftar</a>
+      Belum punya akun ?
+      <a (click)="onRegister()" href="javascript:void(0)">Daftar</a>
     </p>
   </div>
 </ion-content>

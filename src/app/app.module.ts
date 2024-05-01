@@ -17,12 +17,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgIconsModule } from '@ng-icons/core';
-import { lucideChevronLeft, lucideChevronRight, lucideSendHorizontal, lucideMapPin } from '@ng-icons/lucide';
-import { saxLocationBulk, saxTickCircleBulk } from '@ng-icons/iconsax/bulk';
+import { lucideChevronLeft, lucideCircleUserRound, lucideSmartphone, lucideLock, lucideLockKeyhole, lucideMail, lucideUnlockKeyhole,  lucideChevronRight, lucideSendHorizontal, lucideMapPin } from '@ng-icons/lucide';
+import { saxLocationBulk, saxTickCircleBulk, } from '@ng-icons/iconsax/bulk';
+import { saxMessageBold } from '@ng-icons/iconsax/bold';
 import { heroTrash, heroPlus, heroMinus, heroXMark, heroAdjustmentsHorizontal } from '@ng-icons/heroicons/outline';
 import { saxMessageTextOutline } from '@ng-icons/iconsax/outline';
 import { heroCheckCircleSolid, heroXMarkSolid } from '@ng-icons/heroicons/solid';
-import { heroCheckCircleMini } from '@ng-icons/heroicons/mini';
+import { heroCheckCircleMini, heroEyeMini } from '@ng-icons/heroicons/mini';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { SelectAdminPageModule } from './check-out/select-admin/select-admin.module';
 import { CheckOutPageModule } from './check-out/check-out.module';
@@ -47,6 +48,14 @@ const config: SocketIoConfig = { url: 'http://localhost:4040/', options: { trans
     CorePipesModule,
     PickerComponent,
     NgIconsModule.withIcons({ 
+      lucideCircleUserRound, 
+      lucideSmartphone, 
+      lucideLock, 
+      lucideLockKeyhole,
+      heroEyeMini,
+      lucideMail, 
+      lucideUnlockKeyhole,
+      saxMessageBold,
       saxTickCircleBulk,
       lucideChevronLeft, 
       lucideChevronRight, 

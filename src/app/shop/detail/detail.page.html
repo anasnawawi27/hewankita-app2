@@ -123,108 +123,117 @@
     </div>
     <ion-row mode="ios">
       <ng-container *ngIf="!loading2; else loader">
-        <ion-col size="6" *ngFor="let pet of pets; let i = index">
-          <ion-card class="card-horizontal">
-            <ion-card-content>
-              <div class="top">
-                <img
-                  (click)="onDetail(pet)"
-                  [src]="(pet.images | firstArray) | imgCld"
-                />
-                <div
-                  (click)="addFav(pet.id, i)"
-                  class="add-fav ion-activatable"
-                >
-                  <ion-icon
-                    color="danger"
-                    [name]="!pet.favourite ? 'heart-outline' : 'heart'"
-                  ></ion-icon>
-                  <ion-ripple-effect></ion-ripple-effect>
-                </div>
-              </div>
-              <div (click)="onDetail(pet)">
-                <div class="type ion-margin-top">
-                  <div class="badge-type">{{ pet.category?.name }}</div>
-                  <div class="rating">
-                    <span>{{ pet.rating }}</span>
-                    <ion-icon name="star" class="star"></ion-icon>
+        <ng-container *ngIf="pets.length; else empty">
+          <ion-col size="6" *ngFor="let pet of pets; let i = index">
+            <ion-card class="card-horizontal">
+              <ion-card-content>
+                <div class="top">
+                  <img
+                    (click)="onDetail(pet)"
+                    [src]="(pet.images | firstArray) | imgCld"
+                  />
+                  <div
+                    (click)="addFav(pet.id, i)"
+                    class="add-fav ion-activatable"
+                  >
+                    <ion-icon
+                      color="danger"
+                      [name]="!pet.favourite ? 'heart-outline' : 'heart'"
+                    ></ion-icon>
+                    <ion-ripple-effect></ion-ripple-effect>
                   </div>
                 </div>
-                <div class="inner">
-                  <h6 class="name">{{ pet.name }}</h6>
-                  <div class="price-section mt-10px">
-                    <div>
-                      <p class="price">
-                        <ng-container *ngIf="!pet.discount_type"
-                          >{{ pet.price | currencyID }}</ng-container
-                        >
-                        <ng-container *ngIf="pet.discount_type == 'amount'"
-                          >{{ pet.price - pet.discount_amount | currencyID
-                          }}</ng-container
-                        >
-                        <ng-container *ngIf="pet.discount_type == 'percent'"
-                          >{{ pet.price - (pet.price * (pet.discount_percent /
-                          100)) | currencyID }}</ng-container
-                        >
-                      </p>
-                      <p *ngIf="pet.discount_type" class="price-original">
-                        {{ pet.price | currencyID }}
-                      </p>
+                <div (click)="onDetail(pet)">
+                  <div class="type ion-margin-top">
+                    <div class="badge-type">{{ pet.category?.name }}</div>
+                    <div class="rating">
+                      <span>{{ pet.rating }}</span>
+                      <ion-icon name="star" class="star"></ion-icon>
                     </div>
-                    <span
-                      *ngIf="data?.id == user?.shop?.id; else discount"
-                      class="pet-stock"
-                      >1 Ekor</span
-                    >
-                    <ng-template #discount>
-                      <div
-                        *ngIf="pet.discount_type == 'percent'"
-                        class="badge-discount"
-                      >
-                        {{ pet.discount_percent }}%
+                  </div>
+                  <div class="inner">
+                    <h6 class="name">{{ pet.name }}</h6>
+                    <div class="price-section mt-10px">
+                      <div>
+                        <p class="price">
+                          <ng-container *ngIf="!pet.discount_type"
+                            >{{ pet.price | currencyID }}</ng-container
+                          >
+                          <ng-container *ngIf="pet.discount_type == 'amount'"
+                            >{{ pet.price - pet.discount_amount | currencyID
+                            }}</ng-container
+                          >
+                          <ng-container *ngIf="pet.discount_type == 'percent'"
+                            >{{ pet.price - (pet.price * (pet.discount_percent /
+                            100)) | currencyID }}</ng-container
+                          >
+                        </p>
+                        <p *ngIf="pet.discount_type" class="price-original">
+                          {{ pet.price | currencyID }}
+                        </p>
                       </div>
-                    </ng-template>
+                      <span
+                        *ngIf="data?.id == user?.shop?.id; else discount"
+                        class="pet-stock"
+                        >1 Ekor</span
+                      >
+                      <ng-template #discount>
+                        <div
+                          *ngIf="pet.discount_type == 'percent'"
+                          class="badge-discount"
+                        >
+                          {{ pet.discount_percent }}%
+                        </div>
+                      </ng-template>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <ion-row *ngIf="data?.id == user?.shop?.id; else buy">
-                <ion-col size="6" class="ion-no-padding">
-                  <ion-button
-                    [routerLink]="'/pet/form/' + data.id + '/' + pet.id"
-                    routerDirection="forward"
-                    class="ion-margin-top edit"
-                    size="small"
-                    expand="block"
-                    >Edit</ion-button
-                  >
-                </ion-col>
-                <ion-col size="6" class="ion-no-padding">
-                  <ion-button
-                    (click)="onDelete(pet.id)"
-                    color="danger"
-                    class="ion-margin-top delete"
-                    size="small"
-                    expand="block"
-                    >Hapus</ion-button
-                  >
-                </ion-col>
-              </ion-row>
+                <ion-row *ngIf="data?.id == user?.shop?.id; else buy">
+                  <ion-col size="6" class="ion-no-padding">
+                    <ion-button
+                      [routerLink]="'/pet/form/' + data.id + '/' + pet.id"
+                      routerDirection="forward"
+                      class="ion-margin-top edit"
+                      size="small"
+                      expand="block"
+                      >Edit</ion-button
+                    >
+                  </ion-col>
+                  <ion-col size="6" class="ion-no-padding">
+                    <ion-button
+                      (click)="onDelete(pet.id)"
+                      color="danger"
+                      class="ion-margin-top delete"
+                      size="small"
+                      expand="block"
+                      >Hapus</ion-button
+                    >
+                  </ion-col>
+                </ion-row>
 
-              <ng-template #buy>
-                <ion-button
-                  class="ion-margin-top buy"
-                  size="small"
-                  expand="block"
-                  >Beli</ion-button
-                >
-              </ng-template>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
+                <ng-template #buy>
+                  <ion-button
+                    class="ion-margin-top buy"
+                    size="small"
+                    expand="block"
+                    >Beli</ion-button
+                  >
+                </ng-template>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ng-container>
       </ng-container>
     </ion-row>
   </div>
 </ion-content>
+
+<ng-template #empty>
+  <div class="ion-padding ion-text-center not-found">
+    <img style="width: 40%" src="assets/illustrations/not-found.png" />
+    <h4>Data Kosong</h4>
+  </div>
+</ng-template>
 
 <ng-template #loader>
   <ion-col size="6" *ngFor="let val of loop(6)">

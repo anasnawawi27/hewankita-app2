@@ -6,6 +6,7 @@ import { ToastService } from 'src/services/toast.service';
 import * as _ from 'lodash';
 import { CheckOutPage } from '../check-out/check-out.page';
 import { DetailPage } from '../pet/detail/detail.page';
+import { LoginPage } from '../auth/login/login.page';
 
 @Component({
   selector: 'app-search',
@@ -50,6 +51,8 @@ export class SearchPage implements OnInit {
   widthSearchInputClass: string = '';
   @ViewChild('inputSearch') inputSearch!: IonInput ;
 
+  public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
+
   constructor(
     private _apiService: ApiService,
     private toast: ToastService,
@@ -57,8 +60,7 @@ export class SearchPage implements OnInit {
     private navController: NavController
   ) {
     this.getCategories()
-   }
-   
+   }   
 
   ngOnInit() {
     setTimeout(() => {
@@ -81,6 +83,10 @@ export class SearchPage implements OnInit {
       this.onSearch();
     }
     
+  }
+
+  ionViewDidEnter(){
+    this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}')
   }
 
   refreshPage(event: any) {
@@ -111,6 +117,16 @@ export class SearchPage implements OnInit {
   }
 
   addFav(pet_id: number, index: number){
+    if(!this.isModal){
+      if(!Object.keys(this.user).length){
+        this.navController.navigateForward('auth/login');
+        return
+      }
+    } else {
+      this.showModalLogin();
+      return
+    }
+
     const type = this.data[index].favourite == null ? 'add' : 'delete';
     lastValueFrom(
       this._apiService.post('favourite', { type, pet_id })
@@ -126,6 +142,16 @@ export class SearchPage implements OnInit {
   }
 
   checkOut(pet_id: number, i:number, type: string){
+    if(!this.isModal){
+      if(!Object.keys(this.user).length){
+        this.navController.navigateForward('auth/login');
+        return
+      }
+    } else {
+      this.showModalLogin();
+      return
+    }
+
     if(this.data[i].formLoading) return
     this.data[i].formLoading = true;
 
@@ -289,6 +315,16 @@ export class SearchPage implements OnInit {
     } else {
       this.modalController.dismiss()
     }
+  }
+
+  async showModalLogin(){
+    const modal = await this.modalController.create({
+      mode: 'ios',
+      component: LoginPage,
+      componentProps: { isModal: true }
+    })
+
+    await modal.present();
   }
 
 }

@@ -19,11 +19,14 @@ export class ReviewPage implements OnInit {
   private params: any = {
     start: 0,
     length: 10,
+    pet_id: null
   };
   public isInit = true;
   public loading = true;
   public totalData: number = 0;
   public data: Array<any> = [];
+
+  pet_id: number = 0;
 
   constructor(
     private _apiService: ApiService,
@@ -32,6 +35,8 @@ export class ReviewPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    
+    this.params.pet_id = this.pet_id;
     this.getList();
   }
 

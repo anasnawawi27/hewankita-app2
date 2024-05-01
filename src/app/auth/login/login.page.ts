@@ -7,6 +7,7 @@ import { lastValueFrom } from 'rxjs';
 
 import * as _ from  'lodash';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password.page';
+import { RegisterPage } from '../register/register.page';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,10 @@ export class LoginPage implements OnInit {
   public password: string = '';
   public showPassword: boolean = false;
   public formLoading: boolean = false;
+  public isGuest: boolean = JSON.parse(localStorage.getItem('isGuestHewanKita') || 'false')
 
+  isModal: boolean = false;
+  
   constructor(
     private modalController: ModalController,
     private navController: NavController,
@@ -63,8 +67,13 @@ export class LoginPage implements OnInit {
           localStorage.setItem('isLoginHewanKita', 'true');
           localStorage.setItem('hewanKitaUserMobile', JSON.stringify(res.data.account));
 
-          this.toast.success(res.message)
-          this.navController.navigateForward('/home');
+          this.toast.success(res.message);
+          if(!this.isModal){
+            this.navController.navigateForward('/home');
+          } else {
+            this.modalController.dismiss();
+          }
+          
         } else {
           this.toast.error(res.message);
         }
@@ -84,6 +93,33 @@ export class LoginPage implements OnInit {
     })
 
     await modal.present();
+  }
+
+  continueAsGuest(){
+    localStorage.setItem('isGuestHewanKita', 'true');
+    this.navController.navigateForward('/home');
+  }
+
+  async onRegister(){
+    if(!this.isModal){
+      this.navController.navigateForward('/auth/register')
+    } else {
+      const modal = await this.modalController.create({
+        mode: 'ios',
+        component: RegisterPage,
+        componentProps: { isModal: true }
+      })
+
+      await modal.present();
+    }
+  }
+
+  back(){
+    if(!this.isModal){
+      this.navController.back()
+    } else {
+      this.modalController.dismiss();
+    }
   }
 
 }

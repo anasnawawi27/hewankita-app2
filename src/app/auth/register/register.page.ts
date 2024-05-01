@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { ApiService } from 'src/services/api.service';
 import { ToastService } from 'src/services/toast.service';
 import { lastValueFrom } from 'rxjs';
@@ -29,7 +29,11 @@ export class RegisterPage implements OnInit {
 
     public formLoading: boolean = false;
 
+    isModal: boolean = false;
+
   constructor(
+    private modalController: ModalController,
+    private navController: NavController,
     private toast: ToastService,
     private _apiService: ApiService,
     private _modalController: ModalController,
@@ -89,5 +93,20 @@ export class RegisterPage implements OnInit {
       });
   }
 
+  async onLogin(){
+    if(!this.isModal){
+      this.navController.navigateForward('/auth/login')
+    } else {
+      this.modalController.dismiss()
+    }
+  }
+
+  back(){
+    if(!this.isModal){
+      this.navController.back()
+    } else {
+      this.modalController.dismiss();
+    }
+  }
 
 }

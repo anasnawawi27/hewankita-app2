@@ -37,6 +37,8 @@ export class HomePage implements OnInit {
   public openBanner: boolean = false;
   public banner: any;
 
+  public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
+
   constructor(
     private favService: FavCountService,
     private navController: NavController,
@@ -80,7 +82,10 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidEnter(){
-    this.refresh();
+    this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}')
+    if(Object.keys(this.user).length){
+      this.refresh();
+    }
     this.getCategories();
     this.getByCategory();
     this.getLatestPet();
@@ -200,6 +205,11 @@ export class HomePage implements OnInit {
   }
 
   addFav(pet_id: number, index: number, typeParam: string){
+    if(!Object.keys(this.user).length){
+      this.navController.navigateForward('auth/login');
+      return
+    }
+
     let type = '';
     if(typeParam == 'category'){
       type = this.petsByCategory[index].favourite == null ? 'add' : 'delete';
@@ -235,6 +245,11 @@ export class HomePage implements OnInit {
   }
 
   checkOut(pet_id: number, i:number, type: string){
+    if(!Object.keys(this.user).length){
+      this.navController.navigateForward('auth/login');
+      return
+    }
+
     if(this.petsByCategory[i].formLoading) return
     if(type == 'category') this.petsByCategory[i].formLoading = true;
     if(type == 'latest') this.petsLatestAdd[i].formLoading = true;
@@ -285,32 +300,27 @@ export class HomePage implements OnInit {
   }
 
   refresh(event: any = null){
-    let account = JSON.parse(localStorage.getItem('hewanKitaUserMobile') ?? '{}');
-    lastValueFrom(this._apiService.get('auth/refresh',{}))
-      .then((res) => {
-        if (res.statusCode == 200) {
-          // localStorage.setItem(
-          //   'token',
-          //   JSON.stringify(
-          //     this._encryptionService.encryption(res.data.access_token)
-          //   )
-          // );
-          localStorage.setItem('hewanKitaUserMobile', JSON.stringify(res.data.account));
-
-        } else {
-          this.toast.error(res.message);
-        }
-      })
-      .catch((err) => {
-        this.toast.handleError(err);
-      })
-      .finally(() => {
-        if (event) {
-          event.target.complete();
-        }
-      });
+    if(Object.keys(this.user).length){
+      lastValueFrom(this._apiService.get('auth/refresh',{}))
+        .then((res) => {
+          if (res.statusCode == 200) {
+            localStorage.setItem('hewanKitaUserMobile', JSON.stringify(res.data.account));
+          } else {
+            this.toast.error(res.message);
+          }
+        })
+        .catch((err) => {
+          this.toast.handleError(err);
+        })
+        .finally(() => {
+          if (event) {
+            event.target.complete();
+          }
+        });
+    } else {
+      if (event) {
+        event.target.complete();
+      }
+    }
   }
-
-
-
 }

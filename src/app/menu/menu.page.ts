@@ -72,6 +72,7 @@ export class MenuPage implements OnInit {
       .then((res) => {
         if (res.statusCode == 200) {
 
+          localStorage.removeItem('isGuestHewanKita');
           localStorage.removeItem('isLoginHewanKita');
           localStorage.removeItem('token');
           localStorage.removeItem('hewanKitaUserMobile');

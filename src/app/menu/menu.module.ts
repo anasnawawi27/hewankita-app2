@@ -23,6 +23,7 @@ import { AddressPage } from './address/address.page';
 import { FormPage } from './address/form/form.page';
 import { BannersPage } from './banners/banners.page';
 import { FormPage as FormBannerPage }  from './banners/form/form.page';
+import { ChangePasswordPage } from './change-password/change-password.page';
 
 @NgModule({
   imports: [
@@ -65,6 +66,6 @@ import { FormPage as FormBannerPage }  from './banners/form/form.page';
     PickerComponent,
     MenuPageRoutingModule
   ],
-  declarations: [MenuPage, ProfilePage, ShopPage, DetailPage, SettingsPage, CategoriesPage, AddressPage, FormPage, BannersPage, FormBannerPage]
+  declarations: [MenuPage, ProfilePage, ShopPage, DetailPage, SettingsPage, CategoriesPage, AddressPage, FormPage, BannersPage, FormBannerPage, ChangePasswordPage]
 })
 export class MenuPageModule {}

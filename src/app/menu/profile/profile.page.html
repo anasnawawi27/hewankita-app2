@@ -9,10 +9,10 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <ng-container *ngIf="!loading; else loader">
     <ion-avatar
-      (click)="data.profile_image ? viewImage(data.profile_image) : null"
+      (click)="data?.profile_image ? viewImage(data.profile_image) : null"
     >
       <img
-        [src]="data.profile_image ? (data.profile_image | imgCld ) :  'assets/images/avatar.svg'"
+        [src]="data?.profile_image ? (data.profile_image | imgCld ) :  'assets/images/avatar.svg'"
       />
     </ion-avatar>
 
@@ -32,19 +32,19 @@
       </div>
       <div class="detail ion-margin-top">
         <small>Nama Lengkap</small>
-        <h6>{{ data.fullname }}</h6>
+        <h6>{{ data?.fullname }}</h6>
       </div>
       <div class="detail ion-margin-top">
         <small>Nama Handphone</small>
-        <h6>{{ data.phone_number }}</h6>
+        <h6>{{ data?.phone_number }}</h6>
       </div>
       <div class="detail border-bottom ion-margin-top">
         <small>Email</small>
-        <h6>{{ data.email }}</h6>
+        <h6>{{ data?.email }}</h6>
       </div>
       <hr />
 
-      <ng-container *ngIf="data.shop">
+      <ng-container *ngIf="data?.shop">
         <div
           class="flex-center ion-margin-vertical detail-heading"
           style="justify-content: space-between"

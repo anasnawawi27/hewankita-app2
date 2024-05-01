@@ -10,6 +10,7 @@ import { ProfilePage } from './profile/profile.page';
 import { AddressPage } from './address/address.page';
 import { BannersPage } from './banners/banners.page';
 import { FormPage } from './banners/form/form.page';
+import { ChangePasswordPage } from './change-password/change-password.page';
 
 const routes: Routes = [
   {
@@ -47,6 +48,10 @@ const routes: Routes = [
   {
     path: 'banners/form',
     component: FormPage
+  },
+  {
+    path: 'change-password',
+    component: ChangePasswordPage
   },
 ];
 

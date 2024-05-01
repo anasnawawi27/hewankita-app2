@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 import { AuthGuard } from '../auth.guard';
+import { GuestGuard } from '../guest.guard';
 
 const routes: Routes = [
   {
@@ -15,7 +16,8 @@ const routes: Routes = [
       },
       {
         path: 'favourites',
-        loadChildren: () => import('../favourites/favourites-routing.module').then(m => m.FavouritesPageRoutingModule)
+        loadChildren: () => import('../favourites/favourites-routing.module').then(m => m.FavouritesPageRoutingModule),
+        canActivate: [GuestGuard]
       },
       {
         path: '',

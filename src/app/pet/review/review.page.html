@@ -12,7 +12,7 @@
   </ion-refresher>
 
   <div *ngIf="!loading; else loader">
-    <ion-list class="review">
+    <ion-list *ngIf="data.length; else noReview" class="review">
       <ion-item *ngFor="let d of data">
         <ion-row>
           <ion-col size="2">
@@ -63,6 +63,13 @@
     </ion-infinite-scroll>
   </div>
 </ion-content>
+
+<ng-template #noReview>
+  <div class="ion-padding ion-text-center not-found">
+    <img src="assets/illustrations/no-review.svg" />
+    <h4>Belum Ada Review</h4>
+  </div>
+</ng-template>
 
 <ng-template #loader>
   <ion-skeleton-text

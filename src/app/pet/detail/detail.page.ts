@@ -12,6 +12,8 @@ import { DetailPage as DetailPageChat }  from 'src/app/chats/detail/detail.page'
 import { ImageViewPage } from 'src/app/image-view/image-view.page';
 import { ReviewPage } from '../review/review.page';
 import { StarRatingConfigService } from 'angular-star-rating';
+import { LoginPage } from 'src/app/auth/login/login.page';
+import { CheckOutPage } from 'src/app/check-out/check-out.page';
 
 Swiper.use([Navigation, Pagination]);
 
@@ -39,7 +41,8 @@ export class DetailPage implements OnInit {
   totalSold: number = 0;
 
   public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
-  public videUrl: string = 'https://www.youtube.com/embed/3u3EHJuf4Mg?si=tAcC0LcBM0aln8t5'
+  public videUrl: string = 'https://www.youtube.com/embed/3u3EHJuf4Mg?si=tAcC0LcBM0aln8t5';
+  
   constructor(
     private navController: NavController,
     private modalController: ModalController,
@@ -112,6 +115,16 @@ export class DetailPage implements OnInit {
   }
 
   addFav(pet_id: number){
+    if(!this.isModal){
+      if(!Object.keys(this.user).length){
+        this.navController.navigateForward('auth/login');
+        return
+      }
+    } else {
+      this.showModalLogin();
+      return
+    }
+
     const type = this.data.favourite == null ? 'add' : 'delete';
     lastValueFrom(
       this._apiService.post('favourite', { type, pet_id })
@@ -135,6 +148,16 @@ export class DetailPage implements OnInit {
   }
 
   async onChat(data: any){
+    if(!this.isModal){
+      if(!Object.keys(this.user).length){
+        this.navController.navigateForward('auth/login');
+        return
+      }
+    } else {
+      this.showModalLogin();
+      return
+    }
+    
     const pet = data;
     const heading = {
       profile_image: data.shop.user.profile_image,
@@ -172,9 +195,52 @@ export class DetailPage implements OnInit {
       mode: 'ios',
       component: ReviewPage,
       showBackdrop: true,
+      componentProps: { pet_id: this.id}
     });
 
     modal.present();
+  }
+
+  async showModalLogin(){
+    const modal = await this.modalController.create({
+      mode: 'ios',
+      component: LoginPage,
+      componentProps: { isModal: true }
+    })
+
+    await modal.present();
+  }
+
+  checkOut(){
+    if(!Object.keys(this.user).length){
+      this.navController.navigateForward('auth/login');
+      return
+    }
+
+    this.formLoading = true;
+
+    lastValueFrom(
+      this._apiService.post('check-out', { pet_ids: JSON.stringify([this.id]) })
+    ).then((res) => {
+      if(res.statusCode == 200){
+        this.showCheckOutModal(res.data)
+      }
+    }).catch((err) => {
+      this.toast.handleError(err)
+    }).finally(() => {
+      this.formLoading = false;
+    })
+
+  }
+
+  async showCheckOutModal(data:any){
+    const modal = await this.modalController.create({
+      mode: 'ios',
+      component: CheckOutPage,
+      componentProps: { res: data }
+    })
+
+    await modal.present();
   }
 
 

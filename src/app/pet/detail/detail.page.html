@@ -263,6 +263,7 @@
       expand="block"
       color="primary"
       shape="round"
+      (click)="checkOut()"
       [disabled]="loading || formLoading || !data?.stock "
     >
       <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
