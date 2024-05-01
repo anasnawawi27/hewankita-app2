@@ -34,6 +34,9 @@ export class HomePage implements OnInit {
   public petsLatestAdd: Array<any> = [];
   public petsCheapest: Array<any> = [];
 
+  public openBanner: boolean = false;
+  public banner: any;
+
   constructor(
     private _encryptionService: EncryptionService,
     private navController: NavController,

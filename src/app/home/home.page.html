@@ -11,26 +11,37 @@
   </ion-refresher>
   <swiper
     class="ion-margin-bottom swiper-banner"
-    *ngIf="banners.length"
     [slidesPerView]="1.2"
     [spaceBetween]="5"
     [pagination]="true"
   >
-    <ng-template *ngFor="let banner of banners" swiperSlide>
-      <ion-card
-        mode="ios"
-        class="ion-no-margin ion-activatable"
-        style="margin: 10px !important; height: 140px"
-      >
-        <ion-card-content class="ion-no-padding">
-          <img
-            [src]="banner.image | imgCld"
-            alt="banner image"
-            style="height: 140px; width: 100%; object-fit: cover"
-          />
-        </ion-card-content>
-        <ion-ripple-effect></ion-ripple-effect>
-      </ion-card>
+    <ng-container *ngIf="!loading5; else loaderBanner">
+      <ng-template *ngFor="let d of banners" swiperSlide>
+        <ion-card
+          mode="ios"
+          (click)="banner = d; openBanner = true"
+          class="ion-no-margin ion-activatable"
+          style="margin: 10px !important; height: 140px"
+        >
+          <ion-card-content class="ion-no-padding">
+            <img
+              [src]="d.image | imgCld"
+              alt="banner image"
+              style="height: 140px; width: 100%; object-fit: cover"
+            />
+          </ion-card-content>
+          <ion-ripple-effect></ion-ripple-effect>
+        </ion-card>
+      </ng-template>
+    </ng-container>
+
+    <ng-template #loaderBanner>
+      <ng-template swiperSlide *ngFor="let val of loop(4)">
+        <ion-skeleton-text
+          [animated]="true"
+          style="height: 140px; border-radius: 10px; margin-right: 10px"
+        ></ion-skeleton-text>
+      </ng-template>
     </ng-template>
   </swiper>
 
@@ -439,3 +450,36 @@
     </ion-card-content>
   </ion-card>
 </ng-template>
+
+<ion-modal [isOpen]="openBanner" [mode]="'ios'">
+  <ng-template>
+    <ion-header class="common-header bg-white">
+      <ion-title> {{ banner?.title }}</ion-title>
+      <div
+        (click)="openBanner = false"
+        slot="end"
+        class="back right ion-activatable"
+      >
+        <ng-icon name="heroXMark"></ng-icon>
+        <ion-ripple-effect></ion-ripple-effect>
+      </div>
+    </ion-header>
+    <ion-content>
+      <img
+        style="width: 100%; height: 240px; object-fit: cover"
+        [src]="banner?.image ? (banner.image | imgCld) : ''"
+      />
+      <div class="ion-padding">
+        <div
+          style="
+            text-align: justify;
+            font-size: 15px;
+            color: #818181;
+            line-height: 25px;
+          "
+          [innerText]="banner?.description"
+        ></div>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>
