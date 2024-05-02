@@ -51,10 +51,8 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
 
-    if (Capacitor.isNativePlatform()) {
-      this.oneSignalInit();
-    }
   }
+
 
   oneSignalInit() {
     if (localStorage.getItem('hewanKitaUserMobile')) {
@@ -63,21 +61,19 @@ export class HomePage implements OnInit {
       // OneSignal.initialize(environment.oneSignalAppId);
       // OneSignal.login('user-' + account.auth_id);
       
-      // OneSignal.setAppId(environment.oneSignalAppId);
-      // OneSignal.setExternalUserId('user-' + account.auth_id);
-      // OneSignal.promptForPushNotificationsWithUserResponse((response) => {
-      //   console.log('Prompt response:', response);
-      // });
-      // OneSignal.setNotificationOpenedHandler(function (data: any) {
-      //   let dataAdditional = data.notification.additionalData;
-      //     // redirect('attendance-list');
-      // });
+      OneSignal.setAppId(environment.oneSignalAppId);
+      OneSignal.setExternalUserId('user-' + account.id);
+      OneSignal.promptForPushNotificationsWithUserResponse((response) => {
+        console.log('Prompt response:', response);
+      });
+      OneSignal.setNotificationOpenedHandler(function (data: any) {
+        let dataAdditional = data.notification.additionalData;
+          redirect(dataAdditional['redirect_url']);
+      });
 
       let redirect = (url: string) => {
         this.navController.navigateForward(url, { replaceUrl: true });
       };
-
-      localStorage.setItem('hewanKitaOneSignalRegistered', 'true');
     }
   }
 
@@ -91,6 +87,10 @@ export class HomePage implements OnInit {
     this.getLatestPet();
     this.getCheapestPet();
     this.getBanners()
+
+    if (Capacitor.isNativePlatform()) {
+      this.oneSignalInit();
+    }
   }
 
   onClickCategory(){

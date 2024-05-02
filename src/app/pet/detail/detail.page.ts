@@ -209,6 +209,11 @@ export class DetailPage implements OnInit {
     })
 
     await modal.present();
+    await modal.onDidDismiss().then((o) => {
+      if(o.data?.reloadUser){
+        this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
+      }
+    })
   }
 
   checkOut(){

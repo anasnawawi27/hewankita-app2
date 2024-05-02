@@ -21,13 +21,13 @@
           mode="ios"
           (click)="banner = d; openBanner = true"
           class="ion-no-margin ion-activatable"
-          style="margin: 10px !important; height: 140px"
+          style="margin: 10px !important; height: 150px"
         >
           <ion-card-content class="ion-no-padding">
             <img
               [src]="d.image | imgCld"
               alt="banner image"
-              style="height: 140px; width: 100%; object-fit: cover"
+              style="height: 150px; width: 100%; object-fit: cover"
             />
           </ion-card-content>
           <ion-ripple-effect></ion-ripple-effect>
@@ -39,7 +39,7 @@
       <ng-template swiperSlide *ngFor="let val of loop(4)">
         <ion-skeleton-text
           [animated]="true"
-          style="height: 140px; border-radius: 10px; margin-right: 10px"
+          style="height: 150px; border-radius: 10px; margin-right: 10px"
         ></ion-skeleton-text>
       </ng-template>
     </ng-template>

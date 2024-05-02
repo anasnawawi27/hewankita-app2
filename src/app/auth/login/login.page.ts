@@ -71,7 +71,7 @@ export class LoginPage implements OnInit {
           if(!this.isModal){
             this.navController.navigateForward('/home');
           } else {
-            this.modalController.dismiss();
+            this.modalController.dismiss({ reloadUser: true });
           }
           
         } else {
