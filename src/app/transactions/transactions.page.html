@@ -76,25 +76,14 @@
       >
         <ion-card-content>
           <ion-item [button]="true" lines="none">
-            <div class="inner-card w-100">
+            <div class="inner-card w-100" style="padding-right: 0">
               <div
                 class="alert {{ status[row.current_process_sort].className }} ion-margin-bottom"
                 style="width: fit-content"
               >
                 <ng-icon
-                  *ngIf="status[row.current_process_sort].type == 'danger'"
                   size="20"
-                  name="lucideAlertCircle"
-                ></ng-icon>
-                <ng-icon
-                  *ngIf="status[row.current_process_sort].type == 'waiting'"
-                  size="20"
-                  name="lucideClock"
-                ></ng-icon>
-                <ng-icon
-                  *ngIf="status[row.current_process_sort].type == 'success'"
-                  size="20"
-                  name="lucideCheckCircle2"
+                  [name]="status[row.current_process_sort].icon"
                 ></ng-icon>
                 {{ status[row.current_process_sort].label }}
               </div>

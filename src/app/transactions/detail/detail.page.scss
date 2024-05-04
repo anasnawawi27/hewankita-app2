@@ -19,13 +19,13 @@ transaction-detail{
                     align-items: end;
 
                     .logo{
-                        width: 50px;
+                        width: 60px;
                         height: 50px;
 
                         img{
-                            width: 50px;
+                            // width: 50px;
                             height: 50px;
-                            object-fit: cover;
+                            // object-fit: cover;
                         }
                     }
                 }
@@ -44,6 +44,10 @@ transaction-detail{
                 }
             }
         }
+    }
+
+    .alert{
+        line-height: 20px;
     }
 
     .heading{

@@ -10,12 +10,13 @@ import { Capacitor } from '@capacitor/core';
 import { environment } from 'src/environments/environment';
 import { SearchPage } from '../search/search.page';
 import { FavCountService } from 'src/services/fav-count.service';
+import { PusherService } from 'src/services/pusher.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  providers: [ApiService],
+  providers: [ApiService, PusherService],
   encapsulation: ViewEncapsulation.None
 })
 export class HomePage implements OnInit {
@@ -40,6 +41,7 @@ export class HomePage implements OnInit {
   public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
 
   constructor(
+    private pusherService: PusherService,
     private favService: FavCountService,
     private navController: NavController,
     private modalController: ModalController,
@@ -50,19 +52,19 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.pusherService.channel.bind('event-name-5', (data: any) => {
+      console.log(data)
+    });
   }
 
 
   oneSignalInit() {
     if (localStorage.getItem('hewanKitaUserMobile')) {
       let account = JSON.parse(localStorage.getItem('hewanKitaUserMobile') ?? '');
-
-      // OneSignal.initialize(environment.oneSignalAppId);
-      // OneSignal.login('user-' + account.auth_id);
       
       OneSignal.setAppId(environment.oneSignalAppId);
       OneSignal.setExternalUserId('user-' + account.id);
+
       OneSignal.promptForPushNotificationsWithUserResponse((response) => {
         console.log('Prompt response:', response);
       });

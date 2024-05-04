@@ -6,6 +6,7 @@ import { ToastService } from 'src/services/toast.service';
 
 import * as _ from 'lodash';
 import Swiper, { Navigation, Pagination } from 'swiper';
+
 import { DomSanitizer } from '@angular/platform-browser';
 import { ModalController, NavController } from '@ionic/angular';
 import { DetailPage as DetailPageChat }  from 'src/app/chats/detail/detail.page';
@@ -159,7 +160,7 @@ export class DetailPage implements OnInit {
     }
     
     const pet = data;
-    const heading = {
+    const header = {
       profile_image: data.shop.user.profile_image,
       name: data.shop.name,
     }
@@ -170,7 +171,7 @@ export class DetailPage implements OnInit {
       mode: 'ios',
       component: DetailPageChat,
       componentProps: {
-        params: { heading, pet, sender_id, receiver_id }
+        params: { header, pet, sender_id, receiver_id }
       }
     })
     await modal.present()

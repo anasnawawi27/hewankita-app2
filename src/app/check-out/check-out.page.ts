@@ -222,13 +222,26 @@ export class CheckOutPage implements OnInit {
   } 
 
   async onChooseAdmin(){
+
+    let message = `Halo Admin. Saya mau tanya biaya kirim untuk Pembelian : \n\n`
+    _.forEach(this.pets, (d, i) => {
+      message += `${i+1}. ${d.name} ( ${d.quantity} Ekor )\n`
+    })
+
+    message += `\nDari Pet Shop : ${ this.res.pets[0].shop.name }, ${ this.res.pets[0].shop.city }\n`; 
+    message += `\nDikirim Ke Alamat : `
+
+    if(this.selectedAddress){
+      message += this.selectedAddress.address
+    }
+
     const modal = await this.modalController.create({
       mode: 'ios',
       component: SelectAdminPage,
       initialBreakpoint: 0.7,
       breakpoints: [0.5, 0.7, 1],
       componentProps: {
-        params: 'Halo Admin. Saya mau tanya biaya kirim ke lokasi saya.'
+        params: message
       }
     })
     await modal.present();

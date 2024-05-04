@@ -23,55 +23,9 @@ export class TransactionsPage implements OnInit {
   public loading = true;
   public totalData: number = 0;
   public rows: Array<any> = [];
-
-  status: any = {
-    '1': {
-      type: 'waiting',
-      label: 'Menunggu Transaksi Diproses Admin',
-      className: 'primary'
-    },
-    '2': {
-      type: 'danger',
-      label: 'Customer Membatalkan Transaksi',
-      className: 'danger'
-    },
-    '3': {
-      type: 'danger',
-      label: 'Admin Membatalkan Transaksi',
-      className: 'danger'
-    },
-    '4': {
-      type: 'success',
-      label: 'Ongkir & Transaksi sudah diproses. Lakukan Pembayaran',
-      className: 'success'
-    },
-    '5': {
-      type: 'waiting',
-      label: 'Menunggu Verifikasi Pembayaran oleh Admin',
-      className: 'primary'
-    },
-    '6': {
-      type: 'danger',
-      label: 'Verifikasi Pembayaran Gagal',
-      className: 'danger'
-    },
-    '7': {
-      type: 'success',
-      label: 'Pembayaran Berhasil. Transaksi diproses pemilik toko',
-      className: 'success'
-    },
-    '8': {
-      type: 'success',
-      label: 'Pet dalam proses Pengiriman',
-      className: 'success'
-    },
-    '9': {
-      type: 'success',
-      label: 'Pet sudah diterima customer',
-      className: 'success'
-    },
-  }
   public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
+
+  status: any
 
   public totalBuy: number = 0
   public totalSold: number = 0
@@ -83,6 +37,53 @@ export class TransactionsPage implements OnInit {
    }
 
   ngOnInit() {
+    this.status = {
+      '1': {
+        icon: "'heroClipboardDocumentCheck'",
+        label: 'Menunggu Transaksi Diproses Admin',
+        className: 'primary'
+      },
+      '2': {
+        icon: "'lucideBan'",
+        label: 'Customer Membatalkan Transaksi',
+        className: 'danger'
+      },
+      '3': {
+        icon: "'lucideAlertCircle'",
+        label: 'Admin Membatalkan Transaksi',
+        className: 'danger'
+      },
+      '4': {
+        icon: "'saxEmptyWalletTimeOutline'",
+        label: this.user.level == 'user' ? 'Ongkir & Transaksi Sudah Diproses. Lakukan Pembayaran' : 'Menunggu Pembayaran Dari Pembeli',
+        className: 'primary'
+      },
+      '5': {
+        icon: "'saxArchiveBookOutline'",
+        label: 'Menunggu Verifikasi Pembayaran Oleh Admin',
+        className: 'primary'
+      },
+      '6': {
+        icon: "'lucideAlertCircle'",
+        label: 'Verifikasi Pembayaran Gagal',
+        className: 'danger'
+      },
+      '7': {
+        icon:  this.user.level == 'shop' ? "'saxCardTick1Outline'" : "'saxReceiptEditOutline'",
+        label: this.user.level == 'shop' ? 'Yeay!! Ada Pembelian Baru Nih, Segera Proses !' : 'Pembayaran Berhasil. Transaksi Diproses Pemilik Toko',
+        className: this.user.level == 'shop' ? 'primary' : 'success'
+      },
+      '8': {
+        icon: "'saxTruckFastOutline'",
+        label: 'Pet Dalam Proses Pengiriman',
+        className: 'primary'
+      },
+      '9': {
+        icon: "'lucideCheckCircle2'",
+        label: 'Pet Sudah Diterima Customer',
+        className: 'success'
+      },
+    }
     this.getList();
   }
 

@@ -5,10 +5,12 @@ import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/services/api.service';
 import { ToastService } from 'src/services/toast.service';
 import { UploadService } from 'src/services/upload.service';
-import type { MaskitoElementPredicate, MaskitoOptions } from '@maskito/core';
 import { Clipboard } from '@capacitor/clipboard';
+
+import type { MaskitoElementPredicate, MaskitoOptions } from '@maskito/core';
 import mask from 'src/app/pet/form/mask';
 import * as _ from 'lodash';
+
 import { Camera, CameraResultType, CameraSource, GalleryImageOptions } from '@capacitor/camera';
 import { ImageViewPage } from 'src/app/image-view/image-view.page';
 import { ClickEvent } from 'angular-star-rating';
@@ -41,53 +43,7 @@ export class DetailPage implements OnInit {
   readonly maskOptions: MaskitoOptions = mask;
   readonly maskPredicate: MaskitoElementPredicate = (el) => (el as HTMLIonInputElement).getInputElement();
 
-  status: any = {
-    '1': {
-      type: 'waiting',
-      label: 'Menunggu Transaksi Diproses Admin',
-      className: 'primary'
-    },
-    '2': {
-      type: 'danger',
-      label: 'Customer Membatalkan Transaksi',
-      className: 'danger'
-    },
-    '3': {
-      type: 'danger',
-      label: 'Admin Membatalkan Transaksi',
-      className: 'danger'
-    },
-    '4': {
-      type: 'success',
-      label: 'Ongkir & Transaksi sudah diproses. Lakukan Pembayaran',
-      className: 'success'
-    },
-    '5': {
-      type: 'waiting',
-      label: 'Menunggu Verifikasi Pembayaran oleh Admin',
-      className: 'primary'
-    },
-    '6': {
-      type: 'danger',
-      label: 'Verifikasi Pembayaran Gagal',
-      className: 'danger'
-    },
-    '7': {
-      type: 'success',
-      label: 'Pembayaran Berhasil. Transaksi diproses pemilik toko',
-      className: 'success'
-    },
-    '8': {
-      type: 'success',
-      label: 'Pet dalam proses Pengiriman',
-      className: 'success'
-    },
-    '9': {
-      type: 'success',
-      label: 'Pet sudah diterima customer',
-      className: 'success'
-    },
-  }
+  status: any
 
   public paymentImage: any = {
     file: null,
@@ -144,6 +100,53 @@ export class DetailPage implements OnInit {
   };
 
   ngOnInit() {
+    this.status = {
+      '1': {
+        icon: "'heroClipboardDocumentCheck'",
+        label: 'Menunggu Transaksi Diproses Admin',
+        className: 'primary'
+      },
+      '2': {
+        icon: "'lucideBan'",
+        label: 'Customer Membatalkan Transaksi',
+        className: 'danger'
+      },
+      '3': {
+        icon: "'lucideAlertCircle'",
+        label: 'Admin Membatalkan Transaksi',
+        className: 'danger'
+      },
+      '4': {
+        icon: "'saxEmptyWalletTimeOutline'",
+        label: this.user.level == 'user' ? 'Ongkir & Transaksi Sudah Diproses. Lakukan Pembayaran' : 'Menunggu Pembayaran Dari Pembeli',
+        className: 'primary'
+      },
+      '5': {
+        icon: "'saxArchiveBookOutline'",
+        label: 'Menunggu Verifikasi Pembayaran Oleh Admin',
+        className: 'primary'
+      },
+      '6': {
+        icon: "'lucideAlertCircle'",
+        label: 'Verifikasi Pembayaran Gagal',
+        className: 'danger'
+      },
+      '7': {
+        icon:  this.user.level == 'shop' ? "'saxCardTick1Outline'" : "'saxReceiptEditOutline'",
+        label: this.user.level == 'shop' ? 'Yeay!! Ada Pembelian Baru Nih, Segera Proses !' : 'Pembayaran Berhasil. Transaksi Diproses Pemilik Toko',
+        className: this.user.level == 'shop' ? 'primary' : 'success'
+      },
+      '8': {
+        icon: "'saxTruckFastOutline'",
+        label: 'Pet Dalam Proses Pengiriman',
+        className: 'primary'
+      },
+      '9': {
+        icon: "'lucideCheckCircle2'",
+        label: 'Pet Sudah Diterima Customer',
+        className: 'success'
+      },
+    }
   }
 
   getDetail(){
@@ -152,38 +155,42 @@ export class DetailPage implements OnInit {
       this._apiService.get(this.endpoint + '/' + this.id, {})
     ).then((res) => {
       if(res.statusCode == 200){
-        this.data = res.data;
-        this.bankLogo = _.find(res.data.bank, (d) => d.key == 'bank_account_logo').value
-        this.bankAccount = _.find(res.data.bank, (d) => d.key == 'bank_account').value
-        this.bankAccountNum = _.find(res.data.bank, (d) => d.key == 'bank_account_number').value
-        this.bankAccountName = _.find(res.data.bank, (d) => d.key == 'bank_account_name').value
-
-        this.paymentImage = {
-          cloud: true,
-          file: res.data.transaction.payment_image
-        }
-
-        this.deliveredImage = {
-          cloud: true,
-          file: res.data.transaction.delivered_image
-        }
-
-        if(res.data.review){
-          this.rating = res.data.review.rating;
-          this.review = res.data.review.review;
-
-          if(res.data.review.images){
-            this.reviewImages = _.map(JSON.parse(res.data.review.images), (d) => {
-              return { cloud: true, file: d}
-            })
-          }
-        }
+        this.updateVarData(res.data)
       }
     }).catch((err) => {
       this.toast.handleError(err)
     }).finally(() => {
       this.loading = false
     })
+  }
+
+  updateVarData(data: any){
+    this.data = data;
+    this.bankLogo = _.find(data.bank, (d) => d.key == 'bank_account_logo').value
+    this.bankAccount = _.find(data.bank, (d) => d.key == 'bank_account').value
+    this.bankAccountNum = _.find(data.bank, (d) => d.key == 'bank_account_number').value
+    this.bankAccountName = _.find(data.bank, (d) => d.key == 'bank_account_name').value
+
+    this.paymentImage = {
+      cloud: true,
+      file: data.transaction.payment_image
+    }
+
+    this.deliveredImage = {
+      cloud: true,
+      file: data.transaction.delivered_image
+    }
+
+    if(data.review){
+      this.rating = data.review.rating;
+      this.review = data.review.review;
+
+      if(data.review.images){
+        this.reviewImages = _.map(JSON.parse(data.review.images), (d) => {
+          return { cloud: true, file: d}
+        })
+      }
+    }
   }
 
   async onSendPet(){
@@ -249,11 +256,13 @@ export class DetailPage implements OnInit {
     lastValueFrom(
       this._apiService.put(this.endpoint + '/' + this.id, payload )
     ).then((res) => {
+
       if(res.statusCode == 200){
+        this.updateVarData(res.data);
         this.toast.success(res.message);
         localStorage.setItem('reload', 'true');
-        this.navController.back();
       }
+
     }).catch((err) => {
       this.toast.handleError(err)
     }).finally(() => {
@@ -302,11 +311,13 @@ export class DetailPage implements OnInit {
     lastValueFrom(
       this._apiService.put(this.endpoint + '/' + this.id, payload )
     ).then((res) => {
+
       if(res.statusCode == 200){
+        this.updateVarData(res.data)
         this.toast.success(res.message);
         localStorage.setItem('reload', 'true');
-        this.navController.back();
       }
+
     }).catch((err) => {
       this.toast.handleError(err)
     }).finally(() => {
@@ -477,7 +488,10 @@ export class DetailPage implements OnInit {
   }
 
   async onUpload(){
-    if(!this.paymentImage.file) this.toast.warning('Input bukti pembayaran!');
+    if(!this.paymentImage.file){
+      this.toast.warning('Input bukti pembayaran!');
+      return
+    } 
 
     this.formLoading = true;
     const payload = {
@@ -504,11 +518,13 @@ export class DetailPage implements OnInit {
     lastValueFrom(
       this._apiService.put(this.endpoint + '/' + this.id, payload )
     ).then((res) => {
+
       if(res.statusCode == 200){
+        this.updateVarData(res.data)
         this.toast.success(res.message);
         localStorage.setItem('reload', 'true');
-        this.navController.back();
       }
+
     }).catch((err) => {
       this.toast.handleError(err)
     }).finally(() => {
@@ -518,7 +534,10 @@ export class DetailPage implements OnInit {
 
 
   async onUploadDelivered(){
-    if(!this.deliveredImage.file) this.toast.warning('Input bukti pengiriman!');
+    if(!this.deliveredImage.file){
+      this.toast.warning('Input bukti pengiriman!');
+      return
+    } 
 
     this.formLoading = true;
     const payload = {
@@ -545,11 +564,13 @@ export class DetailPage implements OnInit {
     lastValueFrom(
       this._apiService.put(this.endpoint + '/' + this.id, payload )
     ).then((res) => {
+
       if(res.statusCode == 200){
+        this.updateVarData(res.data)
         this.toast.success(res.message);
         localStorage.setItem('reload', 'true');
-        this.navController.back();
       }
+
     }).catch((err) => {
       this.toast.handleError(err)
     }).finally(() => {

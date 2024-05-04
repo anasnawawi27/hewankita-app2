@@ -8,6 +8,8 @@ import { lastValueFrom } from 'rxjs';
 import * as _ from  'lodash';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password.page';
 import { RegisterPage } from '../register/register.page';
+import { environment } from 'src/environments/environment';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-login',

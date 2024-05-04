@@ -15,7 +15,10 @@
       lines="full"
       [button]="true"
     >
-      <ion-thumbnail slot="start" style="border-radius: 50%">
+      <ion-thumbnail
+        slot="start"
+        style="border-radius: 50%; width: 50px; height: 50px"
+      >
         <ng-container *ngIf="user.id == chat.sender_id">
           <img
             style="border-radius: 50%"
@@ -35,6 +38,7 @@
             font-size: 17px;
             font-weight: 600;
             margin-top: 0;
+            margin-bottom: 5px;
             color: #636363;
           "
         >
@@ -55,8 +59,9 @@
             margin: 0;
             font-size: 15px;
             color: #818181;
+            margin-bottom: 5px;
           "
-          [class.ion-text-bold]="chat.unseen"
+          [class.ion-text-bold]="chat.unseen.length"
         >
           {{ chat.last_message }}
         </p>
@@ -68,26 +73,27 @@
             font-size: 15px;
             font-weight: 600;
             color: #b2b2b2;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
           "
           >{{ chat.updated_at | date: 'HH:mm'}}</span
         >
         <span
-          *ngIf="chat.unseen"
+          *ngIf="chat.unseen.length"
           class="badge"
           style="
             background: var(--ion-color-primary);
             color: white;
             margin: 0 auto;
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 20px;
             font-weight: 600;
+            font-size: 12px;
           "
-          >{{ chat.unseen }}</span
+          >{{ chat.unseen.length }}</span
         >
       </div>
     </ion-item>

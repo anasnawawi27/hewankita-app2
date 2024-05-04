@@ -659,6 +659,19 @@ ion-header.common-header{
     }
 }
 
+
+.border-success{
+    border: 1px solid var(--ion-color-success);
+}
+
+.border-primary{
+    border: 1px solid var(--ion-color-primary);
+}
+
+.border-danger{
+    border: 1px solid var(--ion-color-danger);
+}
+
 ion-label{
     font-family: Gilroy!important;
 }

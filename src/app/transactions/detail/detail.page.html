@@ -9,22 +9,11 @@
 <ion-content [fullscreen]="true" class="bg-main ion-padding">
   <ng-container *ngIf="!loading; else loader">
     <div
-      class="alert {{ status[data.transaction.current_process_sort].className }} ion-margin-bottom"
+      class="alert border-{{ status[data.transaction.current_process_sort].className }} {{ status[data.transaction.current_process_sort].className }} ion-margin-bottom"
     >
       <ng-icon
-        *ngIf="status[data.transaction.current_process_sort].type == 'danger'"
         size="20"
-        name="lucideAlertCircle"
-      ></ng-icon>
-      <ng-icon
-        *ngIf="status[data.transaction.current_process_sort].type == 'waiting'"
-        size="20"
-        name="lucideClock"
-      ></ng-icon>
-      <ng-icon
-        *ngIf="status[data.transaction.current_process_sort].type == 'success'"
-        size="20"
-        name="lucideCheckCircle2"
+        [name]="status[data.transaction.current_process_sort].icon"
       ></ng-icon>
       {{ status[data.transaction.current_process_sort].label }}
     </div>
@@ -192,7 +181,7 @@
             </div>
             <div>
               <h6 class="ion-text-bold">No Rek. {{ bankAccountNum }}</h6>
-              <h6 class="ion-text-bold">A/n An. {{ bankAccountName }}</h6>
+              <h6 class="ion-text-bold">a.n. {{ bankAccountName }}</h6>
             </div>
           </div>
           <!-- <div class="timer">
@@ -582,7 +571,7 @@
       color="primary"
       shape="round"
       (click)="onUpload()"
-      [disabled]="formLoading || !paymentImage.file"
+      [disabled]="formLoading"
     >
       <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
       <span *ngIf="!formLoading">Upload Pembayaran</span>
@@ -641,7 +630,7 @@
       color="primary"
       shape="round"
       (click)="onUploadDelivered()"
-      [disabled]="formLoading || !deliveredImage.file"
+      [disabled]="formLoading"
     >
       <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
       <span *ngIf="!formLoading">Pet Sudah Sampai</span>

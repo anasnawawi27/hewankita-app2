@@ -57,6 +57,7 @@
     "ngx-image-cropper": "^7.2.1",
     "ngx-socket-io": "^4.6.1",
     "onesignal-cordova-plugin": "^3.3.1",
+    "pusher-js": "^8.4.0-rc2",
     "rxjs": "~7.8.0",
     "socket.io-client": "^4.7.5",
     "swiper": "^8.4.7",

@@ -19,12 +19,12 @@
       >
         <img
           style="border-radius: 50%; width: 40px; height: 40px"
-          [src]="data.heading.profile_image ? (data.heading.profile_image | imgCld) : 'assets/images/avatar.svg'"
+          [src]="data.header.profile_image ? (data.header.profile_image | imgCld) : 'assets/images/avatar.svg'"
         />
       </ion-thumbnail>
       <div>
         <h6 style="font-size: 17px; font-weight: 600; margin: 0; color: white">
-          {{ data.heading.name }}
+          {{ data.header.name }}
         </h6>
       </div>
     </ion-item>
@@ -58,7 +58,7 @@
         *ngFor="let d of chats; let i = index"
         class="chat"
         isOnScreen
-        (isIntersecting)="i + 1 == chats.length ? isIntersecting($event, i, d) : null"
+        (isIntersecting)="i + 1 == chats.length ? isIntersecting($event, d) : null"
         [isContinuous]="true"
         [class.chat-left]="user.id !== d.user_id"
       >
@@ -136,9 +136,10 @@
               </div>
             </div> -->
             <div class="ion-padding">
-              <p class="font-small-5 mb-1 text-secondary-darken">
-                {{ d.message }}
-              </p>
+              <p
+                [innerText]="d.message"
+                class="font-small-5 mb-1 text-secondary-darken"
+              ></p>
               <small
                 class="float-right flex-center ion-margin-bottom text-secondary-light font-small-2"
                 >{{ d.created_at | date: 'HH:mm'}} &nbsp;

@@ -1,23 +1,23 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { ChatService } from 'src/services/chat.service';
 import { ToastService } from 'src/services/toast.service';
+
 import * as _ from 'lodash';
+
 import { FavCountService } from 'src/services/fav-count.service';
 import { Subject, lastValueFrom, takeUntil } from 'rxjs';
 import { ApiService } from 'src/services/api.service';
+import { PusherService } from 'src/services/pusher.service';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
-  providers: [ChatService]
+  providers: [PusherService]
 })
 export class TabsPage implements OnDestroy {
 
   public currentUrl: string = 'home';
-  public chats: Array<any> = [];
   public unseenCount: number = 0;
   public favCount: number = 0;
   public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
@@ -26,8 +26,8 @@ export class TabsPage implements OnDestroy {
 
   constructor(
     private _apiService: ApiService,
+    private pusherService: PusherService,
     private favService: FavCountService,
-    private chatService: ChatService,
     private toast: ToastService,
     private router: Router) {
       this._unsubscribeAll = new Subject<void>();
@@ -74,31 +74,19 @@ export class TabsPage implements OnDestroy {
   }
 
   async getUnseen(){
-    await fetch(environment.chatUrl + 'chat?user_id=' + this.user.id)
-    .then(response => response.json())
-    .then(res => {
-        if(res.statusCode == 200){
-          this.chats = res.data;
-          this.unseenCount = _.reduce(this.chats, (sum, obj) => sum + obj.unseen, 0);
-        }
-    } )
-    .catch((err) => {
-      this.toast.handleError(err)
+    lastValueFrom(this._apiService.get('chat/unseen-count', {})).then((res) => {
+      if(res.statusCode == 200){
+        this.unseenCount = res.data;
+      }
+    }).catch((err) => {
+        this.toast.handleError(err)
     })
   }
 
   listenMessages(){
-    this.chatService.getMessage().pipe(takeUntil(this._unsubscribeAll)).subscribe((chat: any) => {
-      const list = chat.list;
-      const index = _.findIndex(this.chats, (d: any) => d.id == list.id );
-      if(index < 0){
-        this.chats.push(list)
-      } else {
-        this.chats[index] = list
-      }
-
-      this.unseenCount = _.reduce(this.chats, (sum, obj) => sum + obj.unseen, 0);
-    })
+    this.pusherService.channel.bind('updateUnseen-' + this.user.id, (chat: any) => {
+      this.unseenCount = chat.data
+    });
   }
 
 }

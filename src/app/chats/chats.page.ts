@@ -1,18 +1,20 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
-import { environment } from 'src/environments/environment';
 import { ToastService } from 'src/services/toast.service';
 import { DetailPage as DetailPageChat }  from 'src/app/chats/detail/detail.page';
-import { ChatService } from 'src/services/chat.service';
+
 import * as _ from 'lodash';
-import { Socket } from 'ngx-socket-io';
+
+import { PusherService } from 'src/services/pusher.service';
+import { lastValueFrom } from 'rxjs';
+import { ApiService } from 'src/services/api.service';
 
 @Component({
   selector: 'app-chats',
   templateUrl: './chats.page.html',
   styleUrls: ['./chats.page.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [ChatService]
+  providers: [PusherService, ApiService]
 })
 export class ChatsPage implements OnInit {
 
@@ -21,9 +23,9 @@ export class ChatsPage implements OnInit {
   public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
   
   constructor(
-    private socket: Socket,
+    private pusherService: PusherService,
     private toast: ToastService,
-    private chatService: ChatService,
+    private _apiService: ApiService,
     private modalController: ModalController,
     private navController: NavController
   ) { }
@@ -31,36 +33,11 @@ export class ChatsPage implements OnInit {
   ngOnInit() {
     this.getChats();
     this.listenMessages()
-
-    this.socket.on('receive-unseen-' + this.user.id, (data: any) => {
-      if(data){
-        const list = data.list;
-        const index = _.findIndex(this.chats, (d: any) => d.id == list.id );
-        if(index < 0){
-          this.chats.push(list)
-        } else {
-          this.chats[index] = list
-        }
-      }
-    })
-
-    this.socket.on('receive-update-self-' + this.user.id, (data: any) => {
-      if(data){
-        const list = data.list;
-        const index = _.findIndex(this.chats, (d: any) => d.id == list.id );
-        if(index < 0){
-          this.chats.push(list)
-        } else {
-          this.chats[index] = list
-        }
-      }
-    })
   }
 
   async getChats(){
     this.loading = true;
-    await fetch(environment.chatUrl + 'chat?user_id=' + this.user.id)
-    .then(response => response.json())
+    lastValueFrom(this._apiService.get('chat', {}))
     .then(res => {
         if(res.statusCode == 200){
           this.chats = res.data
@@ -74,32 +51,33 @@ export class ChatsPage implements OnInit {
   }
 
   listenMessages(){
-    this.chatService.getMessage().subscribe((chat: any) => {
-      if(Object.keys(chat).length){
-        const list = chat.list;
-        const index = _.findIndex(this.chats, (d: any) => d.id == list.id );
-        if(index < 0){
-          this.chats.push(list)
-        } else {
-          this.chats[index] = list
-        }
+    this.pusherService.channel.bind('chatListUpdate-' + this.user.id, (chat: any) => {
+
+      const list = JSON.parse(chat.data);
+      const index = _.findIndex(this.chats, (d: any) => d.id == list.id );
+
+      if(index < 0){
+        this.chats.push(list)
+      } else {
+        this.chats[index] = list
       }
-    })
+
+    });
   }
 
   async onOpenDetail(chat: any){
-    let heading = null;
+    let header = null;
     const sender_id = this.user.id
     let receiver_id = null;
 
     if(chat.sender_id == this.user.id){
-      heading = {
+      header = {
         profile_image: chat.shop.profile_image,
         name: chat.shop?.shop?.name || chat.shop.fullname,
       }
       receiver_id = chat.shop.id
     } else {
-      heading = {
+      header = {
         profile_image: chat.user.profile_image,
         name: chat.user.fullname,
       }
@@ -111,7 +89,7 @@ export class ChatsPage implements OnInit {
       mode: 'ios',
       component: DetailPageChat,
       componentProps: {
-        params: { heading, sender_id, receiver_id }
+        params: { header, sender_id, receiver_id }
       }
     })
     await modal.present()

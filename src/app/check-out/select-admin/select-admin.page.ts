@@ -47,7 +47,7 @@ export class SelectAdminPage implements OnInit {
   }
 
   async onSelectAdmin(admin: any){
-    const heading = {
+    const header = {
       name: admin.fullname,
       profile_image: admin.profile_image
     }
@@ -61,7 +61,7 @@ export class SelectAdminPage implements OnInit {
       mode: 'ios',
       component: DetailPage,
       componentProps: {
-        params: { heading, sender_id, receiver_id, message }
+        params: { header, sender_id, receiver_id, message }
       }
     })
     await modal.present();
