@@ -26,7 +26,7 @@ export class FormPage implements OnInit {
     title: '',
     description: '',
     image: '',
-    display: false
+    display: true
   }
 
   public image: any= {

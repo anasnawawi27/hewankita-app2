@@ -55,7 +55,22 @@ export class HomePage implements OnInit {
   ngOnInit(): void {
     if(Object.keys(this.user).length){
       this.pusherService.channel.bind('notificationsUser-' + (this.user.level == 'admin' ? 'admin' : this.user.id), (d: any) => {
-        this.notifCount = d.data
+        this.notifCount = d.data;
+        if(d.additional){
+          const banner = d.additional;
+          const exist = _.find(this.banners, (o) => o.id == banner.id);
+
+          if(exist){
+            if(banner.display){
+              const i = _.findIndex(this.banners, (o) => o.id == exist.id);
+              this.banners[i] = banner;
+            } else {
+              this.banners = _.filter(this.banners, (o) => o.id !== banner.id);
+            }
+          } else {
+            if(banner.display) this.banners.unshift(banner)
+          }
+        }
       });
     }
   }
@@ -327,6 +342,8 @@ export class HomePage implements OnInit {
         event.target.complete();
       }
     }
+
+    this.getBanners()
   }
 
   getNotifCount(){

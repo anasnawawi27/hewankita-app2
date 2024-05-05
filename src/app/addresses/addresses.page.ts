@@ -50,9 +50,6 @@ export class AddressesPage implements OnInit {
     })
 
     await modal.present();
-    await modal.onDidDismiss().then((o) => {
-      console.log(o.data)
-    })
   }
 
   createArray(length: number){

@@ -134,7 +134,6 @@ export class BannersPage implements OnInit {
 
     await modal.present();
     await modal.onDidDismiss().then((o) => {
-      console.log(o)
       if(o.data?.data){
         const data = o.data.data
         this.rows[this.index] = data

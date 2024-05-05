@@ -1,0 +1,55 @@
+<ion-header class="common-header bg-white">
+  <ion-title> {{ banner?.title }}</ion-title>
+  <div (click)="back()" slot="end" class="back right ion-activatable">
+    <ng-icon name="heroXMark"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+</ion-header>
+<ion-content>
+  <ion-skeleton-text
+    *ngIf="loading"
+    [animated]="true"
+    style="width: 100%; height: 240px"
+  ></ion-skeleton-text>
+
+  <img
+    *ngIf="!loading"
+    style="width: 100%; height: 240px; object-fit: cover"
+    [src]="banner?.image ? (banner.image | imgCld) : ''"
+  />
+  <div class="ion-padding">
+    <div
+      *ngIf="!loading"
+      style="
+        text-align: justify;
+        font-size: 15px;
+        color: #818181;
+        line-height: 25px;
+      "
+      [innerText]="banner?.description"
+    ></div>
+    <div *ngIf="loading">
+      <div *ngFor="let val of loop(6)" style="margin-bottom: 30px">
+        <h3>
+          <ion-skeleton-text
+            [animated]="true"
+            style="width: 100%"
+          ></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text
+            [animated]="true"
+            style="width: 80%"
+          ></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text
+            class="ion-margin-top"
+            [animated]="true"
+            style="width: 60%"
+          ></ion-skeleton-text>
+        </p>
+      </div>
+    </div>
+  </div>
+</ion-content>

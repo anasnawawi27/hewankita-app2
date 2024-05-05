@@ -74,7 +74,7 @@
         <span>Deskripsi Wajib Diisi</span>
       </small>
     </div>
-    <ion-row>
+    <ion-row *ngIf="isEdit">
       <ion-col size="12" class="flex-center" style="height: 55px">
         <ion-toggle
           mode="ios"

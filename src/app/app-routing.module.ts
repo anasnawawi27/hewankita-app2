@@ -63,6 +63,11 @@ const routes: Routes = [
     path: 'notifications',
     component: NotificationsPage
   },
+  {
+    path: 'banners',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./home/view-banner/view-banner.module').then( m => m.ViewBannerPageModule)
+  },
 ];
 @NgModule({
   imports: [
