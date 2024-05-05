@@ -1,0 +1,109 @@
+<ion-header class="common-header bg-white">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Notifikasi</ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ng-template #loader>
+    <ion-list mode="md">
+      <ion-item *ngFor="let val of loop(7)">
+        <ion-thumbnail slot="end">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 80%"
+            ></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 60%"
+            ></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text
+              class="ion-margin-top"
+              [animated]="true"
+              style="width: 30%"
+            ></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-template>
+
+  <ion-list *ngIf="!loading; else loader" mode="md">
+    <ion-item
+      *ngFor="let row of rows; let i = index"
+      style="--background: "
+      [style]="!row.opened ? {
+        '--background': '#eaf7ff',
+      }: null"
+      [button]="true"
+      lines="full"
+      (click)="onOpenNotif(row, i)"
+    >
+      <div>
+        <ion-label class="ion-text-bold ion-margin-top"
+          >{{ row.title }}</ion-label
+        >
+        <p
+          style="
+            display: -webkit-box;
+            white-space: normal;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-align: justify;
+            color: #7f7f7f;
+            font-size: 14px;
+            line-height: 20px;
+          "
+        >
+          {{ row.content }}
+        </p>
+
+        <div class="flex-center ion-margin-bottom" style="color: #8f8f8f">
+          <ng-icon name="saxCalendar1Outline"></ng-icon>
+          <span style="display: block; margin-left: 5px; font-size: 13px"
+            >{{ row.created_at | date: 'dd/MM/yyyy HH:mm' }}</span
+          >
+        </div>
+      </div>
+      <ion-thumbnail
+        *ngIf="row.image"
+        slot="end"
+        style="margin-bottom: 0; --border-radius: 10px"
+      >
+        <img alt="notif image" [src]="row.image | imgCld" />
+      </ion-thumbnail>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll
+    threshold="5%"
+    (ionInfinite)="loadData($event)"
+    *ngIf="!loading && rows.length"
+  >
+    <ion-infinite-scroll-content loadingSpinner="crescent">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <div
+    *ngIf="!loading && !rows.length"
+    class="ion-padding ion-text-center not-found"
+    style="margin-top: 200px"
+  >
+    <img src="assets/illustrations/no-notif.svg" style="width: 40%" />
+    <h4>Notifikasi Kosong</h4>
+  </div>
+</ion-content>

@@ -29,6 +29,7 @@ export class TransactionsPage implements OnInit {
 
   public totalBuy: number = 0
   public totalSold: number = 0
+
   constructor(
     private _apiService: ApiService,
     private toast: ToastService
@@ -89,6 +90,8 @@ export class TransactionsPage implements OnInit {
 
   ionViewDidEnter() {
     if (localStorage.getItem('reload')) {
+      this.isInit = true;
+      this.params.start = 0;
       this.getList();
       localStorage.removeItem('reload');
     }

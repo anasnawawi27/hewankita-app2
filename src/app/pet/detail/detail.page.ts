@@ -59,7 +59,7 @@ export class DetailPage implements OnInit {
   }
 
   showVideo(url: string){
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url)
+    return this.sanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/" + url.replace('https://youtu.be/', ''))
   }
 
   ngOnInit() {

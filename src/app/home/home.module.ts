@@ -8,6 +8,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { CorePipesModule } from 'src/pipes/pipes.module';
 
 import { NgIconsModule } from '@ng-icons/core';
+import { saxNotificationOutline } from '@ng-icons/iconsax/outline';
 import { lucideSearch, lucideMapPin, lucideShoppingCart, lucideChevronsRight, lucideChevronRight } from '@ng-icons/lucide';
 import { ImageViewPage } from '../image-view/image-view.page';
 
@@ -19,7 +20,7 @@ import { ImageViewPage } from '../image-view/image-view.page';
     SwiperModule,
     HomePageRoutingModule,
     CorePipesModule,
-    NgIconsModule.withIcons({ lucideSearch, lucideMapPin, lucideShoppingCart, lucideChevronsRight, lucideChevronRight })
+    NgIconsModule.withIcons({saxNotificationOutline, lucideSearch, lucideMapPin, lucideShoppingCart, lucideChevronsRight, lucideChevronRight })
   ],
   declarations: [HomePage, ImageViewPage]
 })

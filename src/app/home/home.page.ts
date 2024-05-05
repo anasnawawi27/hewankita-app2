@@ -39,6 +39,7 @@ export class HomePage implements OnInit {
   public banner: any;
 
   public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
+  public notifCount: number = 0;
 
   constructor(
     private pusherService: PusherService,
@@ -48,15 +49,16 @@ export class HomePage implements OnInit {
     private _apiService: ApiService,
     private toast: ToastService
   ) {
-    
+
   }
 
   ngOnInit(): void {
-    this.pusherService.channel.bind('event-name-5', (data: any) => {
-      console.log(data)
-    });
+    if(Object.keys(this.user).length){
+      this.pusherService.channel.bind('notificationsUser-' + (this.user.level == 'admin' ? 'admin' : this.user.id), (d: any) => {
+        this.notifCount = d.data
+      });
+    }
   }
-
 
   oneSignalInit() {
     if (localStorage.getItem('hewanKitaUserMobile')) {
@@ -83,6 +85,7 @@ export class HomePage implements OnInit {
     this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}')
     if(Object.keys(this.user).length){
       this.refresh();
+      this.getNotifCount();
     }
     this.getCategories();
     this.getByCategory();
@@ -324,5 +327,17 @@ export class HomePage implements OnInit {
         event.target.complete();
       }
     }
+  }
+
+  getNotifCount(){
+    lastValueFrom(
+      this._apiService.get('notification/count-unseen', {})
+    ).then((res) => {
+      if(res.statusCode == 200){
+        this.notifCount = res.data
+      }
+    }).catch((err) => {
+      this.toast.handleError(err)
+    })
   }
 }

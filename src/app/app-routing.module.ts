@@ -4,6 +4,7 @@ import { CheckOutPageModule } from './check-out/check-out.module';
 import { AuthGuard } from './auth.guard';
 import { SelectAdminPageModule } from './check-out/select-admin/select-admin.module';
 import { GuestGuard } from './guest.guard';
+import { NotificationsPage } from './notifications/notifications.page';
 
 const routes: Routes = [
   {
@@ -57,6 +58,10 @@ const routes: Routes = [
     path: 'search',
     canActivate: [AuthGuard],
     loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
+  },
+  {
+    path: 'notifications',
+    component: NotificationsPage
   },
 ];
 @NgModule({

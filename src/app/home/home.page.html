@@ -1,7 +1,31 @@
 <ion-header class="common-header ion-padding">
-  <div routerLink="/search" class="search">
-    <ng-icon name="lucideSearch"></ng-icon>
-    <span>Cari Peliharaan</span>
+  <div class="flex-center">
+    <div routerLink="/search" class="search">
+      <ng-icon name="lucideSearch"></ng-icon>
+      <span>Cari Peliharaan</span>
+    </div>
+    <div class="position-relative">
+      <span
+        *ngIf="notifCount"
+        class="unseen"
+        style="z-index: 4; text-align: center; right: 0px; top: 5px"
+        >{{ notifCount }}</span
+      >
+      <div
+        routerLink="/notifications"
+        routerDirection="forward"
+        slot="end"
+        class="action-header ion-activatable position-relative"
+        style="top: 0; margin-left: 15px"
+      >
+        <ng-icon
+          color="#004D95"
+          name="saxNotificationOutline"
+          size="23"
+        ></ng-icon>
+        <ion-ripple-effect></ion-ripple-effect>
+      </div>
+    </div>
   </div>
 </ion-header>
 

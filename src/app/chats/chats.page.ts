@@ -100,7 +100,7 @@ export class ChatsPage implements OnInit {
   }
 
   back(){
-    this.navController.back()
+    this.navController.navigateBack('/home')
   }
 
 }
