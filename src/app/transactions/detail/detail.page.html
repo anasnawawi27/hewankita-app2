@@ -114,16 +114,16 @@
         class="flex-center"
         *ngIf="![2, 3].includes(data.transaction.current_process_sort)"
       >
-        <p class="ion-no-margin">Biaya Ongkir</p>
+        <p class="ion-no-margin">Biaya Kirim</p>
         <small
           *ngIf="data.transaction.current_process_sort == 1 && user.level == 'user' && !data.transaction.shipping_cost"
           class="ion-text-primary"
-          >Sedang Diproses Admin</small
+          >*Sedang Diproses Admin</small
         >
         <small
           *ngIf="data.transaction.current_process_sort == 1 && user.level == 'admin' && !data.transaction.shipping_cost"
           class="ion-text-primary"
-          >Perlu Diproses Admin</small
+          >*Perlu Diproses Admin</small
         >
 
         <h6

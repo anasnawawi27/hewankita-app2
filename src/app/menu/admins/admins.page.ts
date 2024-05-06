@@ -69,6 +69,7 @@ export class AdminsPage implements OnInit {
           this.totalData = res.totalData;
           this.totalActive = res.totalActive;
           this.totalNonactive = res.totalNonactive;
+          
           this.params.start += res.data.length;
           this.rows = this.isInit
             ? res.data
@@ -87,7 +88,6 @@ export class AdminsPage implements OnInit {
         }
       })
       .catch((err) => {
-        console.log(err)
         this.toast.handleError(err)
       })
       .finally(() => {

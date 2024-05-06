@@ -80,9 +80,8 @@ export class DetailPage implements OnInit {
     private modalController: ModalController,
     private actionSheetController: ActionSheetController,
   ) { 
-
     this.id = this.route.snapshot.params['id'];
-    if(this.id) this.getDetail()
+    if(this.id) this.getDetail();
   }
 
  async copyToClipboard(bankNum: string){
@@ -343,7 +342,7 @@ export class DetailPage implements OnInit {
   }
 
   back(){
-    this.navController.navigateForward('/transactions')
+    this.navController.navigateBack('/transactions')
   }
 
   async presentActionSheet(type: string) {

@@ -108,7 +108,7 @@ export class NotificationsPage implements OnInit {
   }
 
   back(){
-    this.navController.navigateRoot('/home');
+    this.navController.navigateBack('/home');
   }
 
 }

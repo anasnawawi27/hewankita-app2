@@ -45,7 +45,7 @@ export class ViewBannerPage implements OnInit {
   }
 
   back(){
-    this.navController.navigateForward('/home')
+    this.navController.navigateBack('/home')
   }
 
   loop(length: number){

@@ -3,6 +3,7 @@ import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/services/api.service';
 import { ToastService } from 'src/services/toast.service';
 import * as _ from 'lodash';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-transactions',
@@ -31,6 +32,7 @@ export class TransactionsPage implements OnInit {
   public totalSold: number = 0
 
   constructor(
+    private navController: NavController,
     private _apiService: ApiService,
     private toast: ToastService
   ) {
