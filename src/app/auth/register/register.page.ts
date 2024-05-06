@@ -6,6 +6,9 @@ import { lastValueFrom } from 'rxjs';
 
 import * as _ from 'lodash';
 import { VerificationPage } from '../verification/verification.page';
+import type { MaskitoElementPredicate, MaskitoOptions } from '@maskito/core';
+ 
+import mask from './mask';
 
 @Component({
   selector: 'app-register',
@@ -31,6 +34,9 @@ export class RegisterPage implements OnInit {
 
     isModal: boolean = false;
 
+    readonly maskOptions: MaskitoOptions = mask;
+    readonly maskPredicate: MaskitoElementPredicate = (el) => (el as HTMLIonInputElement).getInputElement();
+
   constructor(
     private modalController: ModalController,
     private navController: NavController,
@@ -44,8 +50,7 @@ export class RegisterPage implements OnInit {
 
   onSubmit() {
     if (
-      !this.fullname || 
-      !this.phone_number ||
+      !this.fullname ||
       !this.email ||
       !this.password ||
       !this.confirm_password

@@ -24,6 +24,7 @@ import { FormPage } from './address/form/form.page';
 import { BannersPage } from './banners/banners.page';
 import { FormPage as FormBannerPage }  from './banners/form/form.page';
 import { ChangePasswordPage } from './change-password/change-password.page';
+import { MaskitoDirective } from '@maskito/angular';
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { ChangePasswordPage } from './change-password/change-password.page';
     IonicModule,
     CorePipesModule,
     SwiperModule,
+    MaskitoDirective,
     NgIconsModule.withIcons({
       lucideArrowDownNarrowWide, 
       lucideArrowDownWideNarrow,

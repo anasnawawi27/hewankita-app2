@@ -23,7 +23,7 @@ import { saxMessageBold, saxVerifyBold } from '@ng-icons/iconsax/bold';
 import { heroTrash, heroPlus, heroMinus, heroXMark, heroAdjustmentsHorizontal } from '@ng-icons/heroicons/outline';
 import { saxMessageTextOutline, saxCalendar1Outline, } from '@ng-icons/iconsax/outline';
 import { heroCheckCircleSolid, heroXMarkSolid } from '@ng-icons/heroicons/solid';
-import { heroCheckCircleMini, heroEyeMini } from '@ng-icons/heroicons/mini';
+import { heroCheckCircleMini, heroEyeMini, heroEyeSlashMini } from '@ng-icons/heroicons/mini';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { SelectAdminPageModule } from './check-out/select-admin/select-admin.module';
 import { CheckOutPageModule } from './check-out/check-out.module';
@@ -48,6 +48,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4040/', options: { trans
     CorePipesModule,
     PickerComponent,
     NgIconsModule.withIcons({ 
+      heroEyeSlashMini,
       saxVerifyBulk,
       saxVerifyBold,
       saxCalendar1Outline,

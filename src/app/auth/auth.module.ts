@@ -14,6 +14,7 @@ import { lucideChevronLeft, lucideLockKeyhole, lucideSmartphone, lucideCircleUse
 import { heroEyeMini, heroEyeSlashMini } from '@ng-icons/heroicons/mini'
 import { VerificationPage } from './verification/verification.page';
 import { ForgotPasswordPage } from './forgot-password/forgot-password.page';
+import { MaskitoDirective } from '@maskito/angular';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { ForgotPasswordPage } from './forgot-password/forgot-password.page';
     IonicModule,
     AuthPageRoutingModule,
     CountdownModule,
+    MaskitoDirective,
     NgIconsModule.withIcons({ 
       lucideMail, 
       lucideLock, 

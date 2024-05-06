@@ -1,11 +1,14 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ModalController, NavController } from '@ionic/angular';
+import { MaskitoElementPredicate, MaskitoOptions } from '@maskito/core';
 import { lastValueFrom } from 'rxjs';
 import { ImageViewPage } from 'src/app/image-view/image-view.page';
 import { ApiService } from 'src/services/api.service';
 import { ToastService } from 'src/services/toast.service';
 import { UploadService } from 'src/services/upload.service';
+
+import mask from 'src/app/auth/register/mask';
 
 @Component({
   selector: 'app-profile',
@@ -14,6 +17,9 @@ import { UploadService } from 'src/services/upload.service';
   encapsulation: ViewEncapsulation.None
 })
 export class ProfilePage implements OnInit {
+
+  readonly maskOptions: MaskitoOptions = mask;
+  readonly maskPredicate: MaskitoElementPredicate = (el) => (el as HTMLIonInputElement).getInputElement();
 
   private endpoint: string = 'profile'
   public loading: boolean = false;

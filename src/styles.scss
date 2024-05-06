@@ -1,6 +1,21 @@
 @import '~css-star-rating/css/star-rating.min.css';
 @import '@ctrl/ngx-emoji-mart/picker';
 
+.text-muted{
+    color: #919191
+}
+
+.mb-7px{
+    margin-bottom: 7px!important;
+}
+
+.mb-5px{
+    margin-bottom: 5px!important;
+}
+
+.mb-15px{
+    margin-bottom: 15px!important;
+}
 .overflow-visible{
     overflow: visible !important
 }

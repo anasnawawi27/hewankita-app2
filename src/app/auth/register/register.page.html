@@ -1,6 +1,6 @@
 <ion-header class="common-header bg-white no-shadow">
   <div (click)="back()" slot="start" class="back left ion-activatable">
-    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ng-icon name="lucideChevronLeft" class="pr-10px"></ng-icon>
     <ion-ripple-effect></ion-ripple-effect>
   </div>
 </ion-header>
@@ -16,27 +16,30 @@
   </div>
 
   <ion-item class="input-outline" lines="none">
-    <ng-icon size="18" name="lucideCircleUserRound"></ng-icon>
+    <ng-icon size="18" name="lucideCircleUserRound" class="pr-10px"></ng-icon>
     <ion-input
       type="text"
       placeholder="Nama Lengkap"
       [(ngModel)]="fullname"
     ></ion-input>
   </ion-item>
-  <ion-item class="input-outline" lines="none">
-    <ng-icon size="18" name="lucideSmartphone"></ng-icon>
+  <ion-item class="input-outline mb-7px" lines="none">
+    <ng-icon size="18" name="lucideSmartphone" class="pr-10px"></ng-icon>
     <ion-input
-      type="text"
+      [maskito]="maskOptions"
+      [maskitoElement]="maskPredicate"
       placeholder="No Handphone"
       [(ngModel)]="phone_number"
     ></ion-input>
   </ion-item>
+  <small class="d-block mb-15px text-muted">Optional</small>
+
   <ion-item class="input-outline" lines="none">
-    <ng-icon size="18" name="lucideMail"></ng-icon>
+    <ng-icon size="18" name="lucideMail" class="pr-10px"></ng-icon>
     <ion-input type="text" placeholder="Email" [(ngModel)]="email"></ion-input>
   </ion-item>
   <ion-item class="input-outline" lines="none">
-    <ng-icon size="18" name="lucideLock"></ng-icon>
+    <ng-icon size="18" name="lucideLock" class="pr-10px"></ng-icon>
     <ion-input
       [type]="showPassword ? 'text' : 'password'"
       placeholder="Password"
@@ -48,10 +51,11 @@
       size="20"
       (click)="showPassword = !showPassword"
       [name]="showPassword ? 'heroEyeSlashMini' : 'heroEyeMini'"
+      class="pr-10px"
     ></ng-icon>
   </ion-item>
   <ion-item class="input-outline" lines="none">
-    <ng-icon size="18" name="lucideLockKeyhole"></ng-icon>
+    <ng-icon size="18" name="lucideLockKeyhole" class="pr-10px"></ng-icon>
     <ion-input
       [type]="showConfirmPassword ? 'text' : 'password'"
       placeholder="Konfirmasi Password"
@@ -63,6 +67,7 @@
       size="20"
       (click)="showConfirmPassword = !showConfirmPassword"
       [name]="showConfirmPassword ? 'heroEyeSlashMini' : 'heroEyeMini'"
+      class="pr-10px"
     ></ng-icon>
   </ion-item>
 
