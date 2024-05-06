@@ -1,21 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { lastValueFrom } from 'rxjs';
-import { ImageViewPage } from 'src/app/image-view/image-view.page';
+import { MaskitoElementPredicate, MaskitoOptions } from '@maskito/core';
 import { ApiService } from 'src/services/api.service';
 import { ToastService } from 'src/services/toast.service';
 import { UploadService } from 'src/services/upload.service';
+
+import mask from 'src/app/auth/register/mask';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { ImageViewPage } from 'src/app/image-view/image-view.page';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.page.html',
   styleUrls: ['./form.page.scss'],
-  providers: [ApiService]
+  providers: [ApiService],
+  encapsulation: ViewEncapsulation.None
 })
 export class FormPage implements OnInit {
 
-  private endpoint: string = 'banner'
+  readonly maskOptions: MaskitoOptions = mask;
+  readonly maskPredicate: MaskitoElementPredicate = (el) => (el as HTMLIonInputElement).getInputElement();
+
+  private endpoint: string = 'admin'
   private id: string = ''
 
   public isEdit: boolean = false;
@@ -23,10 +30,12 @@ export class FormPage implements OnInit {
   public formSubmitted: boolean = false;
 
   public input = {
-    title: '',
-    description: '',
-    image: '',
-    display: true
+    fullname: '',
+    email: '',
+    phone_number: '',
+    is_active: true,
+    profile_image: '',
+    password: '',
   }
 
   public image: any= {
@@ -47,14 +56,15 @@ export class FormPage implements OnInit {
       this.isEdit = true;
 
       this.id = this.props.id;
-      this.input.title = this.props.title
-      this.input.description = this.props.description
-      this.input.display = this.props.display ? true : false;
+      this.input.fullname = this.props.fullname
+      this.input.email = this.props.email
+      this.input.phone_number = this.props.phone_number
+      this.input.is_active = this.props.is_active ? true : false;
 
-      if(this.props.image){
-        this.input.image = this.props.image;
+      if(this.props.profile_image){
+        this.input.profile_image = this.props.profile_image;
 
-        this.image.file = this.props.image;
+        this.image.file = this.props.profile_image;
         this.image.cloud = true;
       }
     }
@@ -63,23 +73,23 @@ export class FormPage implements OnInit {
   async onSave(){
     this.formSubmitted = true;
     if(
-      !this.image.file ||
-      !this.input.title ||
-      !this.input.description
+      !this.input.fullname ||
+      !this.input.email ||
+      (!this.isEdit && !this.input.password)
     ) return
 
     this.formLoading = true;
 
     if(!this.image.cloud && this.image.file){
       try{
-        const upload: any = await this._uploadService.upload(this.image.file, 'banners');
+        const upload: any = await this._uploadService.upload(this.image.file, 'user');
         if(upload['error']){
           this.toast.error(upload['error']['message']);
           this.formLoading = false;
           return
         }
   
-        this.input.image = upload['public_id'];
+        this.input.profile_image = upload['public_id'];
       } catch(e) {
         this.formLoading = false;
         return

@@ -3,7 +3,7 @@
     <ng-icon name="lucideChevronLeft"></ng-icon>
     <ion-ripple-effect></ion-ripple-effect>
   </div>
-  <ion-title>Pet Shops</ion-title>
+  <ion-title>User Admin</ion-title>
 
   <ion-toolbar mode="md" style="padding: 0 10px">
     <ion-segment
@@ -16,16 +16,15 @@
           >All <span *ngIf="!loading">({{ totalData }})</span></ion-label
         >
       </ion-segment-button>
-      <ion-segment-button value="verified">
+      <ion-segment-button value="active">
         <ion-label
-          >Verified
-          <span *ngIf="!loading">({{ totalVerified }})</span></ion-label
+          >Active <span *ngIf="!loading">({{ totalActive }})</span></ion-label
         >
       </ion-segment-button>
-      <ion-segment-button value="unverified">
+      <ion-segment-button value="nonactive">
         <ion-label
-          >Not Verified
-          <span *ngIf="!loading">({{ totalUnverified }})</span></ion-label
+          >Nonactive
+          <span *ngIf="!loading">({{ totalNonactive }})</span></ion-label
         >
       </ion-segment-button>
     </ion-segment>
@@ -38,7 +37,7 @@
   </ion-refresher>
 
   <h6 *ngIf="rows.length" class="ion-text-bold" style="margin-bottom: 0">
-    Daftar Pet Shop
+    Daftar User Admin
   </h6>
   <ng-template #loader>
     <ion-skeleton-text
@@ -84,7 +83,7 @@
         >
           <ion-card-content class="ion-no-padding">
             <ion-item
-              [routerLink]="'/menu/shops/detail/' + row.id"
+              [routerLink]="'/menu/admins/detail/' + row.id"
               routerDirection="forward"
               lines="none"
               [button]="true"
@@ -93,11 +92,11 @@
                 <div class="flex-center" style="margin-bottom: 20px">
                   <ng-icon
                     size="20"
-                    [name]="row.is_verified ? 'heroCheckBadgeSolid' : 'heroExclamationCircleSolid'"
-                    [color]="row.is_verified ? '#2dd36f' : '#eb445a'"
+                    [name]="row.is_active ? 'heroCheckCircle' : 'heroXCircle'"
+                    [color]="row.is_active ? '#2dd36f' : '#eb445a'"
                   ></ng-icon>
                   <span class="ft-13"
-                    >{{ !row.is_verified ? 'Belum' : '' }} Diverifikasi</span
+                    >{{ row.is_active ? 'Aktif' : 'Tidak Aktif' }}</span
                   >
                 </div>
                 <div class="flex-center">
@@ -107,21 +106,16 @@
                     class="ion-margin-end"
                   >
                     <img
-                      [src]="row.user.profile_image ? (row.user.profile_image | imgCld) : 'assets/images/avatar.svg'"
+                      [src]="row.profile_image ? (row.profile_image | imgCld) : 'assets/images/avatar.svg'"
                     />
                   </ion-avatar>
                   <div>
-                    <ion-label class="ion-text-bold">{{ row.name }}</ion-label>
+                    <ion-label class="ion-text-bold"
+                      >{{ row.fullname }}</ion-label
+                    >
                     <div class="flex-center">
-                      <ng-icon
-                        class="map-icon"
-                        name="lucideMapPin"
-                        color="#eb445a"
-                      ></ng-icon>
-                      <span class="ion-text-capitalize"
-                        >{{ row.city.replace('KABUPATEN', '').replace('KOTA',
-                        '').toLowerCase() }}</span
-                      >
+                      <ng-icon name="heroEnvelope" color="#004D95"></ng-icon>
+                      <span>{{ row.email }}</span>
                     </div>
                   </div>
                 </div>
@@ -150,3 +144,9 @@
     </ion-infinite-scroll>
   </div>
 </ion-content>
+
+<ion-fab (click)="onCreate()" vertical="bottom" horizontal="center">
+  <ion-fab-button>
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

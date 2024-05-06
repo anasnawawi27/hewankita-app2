@@ -41,6 +41,8 @@ export class BannersPage implements OnInit {
 
   ionViewDidEnter() {
     if (localStorage.getItem('reload')) {
+      this.isInit = true;
+      this.params.start = 0;
       this.getList();
       localStorage.removeItem('reload');
     }

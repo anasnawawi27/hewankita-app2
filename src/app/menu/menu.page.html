@@ -72,6 +72,18 @@
       <h6 class="title">Admin</h6>
       <ion-list mode="ios" [inset]="true">
         <ion-item
+          routerLink="/menu/admins"
+          routerDirection="forward"
+          [button]="true"
+        >
+          <div class="flex-center">
+            <div slot="start" class="icon-section">
+              <ng-icon size="20" name="saxProfile2userOutline"></ng-icon>
+            </div>
+            <ion-label>User Admin</ion-label>
+          </div>
+        </ion-item>
+        <ion-item
           routerLink="/menu/shops"
           routerDirection="forward"
           [button]="true"

@@ -1,19 +1,20 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/services/api.service';
 import { ToastService } from 'src/services/toast.service';
+import { FormPage } from './form/form.page';
 
 @Component({
-  selector: 'app-shop-list',
-  templateUrl: './shop.page.html',
-  styleUrls: ['./shop.page.scss'],
-  encapsulation: ViewEncapsulation.None,
-  providers: [ApiService]
+  selector: 'app-admins',
+  templateUrl: './admins.page.html',
+  styleUrls: ['./admins.page.scss'],
+  providers: [ApiService],
+  encapsulation: ViewEncapsulation.None
 })
-export class ShopPage implements OnInit {
+export class AdminsPage implements OnInit {
 
-  private endpoint: string = 'shop';
+  private endpoint: string = 'admin';
   public params: any = {
     start: 0,
     length: 10,
@@ -22,13 +23,14 @@ export class ShopPage implements OnInit {
   public isInit = true;
   public loading = true;
   public totalData: number = 0;
-  public totalVerified: number = 0;
-  public totalUnverified: number = 0;
+  public totalActive: number = 0;
+  public totalNonactive: number = 0;
   public rows: Array<any> = [];
 
   constructor(
     private _apiService: ApiService,
     private toast: ToastService,
+    private modalController: ModalController,
     private navController: NavController
   ) { }
 
@@ -65,8 +67,8 @@ export class ShopPage implements OnInit {
       .then((res) => {
         if (res.statusCode === 200) {
           this.totalData = res.totalData;
-          this.totalVerified = res.totalVerified;
-          this.totalUnverified = res.totalUnverified;
+          this.totalActive = res.totalActive;
+          this.totalNonactive = res.totalNonactive;
           this.params.start += res.data.length;
           this.rows = this.isInit
             ? res.data
@@ -103,6 +105,27 @@ export class ShopPage implements OnInit {
 
   back(){
     this.navController.back();
+  }
+
+  onCreate(){
+    this.openForm()
+  }
+
+  async openForm(props: any = {}){
+    const modal = await this.modalController.create({
+      mode: 'ios',
+      component: FormPage,
+      componentProps: { props }
+    })
+
+    await modal.present();
+    await modal.onDidDismiss().then((o) => {
+      if(o.data?.reload){
+        this.isInit = true;
+        this.params.start = 0
+        this.getList();
+      }
+    })
   }
 
 }

@@ -42,7 +42,6 @@ export class DetailPage implements OnInit {
   totalSold: number = 0;
 
   public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
-  public videUrl: string = 'https://www.youtube.com/embed/3u3EHJuf4Mg?si=tAcC0LcBM0aln8t5';
   
   constructor(
     private navController: NavController,

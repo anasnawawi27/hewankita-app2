@@ -1,0 +1,120 @@
+<ion-header class="common-header bg-white">
+  <div (click)="close()" slot="start" class="back left ion-activatable">
+    <ng-icon name="heroXMark"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>{{ !isEdit ? 'Tambah' : 'Edit' }} User Admin</ion-title>
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+  <div class="form-section">
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Nama Lengkap</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input [type]="'text'" [(ngModel)]="input.fullname"></ion-input>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !input.fullname"
+      >
+        <span>Nama Lengkap Wajib Diisi</span>
+      </small>
+    </div>
+
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Email</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input [type]="'text'" [(ngModel)]="input.email"></ion-input>
+      </ion-item>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !input.email"
+      >
+        <span>Email Wajib Diisi</span>
+      </small>
+    </div>
+
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">No Handphone</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input
+          [maskito]="maskOptions"
+          [maskitoElement]="maskPredicate"
+          [(ngModel)]="input.phone_number"
+        ></ion-input>
+      </ion-item>
+    </div>
+
+    <div class="input ion-margin-bottom">
+      <ion-label class="input-title">Password</ion-label>
+      <ion-item class="input-outline ion-no-margin" lines="none">
+        <ion-input [type]="'text'" [(ngModel)]="input.password"></ion-input>
+      </ion-item>
+      <small *ngIf="isEdit" class="ion-text-grey d-block mt-10px font-13">
+        <span>Abaikan Jika Tidak Ingin Merubah Password</span>
+      </small>
+      <small
+        class="ion-text-danger d-block mt-10px font-13"
+        *ngIf="formSubmitted && !isEdit && !input.password"
+      >
+        <span>Password Wajib Diisi</span>
+      </small>
+    </div>
+
+    <ion-row>
+      <ion-col size="12">
+        <div class="input ion-padding-bottom ion-margin-top">
+          <ion-label class="input-title">Foto Profil</ion-label>
+          <ion-row>
+            <ion-col *ngIf="image.file" size="3">
+              <div (click)="viewImage(image.file)" class="preview-img">
+                <div (click)="image.file = null" class="remove remove-img">
+                  <ng-icon name="heroXMarkSolid"></ng-icon>
+                </div>
+                <img
+                  class="img-profile"
+                  [src]="image.cloud ? (image.file | imgCld) : image.file"
+                />
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </ion-col>
+            <ion-col size="12" *ngIf="!image.file">
+              <div
+                (click)="onChooseGallery()"
+                class="add-multiple-photo ion-activatable"
+              >
+                <ng-icon size="25" name="lucidePlus"></ng-icon>
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="isEdit">
+      <ion-col size="12" class="flex-center" style="height: 55px">
+        <ion-toggle
+          mode="ios"
+          [(ngModel)]="input.is_active"
+          color="success"
+          labelPlacement="start"
+          >Aktif</ion-toggle
+        >
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
+<ion-toolbar class="common-toolbar" slot="end">
+  <ion-button
+    (click)="onSave()"
+    mode="ios"
+    expand="block"
+    color="primary"
+    shape="round"
+    [disabled]="formLoading"
+  >
+    <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+    <span *ngIf="!formLoading">{{ !isEdit ? 'Simpan' : 'Edit' }}</span>
+  </ion-button>
+</ion-toolbar>

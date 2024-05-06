@@ -1,0 +1,33 @@
+app-admins{
+    ion-item::part(native) {
+        padding-inline-start: 0!important;
+      }
+
+      ion-item{
+        ion-label{
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #686868;
+        }
+
+        span{
+            display: block;
+            margin-left: 5px;
+            color: #818181;
+            font-size: 14px;
+        }
+      }
+
+      ion-card{
+        box-shadow: -1px 3px 4px 4px #00000005;
+        // &::before {
+        //     content: '';
+        //     position: absolute;
+        //     background-color: #85C1E9;
+        //     width: 200px;
+        //     height: 90%;
+        //     bottom: 0;
+        //     left: -10px;
+        // }
+      }
+}

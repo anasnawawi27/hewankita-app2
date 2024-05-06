@@ -14,7 +14,8 @@ import mask from 'src/app/auth/register/mask';
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  providers: [ApiService]
 })
 export class ProfilePage implements OnInit {
 
@@ -125,7 +126,7 @@ export class ProfilePage implements OnInit {
 
     if(!this.image.cloud && this.image.file){
       try{
-        const upload: any = await this._uploadService.upload(this.image.file, 'pets');
+        const upload: any = await this._uploadService.upload(this.image.file, 'user');
         if(upload['error']){
           this.toast.error(upload['error']['message']);
           this.formLoading = false;

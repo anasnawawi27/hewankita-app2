@@ -1,0 +1,89 @@
+<ion-header mode="ios" class="common-header bg-white">
+  <div (click)="back()" slot="start" class="back left ion-activatable">
+    <ng-icon name="lucideChevronLeft"></ng-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+  <ion-title>Detail User Admin</ion-title>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ng-container *ngIf="!loading; else loader">
+    <ion-avatar
+      (click)="data.profile_image ? viewImage(data.profile_image) : null"
+    >
+      <img
+        [src]="data.profile_image ? (data.profile_image | imgCld ) :  'assets/images/avatar.svg'"
+      />
+    </ion-avatar>
+
+    <div class="detail-section">
+      <div class="flex-center ion-margin-vertical detail-heading">
+        <ng-icon size="20" name="heroUserCircle"></ng-icon>
+        <h5 class="ft-17 ion-text-bold">Detail Akun</h5>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Nama Lengkap</small>
+        <h6>{{ data.fullname }}</h6>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Nama Handphone</small>
+        <h6>{{ data.phone_number }}</h6>
+      </div>
+      <div class="detail ion-margin-top">
+        <small>Email</small>
+        <h6>{{ data.email }}</h6>
+      </div>
+      <div class="detail ion-margin-top border-bottom">
+        <small>Status</small>
+        <div class="flex-center mt-10px" style="margin-bottom: 20px">
+          <ng-icon
+            size="20"
+            [name]="data.is_active ? 'heroCheckCircle' : 'heroXCircle'"
+            [color]="data.is_active ? '#2dd36f' : '#eb445a'"
+          ></ng-icon>
+          <span class="ft-15 d-block ml-5px"
+            >{{ data.is_active ? 'Aktif' : 'Tidak Aktif' }}</span
+          >
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ion-content>
+<ion-toolbar *ngIf="!loading" class="common-toolbar" slot="end">
+  <ion-row>
+    <ion-col *ngIf="user.id !== data.id" size="6">
+      <ion-button
+        mode="ios"
+        expand="block"
+        fill="outline"
+        color="danger"
+        shape="round"
+        [disabled]="deleteLoading"
+        (click)="onDelete()"
+      >
+        Hapus
+      </ion-button>
+    </ion-col>
+    <ion-col [size]="user.id !== data.id ? '6' : '12'">
+      <ion-button
+        (click)="onEdit()"
+        mode="ios"
+        expand="block"
+        color="primary"
+        shape="round"
+      >
+        Edit
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-toolbar>
+
+<ng-template #loader>
+  <div class="ion-padding ion-text-center" style="margin-top: 300px">
+    <ion-spinner
+      color="secondary"
+      name="circles"
+      style="width: 50px; height: 50px"
+    ></ion-spinner>
+  </div>
+</ng-template>

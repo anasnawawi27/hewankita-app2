@@ -11,6 +11,8 @@ import { AddressPage } from './address/address.page';
 import { BannersPage } from './banners/banners.page';
 import { FormPage } from './banners/form/form.page';
 import { ChangePasswordPage } from './change-password/change-password.page';
+import { AdminsPage } from './admins/admins.page';
+import { DetailPage as DetailAdmins } from './admins/detail/detail.page';
 
 const routes: Routes = [
   {
@@ -52,6 +54,14 @@ const routes: Routes = [
   {
     path: 'change-password',
     component: ChangePasswordPage
+  },
+  {
+    path: 'admins',
+    component: AdminsPage
+  },
+  {
+    path: 'admins/detail/:id',
+    component: DetailAdmins
   },
 ];
 
