@@ -7,6 +7,7 @@ import { NgIconsModule } from '@ng-icons/core';
 import { lucideChevronLeft, lucideTrash2, lucideChevronRight } from '@ng-icons/lucide';
 import { heroTrash, heroPlus, heroMinus, heroXMark } from '@ng-icons/heroicons/outline';
 import { saxTickCircleBulk, saxLocationBulk } from '@ng-icons/iconsax/bulk';
+import { saxVerifyBold } from '@ng-icons/iconsax/bold';
 import { FavouritesPageRoutingModule } from './favourites-routing.module';
 import { CorePipesModule } from 'src/pipes/pipes.module';
 
@@ -16,7 +17,7 @@ import { CorePipesModule } from 'src/pipes/pipes.module';
     FormsModule,
     IonicModule,
     CorePipesModule,
-    NgIconsModule.withIcons({ lucideChevronLeft, saxTickCircleBulk, heroTrash, lucideTrash2, heroPlus, heroMinus, heroXMark, saxLocationBulk, lucideChevronRight }),
+    NgIconsModule.withIcons({ saxVerifyBold, lucideChevronLeft, saxTickCircleBulk, heroTrash, lucideTrash2, heroPlus, heroMinus, heroXMark, saxLocationBulk, lucideChevronRight }),
     FavouritesPageRoutingModule
   ],
   declarations: [FavouritesPage]

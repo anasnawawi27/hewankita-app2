@@ -92,7 +92,11 @@
       <h6>Terakhir dilihat</h6>
 
       <ion-row class="ion-margin-top" mode="ios">
-        <ion-col *ngFor="let last of latestSeen" size="6">
+        <ion-col
+          size="6"
+          *ngFor="let last of latestSeen; let i = index"
+          [style]="i % 2 == 0 ? 'padding-left: 0' : 'padding-right: 0'"
+        >
           <ion-card
             (click)="onViewdetail(last)"
             class="card-horizontal ion-activatable"
@@ -103,7 +107,7 @@
               </div>
               <div>
                 <div class="inner">
-                  <h6 class="name">{{ last.name }}</h6>
+                  <h6 class="name ft-14px">{{ last.name }}</h6>
                 </div>
               </div>
             </ion-card-content>
@@ -156,10 +160,18 @@
       >
         <ng-container *ngIf="!loading; else loader">
           <ion-row *ngIf="data.length">
-            <ion-col size="6" *ngFor="let d of data; let i = index">
+            <ion-col
+              size="6"
+              *ngFor="let d of data; let i = index"
+              [style]="i % 2 == 0 ? 'padding-left: 0' : 'padding-right: 0'"
+            >
               <ion-card class="card-horizontal">
                 <ion-card-content>
                   <div class="top">
+                    <div class="rating">
+                      <ion-icon size="15" name="star"></ion-icon>
+                      <span>{{ d.rating }}</span>
+                    </div>
                     <img
                       (click)="onViewdetail(d)"
                       [src]="(d.images | firstArray) | imgCld"
@@ -213,10 +225,10 @@
                           '').replace('KOTA', '').toLowerCase() }}</span
                         >
                       </div>
-                      <div class="rating">
+                      <!-- <div class="rating">
                         <span>{{ d.rating }}</span>
                         <ion-icon name="star" class="star"></ion-icon>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                   <ion-button

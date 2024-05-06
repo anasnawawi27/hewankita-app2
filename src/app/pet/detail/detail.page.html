@@ -12,13 +12,7 @@
         <div *ngIf="loading" class="swiper-slide">
           <ion-skeleton-text
             [animated]="true"
-            style="
-              width: 100%;
-              height: 454px;
-              border-radius: 0 0 15px 15px;
-              margin-bottom: 10px;
-              margin-top: -3px;
-            "
+            class="swiper-loader"
           ></ion-skeleton-text>
         </div>
         <ng-container *ngIf="!loading && data">
@@ -34,8 +28,8 @@
     </div>
 
     <div *ngIf="!loading" class="rating">
-      <span>{{ data.rating }}</span>
       <ion-icon name="star" class="star"></ion-icon>
+      <span>{{ data.rating }}</span>
     </div>
   </div>
 
@@ -47,7 +41,7 @@
           <div class="img-preview ion-activatable">
             <ion-skeleton-text
               [animated]="true"
-              style="width: 100%; height: 100%; border-radius: 10px; margin: 0"
+              class="swiper-preview"
             ></ion-skeleton-text>
           </div>
         </ng-template>
@@ -99,7 +93,7 @@
                 {{ data.discount_percent }}%
               </ng-container>
               <ng-container *ngIf="data.discount_type == 'amount'">
-                {{ (data.discount_amount / data.price) * 100 | number : '1.2-2'
+                {{ (data.discount_amount / data.price) * 100 | number : '1.0-0'
                 }}%
               </ng-container>
             </div>
@@ -113,7 +107,7 @@
       </div>
 
       <!-- Shop -->
-      <div class="shop">
+      <div class="shop p-10px">
         <div
           class="detail"
           [routerLink]="'/shop/detail/' + data.shop_id"
@@ -124,12 +118,13 @@
             [src]="data?.shop?.user?.profile_image ? (data?.shop?.user?.profile_image | imgCld) : 'assets/images/avatar.svg'"
           />
           <div class="name">
-            <h6>
-              {{ data.shop.name }}
+            <h6 class="flex-center">
+              <span> {{ data.shop.name }} </span>
               <ng-icon
                 *ngIf="data.shop.is_verified"
                 size="18"
-                name="saxTickCircleBulk"
+                name="saxVerifyBulk"
+                class="ml-5px"
               ></ng-icon>
             </h6>
             <p class="ion-text-capitalize">
@@ -193,7 +188,7 @@
       <div class="mt-40px">
         <h6 class="heading">Review</h6>
         <ng-container *ngIf="data.reviews.length; else noReview">
-          <ion-list class="review">
+          <ion-list class="review ion-margin-bottom">
             <ion-item *ngFor="let d of data.reviews">
               <ion-row>
                 <ion-col size="2">
@@ -204,16 +199,25 @@
                     />
                   </ion-avatar>
                 </ion-col>
-                <ion-col size="10">
+                <ion-col size="10" class="pl-0">
                   <div class="ion-padding-top">
                     <h6 class="fullname">{{ d.user.fullname }}</h6>
-                    <star-rating
-                      class="ion-margin-bottom"
-                      size="medium"
-                      [rating]="d.rating"
-                      staticColor="ok"
-                      [readOnly]="true"
-                    ></star-rating>
+                    <div class="flex-center justify-between">
+                      <star-rating
+                        size="medium"
+                        [rating]="d.rating"
+                        staticColor="ok"
+                        [readOnly]="true"
+                      ></star-rating>
+
+                      <div class="flex-center created">
+                        <ng-icon name="saxCalendar1Outline"></ng-icon>
+                        <span
+                          >{{ d.created_at | date: 'dd MMM yyyy &bullet; HH:mm'
+                          }}</span
+                        >
+                      </div>
+                    </div>
                     <div class="review-section">
                       <p>{{ d.review }}</p>
                     </div>
@@ -256,14 +260,14 @@
     </div>
   </ng-container>
 </ion-content>
-<ion-toolbar slot="end">
+<ion-toolbar slot="end" class="ion-padding-horizontal">
   <div class="toolbar-inner">
     <ion-button
-      style="width: 100%; margin-right: 10px"
       mode="ios"
       expand="block"
       color="primary"
       shape="round"
+      class="mr-10px w-100"
       (click)="checkOut()"
       [disabled]="loading || formLoading || !data?.stock "
     >

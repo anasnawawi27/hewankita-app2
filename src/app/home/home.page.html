@@ -5,18 +5,14 @@
       <span>Cari Peliharaan</span>
     </div>
     <div class="position-relative">
-      <span
-        *ngIf="notifCount"
-        class="unseen"
-        style="z-index: 4; text-align: center; right: 0px; top: 5px"
+      <span *ngIf="notifCount" class="unseen unseen-notif"
         >{{ notifCount }}</span
       >
       <div
         routerLink="/notifications"
         routerDirection="forward"
         slot="end"
-        class="action-header ion-activatable position-relative"
-        style="top: 0; margin-left: 15px"
+        class="action-header btn-notif ion-activatable position-relative"
       >
         <ng-icon
           color="#004D95"
@@ -36,7 +32,7 @@
   <swiper
     class="ion-margin-bottom swiper-banner"
     [slidesPerView]="1.2"
-    [spaceBetween]="5"
+    [spaceBetween]="3"
     [pagination]="true"
   >
     <ng-container *ngIf="!loading5; else loaderBanner">
@@ -44,15 +40,10 @@
         <ion-card
           mode="ios"
           (click)="banner = d; openBanner = true"
-          class="ion-no-margin ion-activatable"
-          style="margin: 10px !important; height: 150px"
+          class="ion-no-margin card-banner ion-activatable"
         >
           <ion-card-content class="ion-no-padding">
-            <img
-              [src]="d.image | imgCld"
-              alt="banner image"
-              style="height: 150px; width: 100%; object-fit: cover"
-            />
+            <img [src]="d.image | imgCld" alt="banner image" />
           </ion-card-content>
           <ion-ripple-effect></ion-ripple-effect>
         </ion-card>
@@ -63,14 +54,14 @@
       <ng-template swiperSlide *ngFor="let val of loop(4)">
         <ion-skeleton-text
           [animated]="true"
-          style="height: 150px; border-radius: 10px; margin-right: 10px"
+          class="loader-banner"
         ></ion-skeleton-text>
       </ng-template>
     </ng-template>
   </swiper>
 
   <div class="categories ion-margin-vertical">
-    <swiper [slidesPerView]="4.5" [spaceBetween]="10">
+    <swiper [slidesPerView]="4" [spaceBetween]="5">
       <ng-container *ngIf="!loading1; else loaderSegment">
         <ng-template swiperSlide>
           <div
@@ -98,7 +89,7 @@
         <ng-template swiperSlide *ngFor="let val of loop(4)">
           <ion-skeleton-text
             [animated]="true"
-            style="width: 100%; height: 40px; border-radius: 50px"
+            class="loader-segment"
           ></ion-skeleton-text>
         </ng-template>
       </ng-template>
@@ -113,11 +104,18 @@
       >
         <ion-card-content>
           <div class="inner">
-            <img
-              [routerLink]="'/pet/detail/' + pet.id"
-              class="thumb-img"
-              [src]="(pet.images | firstArray) | imgCld"
-            />
+            <div class="img-left">
+              <img
+                [routerLink]="'/pet/detail/' + pet.id"
+                class="thumb-img w-100"
+                [src]="(pet.images | firstArray) | imgCld"
+              />
+              <div class="rating">
+                <ion-icon size="15" name="star"></ion-icon>
+                <span>{{ pet.rating }}</span>
+              </div>
+            </div>
+
             <div class="right">
               <div class="top" [routerLink]="'/pet/detail/' + pet.id">
                 <h6 class="name">{{ pet.name }}</h6>
@@ -138,27 +136,23 @@
                   <p *ngIf="pet.discount_type" class="price-original">
                     {{ pet.price | currencyID }}
                   </p>
-                  <div
-                    *ngIf="pet.discount_type"
-                    style="padding: 3px 5px !important"
-                    class="badge-discount"
-                  >
+                  <div *ngIf="pet.discount_type" class="badge-discount">
                     <ng-container *ngIf="pet.discount_type == 'percent'">
                       {{ pet.discount_percent }}%
                     </ng-container>
                     <ng-container *ngIf="pet.discount_type == 'amount'">
                       {{ (pet.discount_amount / pet.price) * 100 | number :
-                      '1.2-2' }}%
+                      '1.0-0' }}%
                     </ng-container>
                   </div>
                 </div>
               </div>
               <div class="bottom">
                 <div class="detail" [routerLink]="'/pet/detail/' + pet.id">
-                  <div class="rating">
+                  <!-- <div class="rating">
                     <span>{{ pet.rating }}</span>
                     <ion-icon name="star" class="star"></ion-icon>
-                  </div>
+                  </div> -->
                   <div class="location">
                     <ng-icon class="map-icon" name="lucideMapPin"></ng-icon>
                     <span class="ion-text-capitalize"
@@ -277,8 +271,8 @@
                   >
                 </div>
                 <div class="rating">
-                  <span>{{ pet.rating }}</span>
                   <ion-icon name="star" class="star"></ion-icon>
+                  <span>{{ pet.rating }}</span>
                 </div>
               </div>
             </div>
@@ -371,8 +365,8 @@
                   >
                 </div>
                 <div class="rating">
-                  <span>{{ pet.rating }}</span>
                   <ion-icon name="star" class="star"></ion-icon>
+                  <span>{{ pet.rating }}</span>
                 </div>
               </div>
             </div>
@@ -488,21 +482,10 @@
         <ion-ripple-effect></ion-ripple-effect>
       </div>
     </ion-header>
-    <ion-content>
-      <img
-        style="width: 100%; height: 240px; object-fit: cover"
-        [src]="banner?.image ? (banner.image | imgCld) : ''"
-      />
+    <ion-content class="content-modal-banner">
+      <img [src]="banner?.image ? (banner.image | imgCld) : ''" />
       <div class="ion-padding">
-        <div
-          style="
-            text-align: justify;
-            font-size: 15px;
-            color: #818181;
-            line-height: 25px;
-          "
-          [innerText]="banner?.description"
-        ></div>
+        <div class="desc" [innerText]="banner?.description"></div>
       </div>
     </ion-content>
   </ng-template>

@@ -81,7 +81,7 @@ export class DetailPage implements OnInit {
         }}
       }); 
     }
-    setTimeout(init, 300)
+    setTimeout(init, 500)
     if(Object.keys(this.modalParams).length){
       if(this.modalParams?.pet_id){
         this.isModal = true;

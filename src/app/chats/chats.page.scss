@@ -2,4 +2,70 @@ app-chats{
     ion-skeleton-text{
         --border-radius: 50px;
     }
+
+    ion-item{
+        align-items: start;
+        --inner-padding-bottom: 0;
+        --inner-padding-end: 0;
+        --inner-padding-start: 0;
+        --inner-padding-top: 0;
+
+        &::part(native) {
+            padding-inline-start: 0;
+        }
+
+        ion-thumbnail{
+            border-radius: 50%; 
+            width: 45px; 
+            height: 45px; 
+            margin: 10px;
+
+            img{
+                border-radius: 50%
+            }
+        }
+
+        h6{
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #636363;
+        }
+
+        p{
+            width: 230px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+            font-size: 13px;
+            color: #818181;
+            margin-bottom: 5px;
+        }
+
+        .updated-at{
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #b2b2b2;
+            margin-bottom: 5px;
+        }
+
+        .unseen-chat{
+            background: var(--ion-color-primary);
+            color: white;
+            margin: 0 auto;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+    }
+
+
 }

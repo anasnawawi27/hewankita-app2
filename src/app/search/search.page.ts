@@ -117,14 +117,14 @@ export class SearchPage implements OnInit {
   }
 
   addFav(pet_id: number, index: number){
-    if(!this.isModal){
-      if(!Object.keys(this.user).length){
+    if(!Object.keys(this.user).length){
+      if(!this.isModal){
         this.navController.navigateForward('auth/login');
         return
+      } else {
+        this.showModalLogin();
+        return
       }
-    } else {
-      this.showModalLogin();
-      return
     }
 
     const type = this.data[index].favourite == null ? 'add' : 'delete';
@@ -142,14 +142,14 @@ export class SearchPage implements OnInit {
   }
 
   checkOut(pet_id: number, i:number, type: string){
-    if(!this.isModal){
-      if(!Object.keys(this.user).length){
+    if(!Object.keys(this.user).length){
+      if(!this.isModal){
         this.navController.navigateForward('auth/login');
         return
+      } else {
+        this.showModalLogin();
+        return
       }
-    } else {
-      this.showModalLogin();
-      return
     }
 
     if(this.data[i].formLoading) return

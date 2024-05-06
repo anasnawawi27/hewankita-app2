@@ -45,7 +45,7 @@
             <div class="right">
               <div class="top with-action">
                 <div>
-                  <h6 class="name">{{ pet.name }}</h6>
+                  <h6 class="name ft-14px">{{ pet.name }}</h6>
                   <div class="price">
                     <p>
                       <ng-container *ngIf="!pet.discount_type"
@@ -73,7 +73,7 @@
                       </ng-container>
                       <ng-container *ngIf="pet.discount_type == 'amount'">
                         {{ (pet.discount_amount / pet.price) * 100 | number :
-                        '1.2-2' }}%
+                        '1.0-0' }}%
                       </ng-container>
                     </div>
                   </div>
@@ -98,7 +98,7 @@
                     <ion-ripple-effect></ion-ripple-effect>
                   </div>
                 </div>
-                <div class="price-qty">
+                <div class="price-qty w-100 justify-end mr-10px">
                   <h6>{{ pet.total_price | currencyID }}</h6>
                 </div>
               </div>

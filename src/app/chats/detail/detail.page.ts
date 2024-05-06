@@ -111,7 +111,7 @@ export class DetailPage implements OnInit {
             const chat = res.data.header;
   
             let header = null;
-            this.sender_id= this.user.id
+            this.sender_id = this.user.id
   
             if(chat.sender_id == this.user.id){
               header = {
@@ -196,8 +196,7 @@ export class DetailPage implements OnInit {
     }, 300);
   }
 
-  isIntersecting(isOnScreen: any, data: any) {
-
+  isIntersecting(isOnScreen: any, data: any, index: number) {
     if(isOnScreen && !data.seen && this.user.id !== data.user_id){
       const payload = {
         chat_id: data.chat_id,
@@ -207,6 +206,7 @@ export class DetailPage implements OnInit {
         this._apiService.put('chat/seen', payload)
       ).then((res: any) => {
         if(res.statusCode == 200){
+          this.chats[index].seen = 1;
           console.log('seen chat updated !')
         }
       })

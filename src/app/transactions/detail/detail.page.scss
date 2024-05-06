@@ -89,4 +89,47 @@ transaction-detail{
             font-family: Gilroy !important;
         }
     }
+
+    .delivery-animation{
+        object-fit: cover;
+        object-position: center;
+        height: 100px;
+        width: 100%;
+    }
+
+    .shop-location{
+        color: #818181
+    }
+
+    .badge-discount{
+        padding: 3px 5px !important
+    }
+
+    .remove-img{
+        right: -10px !important
+    }
+
+    .img-payment, .img-delivered{
+        height: 100px !important; 
+        width: 100% !important
+    }
+
+    .rating-review{
+        width: 100% !important
+    }
+
+    .review-box{
+        padding: 10px;
+        background: #ececec;
+        border-left: 2px solid #a5a5a5;
+        font-size: 15px;
+        color: #818181;
+        font-weight: 600;
+    }
+
+    .input-heading{
+        font-size: 16px; 
+        font-weight: 600; 
+        color: #818181
+    }
 }

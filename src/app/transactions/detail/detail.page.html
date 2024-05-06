@@ -18,20 +18,12 @@
       {{ status[data.transaction.current_process_sort].label }}
     </div>
     <div *ngIf="data.transaction.current_process_sort == 8">
-      <img
-        style="
-          object-fit: cover;
-          object-position: center;
-          height: 100px;
-          width: 100%;
-        "
-        src="assets/gif/on-delivery.gif"
-      />
+      <img class="delivery-animation" src="assets/gif/on-delivery.gif" />
     </div>
 
     <div
       *ngIf="user.id !== data.transaction.shop.user_id"
-      class="shop shop-in-fav ion-no-margin ion-no-radius-top pr-10px"
+      class="shop shop-in-fav ion-no-margin ion-no-radius-top pr-10px pl-10px"
     >
       <div class="detail">
         <img
@@ -39,15 +31,17 @@
           [src]="data.transaction.shop.user.profile_image ? (data.transaction.shop.user.profile_image  | imgCld) : 'assets/images/avatar.svg'"
         />
         <div class="name">
-          <h6>
-            {{ data.transaction.shop.name }}
+          <h6 class="flex-center">
+            <span> {{ data.transaction.shop.name }} </span>
+
             <ng-icon
               *ngIf="data.transaction.shop.is_verified"
               size="18"
-              name="saxTickCircleBulk"
+              name="saxVerifyBold"
+              class="ml-5px"
             ></ng-icon>
           </h6>
-          <p style="color: #818181" class="ion-text-capitalize">
+          <p class="ion-text-capitalize shop-location">
             {{ data.transaction.shop.city.replace('KABUPATEN', '').toLowerCase()
             }}, {{ data.transaction.shop.province.toLowerCase() }}
           </p>
@@ -74,17 +68,13 @@
                   <p *ngIf="d.discount_type" class="price-original">
                     {{ d.original_price | currencyID }}
                   </p>
-                  <div
-                    *ngIf="d.discount_type"
-                    style="padding: 3px 5px !important"
-                    class="badge-discount"
-                  >
+                  <div *ngIf="d.discount_type" class="badge-discount">
                     <ng-container *ngIf="d.discount_type == 'percent'">
                       {{ d.discount_percent }}%
                     </ng-container>
                     <ng-container *ngIf="d.discount_type == 'amount'">
                       {{ (d.discount_amount / d.original_price) * 100 | number :
-                      '1.2-2' }}%
+                      '1.0-0' }}%
                     </ng-container>
                   </div>
                 </div>
@@ -321,13 +311,12 @@
                 <div
                   *ngIf="data.transaction.current_process_sort == 4 && user.level == 'user'"
                   (click)="paymentImage.file = null"
-                  class="remove"
-                  style="right: -10px !important"
+                  class="remove remove-img"
                 >
                   <ng-icon name="heroXMarkSolid"></ng-icon>
                 </div>
                 <img
-                  style="height: 100px !important; width: 100% !important"
+                  class="img-payment"
                   [src]="paymentImage.cloud ? (paymentImage.file | imgCld) : paymentImage.file"
                 />
                 <ion-ripple-effect></ion-ripple-effect>
@@ -367,13 +356,12 @@
                 <div
                   *ngIf="data.transaction.current_process_sort == 8 && user.level == 'shop'"
                   (click)="paymentImage.file = null"
-                  class="remove"
-                  style="right: -10px !important"
+                  class="remove remove-img"
                 >
                   <ng-icon name="heroXMarkSolid"></ng-icon>
                 </div>
                 <img
-                  style="height: 100px !important; width: 100% !important"
+                  class="img-delivered"
                   [src]="deliveredImage.cloud ? (deliveredImage.file | imgCld) : deliveredImage.file"
                 />
                 <ion-ripple-effect></ion-ripple-effect>
@@ -404,15 +392,14 @@
           <h3>Kasih rating yuk!</h3>
         </div>
         <star-rating
-          style="width: 100% !important"
-          class="ion-margin-bottom"
+          class="ion-margin-bottom rating-review"
           size="large"
           [rating]="rating"
           staticColor="ok"
           (starClickChange)="onClickRating($event)"
         ></star-rating>
 
-        <h6 style="margin-top: 30px">Review</h6>
+        <h6 class="mt-30px">Review</h6>
         <div class="input ion-margin-top ion-margin-bottom">
           <ion-item class="input-outline ion-no-margin" lines="none">
             <ion-textarea
@@ -423,13 +410,12 @@
             </ion-textarea>
           </ion-item>
         </div>
-        <h6 style="margin-top: 30px">Foto</h6>
+        <h6 class="mt-30px">Foto</h6>
         <ion-row class="ion-margin-bottom">
           <ion-col *ngFor="let image of reviewImages; let i = index" size="3">
             <div
               (click)="viewImage(image)"
-              class="preview-img"
-              style="overflow: visible !important"
+              class="preview-img overflow-visible"
             >
               <div (click)="reviewImages.splice(i, 1)" class="remove">
                 <ng-icon name="heroXMarkSolid"></ng-icon>
@@ -466,36 +452,21 @@
 
         <ng-container *ngIf="rating; else noReview">
           <star-rating
-            style="width: 100%"
-            class="ion-margin-bottom"
+            class="ion-margin-bottom rating-review"
             size="large"
             [rating]="rating"
             staticColor="ok"
             [readOnly]="true"
           ></star-rating>
 
-          <div
-            *ngIf="review"
-            class="review-box"
-            style="
-              padding: 10px;
-              background: #ececec;
-              border-left: 2px solid #a5a5a5;
-              font-size: 15px;
-              color: #818181;
-              font-weight: 600;
-            "
-          >
-            {{ review }}
-          </div>
+          <div *ngIf="review" class="review-box">{{ review }}</div>
 
-          <h6 style="margin-top: 30px">Foto</h6>
+          <h6 class="mt-30px">Foto</h6>
           <ion-row class="ion-margin-bottom">
             <ion-col *ngFor="let image of reviewImages; let i = index" size="3">
               <div
                 (click)="viewImage(image)"
-                class="preview-img"
-                style="overflow: visible !important"
+                class="preview-img overflow-visible"
               >
                 <img [src]="image.cloud ? (image.file | imgCld) : image.file" />
               </div>
@@ -729,9 +700,7 @@
 >
   <ng-template>
     <ion-content class="ion-padding">
-      <h5 style="font-size: 16px; font-weight: 600; color: #818181">
-        Ongkos Kirim
-      </h5>
+      <h5 class="input-heading">Ongkos Kirim</h5>
       <ion-item class="input-outline ion-no-margin" lines="none">
         <ion-input
           [(ngModel)]="shippingCost"
@@ -766,7 +735,7 @@
 >
   <ng-template>
     <ion-content class="ion-padding">
-      <h5 style="font-size: 16px; font-weight: 600; color: #818181">Note</h5>
+      <h5 class="input-heading">Note</h5>
       <ion-item class="input-outline ion-no-margin" lines="none">
         <ion-input
           type="text"

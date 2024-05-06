@@ -12,6 +12,7 @@ import { NgIconsModule } from '@ng-icons/core';
 import { lucideChevronLeft, lucideBan, lucideArrowDownWideNarrow, lucideArrowDownNarrowWide, lucideClock4, lucideTimer, lucideAlertCircle, lucideClock, lucideCheckCircle2, lucideCopy, lucidePlus } from '@ng-icons/lucide';
 import { heroClipboardDocumentCheck } from '@ng-icons/heroicons/outline'
 import { saxLocationBulk } from '@ng-icons/iconsax/bulk';
+import { saxVerifyBold } from '@ng-icons/iconsax/bold';
 import { saxPetOutline, saxArchiveBookOutline, saxCalendar1Outline, saxEmptyWalletTimeOutline, saxCardTick1Outline, saxTruckFastOutline, saxReceiptEditOutline } from '@ng-icons/iconsax/outline';
 import { CorePipesModule } from 'src/pipes/pipes.module';
 import { MaskitoDirective } from '@maskito/angular';
@@ -29,6 +30,7 @@ import { CountQtyPipe } from './count-qty.pipe';
     StarRatingModule.forRoot(),
     TransactionsPageRoutingModule,
     NgIconsModule.withIcons({ 
+      saxVerifyBold,
       lucideBan,
       saxArchiveBookOutline,
       saxEmptyWalletTimeOutline,

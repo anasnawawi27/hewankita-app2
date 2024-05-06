@@ -23,16 +23,25 @@
               />
             </ion-avatar>
           </ion-col>
-          <ion-col size="10">
+          <ion-col size="10" class="pl-0">
             <div class="ion-padding-top">
               <h6 class="fullname">{{ d.user.fullname }}</h6>
-              <star-rating
-                class="ion-margin-bottom"
-                size="medium"
-                [rating]="d.rating"
-                staticColor="ok"
-                [readOnly]="true"
-              ></star-rating>
+              <div class="flex-center justify-between">
+                <star-rating
+                  size="medium"
+                  [rating]="d.rating"
+                  staticColor="ok"
+                  [readOnly]="true"
+                ></star-rating>
+
+                <div class="flex-center created">
+                  <ng-icon name="saxCalendar1Outline"></ng-icon>
+                  <span
+                    >{{ d.created_at | date: 'dd MMM yyyy &bullet; HH:mm'
+                    }}</span
+                  >
+                </div>
+              </div>
               <div class="review-section">
                 <p>{{ d.review }}</p>
               </div>

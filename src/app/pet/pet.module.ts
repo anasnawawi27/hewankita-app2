@@ -7,7 +7,8 @@ import { PetPageRoutingModule } from './pet-routing.module';
 import { DetailPage } from './detail/detail.page';
 import { SwiperModule } from 'swiper/angular';
 import { lucideChevronLeft, lucidePlus, lucideChevronDown , lucideChevronsRight} from '@ng-icons/lucide';
-import { saxTickCircleBulk } from '@ng-icons/iconsax/bulk'
+import { saxTickCircleBulk, saxVerifyBulk } from '@ng-icons/iconsax/bulk'
+import { saxCalendar1Outline } from '@ng-icons/iconsax/outline';
 import { saxMessageBold } from '@ng-icons/iconsax/bold'
 import { heroXMarkSolid, heroCheckCircleSolid } from '@ng-icons/heroicons/solid'
 import { NgIconsModule } from '@ng-icons/core';
@@ -31,6 +32,8 @@ import { ReviewPage } from './review/review.page';
     CorePipesModule,
     StarRatingModule.forRoot(),
     NgIconsModule.withIcons({ 
+      saxCalendar1Outline,
+      saxVerifyBulk,
       lucideChevronsRight,
       lucideChevronLeft, 
       lucideChevronDown,

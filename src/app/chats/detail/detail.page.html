@@ -1,4 +1,7 @@
-<ion-header mode="ios" class="common-header header-transparent bg-primary">
+<ion-header
+  mode="ios"
+  class="common-header header-transparent bg-primary chat-header"
+>
   <div
     (click)="back()"
     style="background: transparent !important"
@@ -8,24 +11,15 @@
     <ng-icon name="lucideChevronLeft"></ng-icon>
     <ion-ripple-effect></ion-ripple-effect>
   </div>
-  <ion-title style="padding-left: 55px; padding-right: 0px">
-    <ion-item
-      style="padding-left: 0; --ion-item-background: transparent"
-      lines="none"
-    >
-      <ion-thumbnail
-        slot="start"
-        style="border-radius: 50%; width: 40px; height: 40px"
-      >
+  <ion-title>
+    <ion-item lines="none">
+      <ion-thumbnail slot="start">
         <img
-          style="border-radius: 50%; width: 40px; height: 40px"
           [src]="data.header.profile_image ? (data.header.profile_image | imgCld) : 'assets/images/avatar.svg'"
         />
       </ion-thumbnail>
       <div>
-        <h6 style="font-size: 17px; font-weight: 600; margin: 0; color: white">
-          {{ data.header.name }}
-        </h6>
+        <h6>{{ data.header.name }}</h6>
       </div>
     </ion-item>
   </ion-title>
@@ -58,7 +52,7 @@
         *ngFor="let d of chats; let i = index"
         class="chat"
         isOnScreen
-        (isIntersecting)="i + 1 == chats.length ? isIntersecting($event, d) : null"
+        (isIntersecting)="isIntersecting($event, d, i)"
         [isContinuous]="true"
         [class.chat-left]="user.id !== d.user_id"
       >
@@ -198,7 +192,7 @@
                   {{ pet.discount_percent }}%
                 </ng-container>
                 <ng-container *ngIf="pet.discount_type == 'amount'">
-                  {{ (pet.discount_amount / pet.price) * 100 | number : '1.2-2'
+                  {{ (pet.discount_amount / pet.price) * 100 | number : '1.0-0'
                   }}%
                 </ng-container>
               </div>

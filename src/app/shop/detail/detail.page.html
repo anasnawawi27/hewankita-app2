@@ -90,7 +90,7 @@
             <h6>Galeri</h6>
             <swiper
               class="ion-margin-top wrapper-gallery"
-              [slidesPerView]="3.5"
+              [slidesPerView]="3.2"
               [spaceBetween]="10"
               [pagination]="true"
             >
@@ -98,9 +98,9 @@
                 *ngFor="let gallery of data.galleries | convertArray"
                 swiperSlide
               >
-                <div class="img-galery ion-activatable">
+                <div class="img-galery w-100 ion-activatable">
                   <ion-ripple-effect></ion-ripple-effect>
-                  <img [src]="gallery | imgCld" />
+                  <img class="w-100" [src]="gallery | imgCld" />
                 </div>
               </ng-template>
             </swiper>
@@ -147,8 +147,8 @@
                   <div class="type ion-margin-top">
                     <div class="badge-type">{{ pet.category?.name }}</div>
                     <div class="rating">
-                      <span>{{ pet.rating }}</span>
                       <ion-icon name="star" class="star"></ion-icon>
+                      <span>{{ pet.rating }}</span>
                     </div>
                   </div>
                   <div class="inner">

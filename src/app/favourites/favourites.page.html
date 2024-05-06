@@ -10,19 +10,22 @@
   <ng-container *ngIf="!loading; else loader">
     <div class="fav-section" *ngIf="data.length">
       <ng-container *ngFor="let d of data; let i = index">
-        <div class="shop shop-in-fav ion-no-margin ion-no-radius-top pr-10px">
+        <div
+          class="shop shop-in-fav ion-no-margin ion-no-radius-top pr-10px pl-10px"
+        >
           <div class="detail">
             <img
               class="avatar"
               [src]="d.shop.user.profile_image ? (d.shop.user.profile_image | imgCld) : 'assets/images/avatar.svg'"
             />
             <div class="name">
-              <h6>
-                {{ d.shop.name }}
+              <h6 class="flex-center">
+                <span> {{ d.shop.name }} </span>
                 <ng-icon
                   *ngIf="d.shop.is_verified"
                   size="18"
-                  name="saxTickCircleBulk"
+                  name="saxVerifyBold"
+                  class="ml-5px"
                 ></ng-icon>
               </h6>
               <p class="ion-text-capitalize">
@@ -62,8 +65,8 @@
                 <div class="bottom">
                   <div class="detail" [routerLink]="'/pet/detail/'">
                     <div class="rating">
-                      <span>{{ pet.rating }}</span>
                       <ion-icon name="star" class="star"></ion-icon>
+                      <span>{{ pet.rating }}</span>
                     </div>
                   </div>
                   <div class="action">

@@ -47,46 +47,46 @@ app-transactions{
         padding: 0px;
 
         .inner-card{
-          padding: 10px 10px 10px 15px;
+          padding: 10px;
 
           .stack-img{
             position: relative;
 
             .front-img{
-              width: 85px;
-              height: 85px;
+              width: 75px;
+              height: 75px;
               position: relative;
-              z-index:2;
+              z-index: 2;
               border-radius: 10px;
 
               img{
-                width: 85px;
-                height: 85px;
+                width: 75px;
+                height: 75px;
                 object-fit: cover;
                 border-radius: 10px;
               }
             }
 
             .back-img{
-              width: 70px;
-              height: 70px;
+              width: 60px;
+              height: 60px;
               position: absolute;
-              bottom: 13px;
+              bottom: 17px;
               right: 8.5px;
               border-radius: 10px;
 
               .overlay{
                 background: #525252;
-                width: 70px;
-                height: 70px;
+                width: 60px;
+                height: 60px;
                 position: absolute;
                 opacity: 0.4;
                 border-radius: 10px;
               }
 
               img{
-                width: 70px;
-                height: 70px;
+                width: 60px;
+                height: 60px;
                 object-fit: cover;
                 border-radius: 10px;
               }
@@ -104,12 +104,13 @@ app-transactions{
             h6{
               font-weight: 600;
               color: grey;
+              font-size: 13px;
             }
 
             h5{
               font-weight: bold;
               color: var(--ion-color-primary);
-              font-size: 18px;
+              font-size: 16px;
             }
           }
         }
@@ -124,7 +125,7 @@ app-transactions{
             display: block;
             margin-left: 5px;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
           }
         }
       }
@@ -141,7 +142,16 @@ app-transactions{
     }
 
     ion-chip{
+      margin:0;
+      width: 65%;
       background: #efefef;
+
+      ion-label{
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
 }
 

@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   // apiUrl: 'http://192.168.190.43/api/',
-  apiUrl: 'http://127.0.0.1:8000/api/',
+  apiUrl: 'https://hewankita-api.aplikasinya.com/api/',
   chatUrl: 'http://localhost:4040/api/',
   encrypt: '090e49a56ead7eaef7794cfea2bdaef78098c3b474b62567e68e23b9dde3a74e',
   oneSignalAppId: '0223dd42-0ff3-475a-bfbe-b8a0f19207d1',
