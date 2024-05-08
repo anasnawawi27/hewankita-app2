@@ -201,7 +201,7 @@
   </ng-template>
 </ion-modal>
 
-<ion-modal [isOpen]="openModalCity">
+<ion-modal [isOpen]="openModalCity" (didDismiss)="openModalCity = false">
   <ng-template>
     <ion-header class="common-header bg-white">
       <ion-toolbar>
@@ -253,7 +253,7 @@
   </ng-template>
 </ion-modal>
 
-<ion-modal mode="ios" [isOpen]="isModalOpen">
+<ion-modal mode="ios" [isOpen]="isModalOpen" (didDismiss)="isModalOpen = false">
   <ng-template>
     <ion-header class="common-header bg-white">
       <ion-title>Potong Gambar</ion-title>

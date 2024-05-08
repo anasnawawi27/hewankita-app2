@@ -62,25 +62,6 @@ export class DetailPage implements OnInit {
   }
 
   ngOnInit() {
-    const init = () => {
-      const changeIndex = (index: number) => {
-        this.activeIndex = index
-      }
-      this.swiper = new Swiper('.swiper-pet', {
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true 
-        },
-        modules: [Navigation, Pagination],
-        slidesPerView: 1,
-        spaceBetween: 5,
-        on: { 
-          slideChange: function(e) {
-            changeIndex(e.realIndex)
-        }}
-      }); 
-    }
-    setTimeout(init, 500)
     if(Object.keys(this.modalParams).length){
       if(this.modalParams?.pet_id){
         this.isModal = true;
@@ -101,7 +82,27 @@ export class DetailPage implements OnInit {
     ).then((res) => {
       if(res.statusCode == 200){
         this.data = res.data;
-        this.totalSold = res.totalSold
+        this.totalSold = res.totalSold;
+
+        const init = () => {
+          const changeIndex = (index: number) => {
+            this.activeIndex = index
+          }
+          this.swiper = new Swiper('.swiper-pet', {
+            pagination: {
+              el: '.swiper-pagination',
+              clickable: true 
+            },
+            modules: [Navigation, Pagination],
+            slidesPerView: 1,
+            spaceBetween: 5,
+            on: { 
+              slideChange: function(e) {
+                changeIndex(e.realIndex)
+            }}
+          }); 
+        }
+        setTimeout(init, 500)
       }
     }).catch((err) => {
       this.toast.handleError(err)
@@ -115,15 +116,15 @@ export class DetailPage implements OnInit {
   }
 
   addFav(pet_id: number){
-    if(!this.isModal){
-      if(!Object.keys(this.user).length){
-        this.navController.navigateForward('auth/login');
-        return
+    if(!Object.keys(this.user).length){
+      if(!this.isModal){
+          this.navController.navigateForward('auth/login');
+          return
+      } else {
+          this.showModalLogin();
+          return
       }
-    } else {
-      this.showModalLogin();
-      return
-    }
+     }
 
     const type = this.data.favourite == null ? 'add' : 'delete';
     lastValueFrom(

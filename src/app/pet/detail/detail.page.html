@@ -18,6 +18,7 @@
         <ng-container *ngIf="!loading && data">
           <div
             class="swiper-slide"
+            (click)="viewImage(image)"
             *ngFor="let image of data.images | convertArray"
           >
             <img [src]="image | imgCld" />

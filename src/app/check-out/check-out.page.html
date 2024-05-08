@@ -178,7 +178,11 @@
   </div>
 </ng-template>
 
-<ion-modal mode="ios" [isOpen]="openModalAddress">
+<ion-modal
+  mode="ios"
+  [isOpen]="openModalAddress"
+  (didDismiss)="openModalAddress = false"
+>
   <ng-template>
     <ion-header class="common-header bg-white">
       <ion-title>Pilih Alamat</ion-title>

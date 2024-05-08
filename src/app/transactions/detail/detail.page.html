@@ -164,11 +164,11 @@
         <p class="ion-text-primary ion-text-bold ion-margin-bottom">
           Rekening Pembayaran
         </p>
-        <div class="flex ion-margin-top">
+        <div class="logo">
+          <img [src]="bankLogo" />
+        </div>
+        <div class="flex">
           <div class="section">
-            <div class="logo ion-margin-end">
-              <img [src]="bankLogo" />
-            </div>
             <div>
               <h6 class="ion-text-bold">No Rek. {{ bankAccountNum }}</h6>
               <h6 class="ion-text-bold">a.n. {{ bankAccountName }}</h6>
@@ -403,6 +403,7 @@
         <div class="input ion-margin-top ion-margin-bottom">
           <ion-item class="input-outline ion-no-margin" lines="none">
             <ion-textarea
+              class="pl-15px"
               [autoGrow]="true"
               [(ngModel)]="review"
               placeholder="Contoh: Peliharaan menggemaskan"
@@ -532,7 +533,7 @@
     </ion-button>
   </ion-toolbar>
   <ion-toolbar
-    *ngIf="data.transaction.current_process_sort == 4 && user.level == 'user'"
+    *ngIf="data.transaction.current_process_sort == 4 && user.level == 'user' && paymentImage.file"
     class="common-toolbar"
     slot="end"
   >
@@ -561,6 +562,7 @@
           color="danger"
           fill="outline"
           shape="round"
+          [disabled]="formLoading"
           (click)="cancelMessage = 'Tolak Pembayaran Transaksi'; cancelType = 'verification_payment_failed'; openModal2 = true"
           >Reject Pembayaran
         </ion-button>
@@ -571,8 +573,11 @@
           expand="block"
           color="primary"
           shape="round"
+          [disabled]="formLoading"
           (click)="onVerifyPayment()"
-          >Approve Pembayaran
+        >
+          <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
+          <span *ngIf="!formLoading">Approve Pembayaran</span>
         </ion-button>
       </ion-col>
     </ion-row>

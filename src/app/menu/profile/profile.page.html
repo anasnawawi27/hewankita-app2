@@ -140,7 +140,7 @@
   </div>
 </ng-template>
 
-<ion-modal [isOpen]="openForm" [backdropDismiss]="false" [mode]="'ios'">
+<ion-modal [isOpen]="openForm" [mode]="'ios'" (didDismiss)="openForm = false">
   <ng-template>
     <ion-header mode="ios" class="common-header bg-white">
       <div

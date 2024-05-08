@@ -469,7 +469,11 @@
   </ion-card>
 </ng-template>
 
-<ion-modal [isOpen]="openBanner" [mode]="'ios'">
+<ion-modal
+  [isOpen]="openBanner"
+  [mode]="'ios'"
+  (didDismiss)="openBanner = false"
+>
   <ng-template>
     <ion-header class="common-header bg-white">
       <ion-title> {{ banner?.title }}</ion-title>

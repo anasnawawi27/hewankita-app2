@@ -118,6 +118,7 @@ export class HomePage implements OnInit {
   }
 
   getBanners(){
+    this.loading5 = true;
     lastValueFrom(
       this._apiService.get('banners', {})
     ).then((res) => {

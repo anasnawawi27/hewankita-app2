@@ -117,7 +117,7 @@
   </div>
 </ng-template>
 
-<ion-modal [isOpen]="openModalBank">
+<ion-modal [isOpen]="openModalBank" (didDismiss)="openModalBank = false">
   <ng-template>
     <ion-header class="common-header bg-white">
       <ion-toolbar>
