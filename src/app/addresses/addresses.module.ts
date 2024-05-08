@@ -11,12 +11,14 @@ import { heroXMark } from '@ng-icons/heroicons/outline';
 import { saxLocationBulk } from '@ng-icons/iconsax/bulk';
 import { NgIconsModule } from '@ng-icons/core';
 import { FormPage } from './form/form.page';
+import { MaskitoDirective } from '@maskito/angular';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    MaskitoDirective,
     AddressesPageRoutingModule,
     NgIconsModule.withIcons({ lucideChevronLeft, heroXMark, saxLocationBulk }),
   ],

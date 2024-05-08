@@ -51,7 +51,11 @@
     <div class="input ion-margin-bottom">
       <ion-label class="input-title">No Hp Penerima</ion-label>
       <ion-item class="input-outline ion-no-margin" lines="none">
-        <ion-input [type]="'text'" [(ngModel)]="receiver_phone"></ion-input>
+        <ion-input
+          [maskito]="maskOptions"
+          [maskitoElement]="maskPredicate"
+          [(ngModel)]="receiver_phone"
+        ></ion-input>
       </ion-item>
       <small
         class="ion-text-danger d-block mt-10px font-13"

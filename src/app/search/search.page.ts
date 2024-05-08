@@ -326,8 +326,9 @@ export class SearchPage implements OnInit {
 
     await modal.present();
     await modal.onDidDismiss().then((o) => {
-      if(o.data?.reloadUser){
-        this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
+      if(o.data?.redirectHome){
+        this.navController.navigateForward('/home');
+        // this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
       }
     })
   }

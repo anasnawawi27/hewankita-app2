@@ -86,6 +86,13 @@ export class RegisterPage implements OnInit {
             }
           })
           await modal.present();
+          await modal.onDidDismiss().then((o) => {
+            if(this.isModal){
+              this.modalController.dismiss()
+            }
+          })
+
+
         } else {
           this.toast.error(res.message);
         }

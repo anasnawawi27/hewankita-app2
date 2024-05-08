@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { MaskitoElementPredicate, MaskitoOptions } from '@maskito/core';
 import { lastValueFrom } from 'rxjs';
+import mask from 'src/app/auth/register/mask';
 import { ApiService } from 'src/services/api.service';
 import { ToastService } from 'src/services/toast.service';
 
@@ -11,6 +13,9 @@ import { ToastService } from 'src/services/toast.service';
   providers: [ApiService]
 })
 export class FormPage implements OnInit {
+  readonly maskOptions: MaskitoOptions = mask;
+  readonly maskPredicate: MaskitoElementPredicate = (el) => (el as HTMLIonInputElement).getInputElement();
+
   private endoint: string = 'address';
 
   public label: string = '';

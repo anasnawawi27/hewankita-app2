@@ -73,7 +73,8 @@ export class LoginPage implements OnInit {
           if(!this.isModal){
             this.navController.navigateForward('/home');
           } else {
-            this.modalController.dismiss({ reloadUser: true });
+            // this.modalController.dismiss({ reloadUser: true });
+            this.modalController.dismiss({ redirectHome: true });
           }
           
         } else {
@@ -113,6 +114,12 @@ export class LoginPage implements OnInit {
       })
 
       await modal.present();
+      await modal.onDidDismiss().then((o) => {
+        if(this.isModal){
+          // this.modalController.dismiss({ reloadUser: true })
+          this.modalController.dismiss({ redirectHome: true })
+        }
+      })
     }
   }
 
