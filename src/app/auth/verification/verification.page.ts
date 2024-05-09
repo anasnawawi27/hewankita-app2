@@ -7,6 +7,7 @@ import { ToastService } from 'src/services/toast.service';
 
 import * as _ from 'lodash';
 import { EncryptionService } from 'src/services/encription.service';
+import { Device } from '@capacitor/device';
 
 @Component({
   selector: 'app-verification',
@@ -36,6 +37,8 @@ export class VerificationPage implements OnInit {
   fullname: string = '';
   email: string = '';
 
+  public deviceId: any;
+
   constructor(
     private toast: ToastService,
     private _apiService: ApiService,
@@ -46,6 +49,11 @@ export class VerificationPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getDeviceId();
+  }
+
+  async getDeviceId() {
+    this.deviceId = await Device.getId();
   }
 
   ionViewDidEnter() {
@@ -67,7 +75,7 @@ export class VerificationPage implements OnInit {
 
     this.formLoading = true;
     lastValueFrom(
-      this._apiService.post(this.endpoint, { verification_code: otp })
+      this._apiService.post(this.endpoint, { verification_code: otp, device_id: this.deviceId.identifier })
     ).then((res) => {
       if(res.statusCode == 200){
 

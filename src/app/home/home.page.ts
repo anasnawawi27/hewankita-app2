@@ -11,6 +11,9 @@ import { environment } from 'src/environments/environment';
 import { SearchPage } from '../search/search.page';
 import { FavCountService } from 'src/services/fav-count.service';
 import { PusherService } from 'src/services/pusher.service';
+import { Device } from '@capacitor/device';
+import { LoginPage } from '../auth/login/login.page';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -41,7 +44,10 @@ export class HomePage implements OnInit {
   public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
   public notifCount: number = 0;
 
+  public deviceId: any;
+
   constructor(
+    private _router: Router,
     private pusherService: PusherService,
     private favService: FavCountService,
     private navController: NavController,
@@ -53,9 +59,20 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
+    this.listenDeviceEvent();
+    this.listenNotifications();
+
+    if(localStorage.getItem('notification-count')){
+      this.notifCount = parseInt(JSON.parse(localStorage.getItem('notification-count') || '0'))
+    }
+  }
+
+  listenNotifications(){
     if(Object.keys(this.user).length){
       this.pusherService.channel.bind('notificationsUser-' + (this.user.level == 'admin' ? 'admin' : this.user.id), (d: any) => {
         this.notifCount = d.data;
+        localStorage.setItem('notification-count', JSON.stringify(this.notifCount))
+        
         if(d.additional){
           const banner = d.additional;
           const exist = _.find(this.banners, (o) => o.id == banner.id);
@@ -70,6 +87,36 @@ export class HomePage implements OnInit {
           } else {
             if(banner.display) this.banners.unshift(banner)
           }
+        }
+      });
+    }
+  }
+
+  //fungsi untuk listen trigger reload
+  async listenDeviceEvent(){
+    if(!Object.keys(this.user).length){
+      this.deviceId = await Device.getId();
+
+      this.pusherService.channel.bind('event-device-' + this.deviceId.identifier, (d: any) => {
+        console.warn('event ' + d.data)
+        if(d.data == 'reload'){
+          const currentURL = this._router.url.substring(1);
+          this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}')
+          if(currentURL == 'home'){
+            this.initEverything();
+          }
+
+          this.listenNotifications();
+        } else {
+          this.initEverything();
+        }
+      });
+
+      this.pusherService.channel.bind('update-badge-' + this.deviceId.identifier, (d: any) => {
+        if(d.data){
+          const data = JSON.parse(d.data);
+          this.notifCount = data.notifCount
+          localStorage.setItem('notification-count', JSON.stringify(this.notifCount))
         }
       });
     }
@@ -97,9 +144,15 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidEnter(){
-    this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}')
     if(Object.keys(this.user).length){
       this.refresh();
+    }
+    this.initEverything();
+  }
+
+  initEverything(){
+    this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}')
+    if(Object.keys(this.user).length){
       this.getNotifCount();
     }
     this.getCategories();
@@ -225,12 +278,7 @@ export class HomePage implements OnInit {
     return new Array(length)
   }
 
-  addFav(pet_id: number, index: number, typeParam: string){
-    if(!Object.keys(this.user).length){
-      this.navController.navigateForward('auth/login');
-      return
-    }
-
+  async onFavourite(pet_id: number, index: number, typeParam: string){
     let type = '';
     if(typeParam == 'category'){
       type = this.petsByCategory[index].favourite == null ? 'add' : 'delete';
@@ -242,8 +290,37 @@ export class HomePage implements OnInit {
       type = this.petsCheapest[index].favourite == null ? 'add' : 'delete';
     }
 
+    if(!Object.keys(this.user).length){
+      const modal = await this.modalController.create({
+        mode: 'ios',
+        component: LoginPage,
+        componentProps: { isModal: true }
+      })
+  
+      await modal.present();
+      await modal.onDidDismiss().then(async (o) => {
+        if(o.data?.authenticate){
+          this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}')
+          this.deviceId = await Device.getId();
+          this.addFav(pet_id, index, type, typeParam, this.user.id, this.deviceId.identifier)
+        }
+      })
+
+      return
+    }
+
+    this.addFav(pet_id, index, type, typeParam, this.user.id)
+
+  }
+
+  addFav(pet_id: number, index: number, type: string, typeParam: string, user_id = '', device_id = ''){
+
+    const payload: any = { type, pet_id }
+    if(user_id) payload['user_id'] = user_id
+    if(device_id) payload['device_id'] = device_id
+
     lastValueFrom(
-      this._apiService.post('favourite', { type, pet_id })
+      this._apiService.post('favourite', payload)
     ).then((res) => {
       if(res.statusCode == 200){
 
@@ -265,19 +342,44 @@ export class HomePage implements OnInit {
     })
   }
 
-  checkOut(pet_id: number, i:number, type: string){
+  async onCheckOut(pet_id: number, i:number, type: string){
     if(!Object.keys(this.user).length){
-      this.navController.navigateForward('auth/login');
+      const modal = await this.modalController.create({
+        mode: 'ios',
+        component: LoginPage,
+        componentProps: { isModal: true }
+      })
+  
+      await modal.present();
+      await modal.onDidDismiss().then(async (o) => {
+        if(o.data?.authenticate){
+          this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}')
+          this.deviceId = await Device.getId();
+          this.toast.loading('Mohon Tunggu...')
+          this.checkOut(pet_id, i, type, this.deviceId.identifier)
+        }
+      })
       return
     }
 
+    this.checkOut(pet_id, i, type)
+
+  }
+
+  checkOut(pet_id: number, i:number, type: string, device_id = ''){
     if(this.petsByCategory[i].formLoading) return
     if(type == 'category') this.petsByCategory[i].formLoading = true;
     if(type == 'latest') this.petsLatestAdd[i].formLoading = true;
     if(type == 'cheapest') this.petsCheapest[i].formLoading = true;
 
+    const payload: any = { pet_ids: JSON.stringify([pet_id]) };
+    if(device_id){
+      payload['device_id'] = device_id
+      payload['user_id'] = this.user.id
+    } 
+
     lastValueFrom(
-      this._apiService.post('check-out', { pet_ids: JSON.stringify([pet_id]) })
+      this._apiService.post('check-out', payload)
     ).then((res) => {
       if(res.statusCode == 200){
         this.showCheckOutModal(res.data)
@@ -288,8 +390,9 @@ export class HomePage implements OnInit {
       if(type == 'category') this.petsByCategory[i].formLoading = false;
       if(type == 'latest') this.petsLatestAdd[i].formLoading = false;
       if(type == 'cheapest') this.petsCheapest[i].formLoading = false;
-    })
 
+      if(device_id) this.toast.close('loading')
+    })
   }
 
   async showCheckOutModal(data:any){
@@ -318,6 +421,13 @@ export class HomePage implements OnInit {
     })
 
     await modal.present();
+    await modal.onDidDismiss().then((o) => {
+      if(o.data?.reloadUser){
+        this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
+        this.initEverything();
+        this.listenNotifications();
+      }
+    })
   }
 
   refresh(event: any = null){
@@ -353,9 +463,11 @@ export class HomePage implements OnInit {
     ).then((res) => {
       if(res.statusCode == 200){
         this.notifCount = res.data
+        localStorage.setItem('notification-count', JSON.stringify(this.notifCount))
       }
     }).catch((err) => {
       this.toast.handleError(err)
     })
   }
+
 }

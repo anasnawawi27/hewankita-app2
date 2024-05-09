@@ -12,6 +12,7 @@ import { SelectAdminPage } from './select-admin/select-admin.page';
   templateUrl: './check-out.page.html',
   styleUrls: ['./check-out.page.scss'],
   encapsulation: ViewEncapsulation.None,
+  providers: [ApiService]
 })
 export class CheckOutPage implements OnInit {
 

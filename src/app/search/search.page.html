@@ -177,7 +177,7 @@
                       [src]="(d.images | firstArray) | imgCld"
                     />
                     <div
-                      (click)="addFav(d.id, i)"
+                      (click)="onFavourite(d.id, i)"
                       class="add-fav ion-activatable"
                     >
                       <ion-icon
@@ -236,7 +236,7 @@
                     size="small"
                     expand="block"
                     [disabled]="d.formLoading"
-                    (click)="checkOut(d.id, i, 'latest')"
+                    (click)="onCheckOut(d.id, i)"
                   >
                     <ion-spinner
                       *ngIf="d.formLoading"

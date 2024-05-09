@@ -163,7 +163,7 @@
                 </div>
                 <div class="action">
                   <div
-                    (click)="addFav(pet.id, i, 'category')"
+                    (click)="onFavourite(pet.id, i, 'category')"
                     class="add-fav ion-activatable"
                   >
                     <ion-icon
@@ -173,7 +173,7 @@
                     <ion-ripple-effect></ion-ripple-effect>
                   </div>
                   <div
-                    (click)="checkOut(pet.id, i, 'category')"
+                    (click)="onCheckOut(pet.id, i, 'category')"
                     class="buy-icon-only ion-activatable"
                   >
                     <ng-icon
@@ -222,7 +222,7 @@
                 [src]="(pet.images | firstArray) | imgCld"
               />
               <div
-                (click)="addFav(pet.id, i, 'latest')"
+                (click)="onFavourite(pet.id, i, 'latest')"
                 class="add-fav ion-activatable"
               >
                 <ion-icon
@@ -281,7 +281,7 @@
               size="small"
               expand="block"
               [disabled]="pet.formLoading"
-              (click)="checkOut(pet.id, i, 'latest')"
+              (click)="onCheckOut(pet.id, i, 'latest')"
             >
               <ion-spinner
                 *ngIf="pet.formLoading"
@@ -316,7 +316,7 @@
                 [src]="(pet.images | firstArray) | imgCld"
               />
               <div
-                (click)="addFav(pet.id, i, 'cheapest')"
+                (click)="onFavourite(pet.id, i, 'cheapest')"
                 class="add-fav ion-activatable"
               >
                 <ion-icon
@@ -375,7 +375,7 @@
               size="small"
               expand="block"
               [disabled]="pet.formLoading"
-              (click)="checkOut(pet.id, i, 'cheapest')"
+              (click)="onCheckOut(pet.id, i, 'cheapest')"
             >
               <ion-spinner
                 *ngIf="pet.formLoading"

@@ -142,7 +142,11 @@ export class DetailPage implements OnInit {
 
   onSend(){
     if(this.formLoading) return
-    if(!this.message) this.toast.warning('Silahkan isi pesan');
+    
+    if(!this.message){
+      this.toast.warning('Silahkan isi pesan');
+      return
+    } 
     this.formLoading = true;
     const payload: any = {
       sender_id: this.sender_id,

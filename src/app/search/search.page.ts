@@ -1,12 +1,15 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { IonInput, ModalController, NavController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/services/api.service';
 import { ToastService } from 'src/services/toast.service';
+
 import * as _ from 'lodash';
+
 import { CheckOutPage } from '../check-out/check-out.page';
 import { DetailPage } from '../pet/detail/detail.page';
 import { LoginPage } from '../auth/login/login.page';
+import { Device } from '@capacitor/device';
 
 @Component({
   selector: 'app-search',
@@ -116,20 +119,43 @@ export class SearchPage implements OnInit {
     }
   }
 
-  addFav(pet_id: number, index: number){
+  async onFavourite(pet_id: number, index: number){
     if(!Object.keys(this.user).length){
-      if(!this.isModal){
-        this.navController.navigateForward('auth/login');
-        return
-      } else {
-        this.showModalLogin();
-        return
-      }
+      const modal = await this.modalController.create({
+        mode: 'ios',
+        component: LoginPage,
+        componentProps: { isModal: true }
+      })
+  
+      await modal.present();
+      await modal.onDidDismiss().then(async (o) => {
+        if(o.data?.authenticate){
+          console.warn('Search ' + o.data?.authenticate)
+          this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
+          const deviceId = await Device.getId();
+
+          this.addFav(pet_id, index, this.user.id, deviceId.identifier);
+        }
+      })
+
+      return
     }
 
+    this.addFav(pet_id, index, this.user.id);
+
+  }
+
+  addFav(pet_id: number, index: number, user_id = '', device_id = ''){
+    this.toast.loading('Mohon Tunggu...');
+
     const type = this.data[index].favourite == null ? 'add' : 'delete';
+    const payload: any = { type, pet_id }
+
+    if(user_id) payload['user_id'] = user_id
+    if(device_id) payload['device_id'] = device_id
+
     lastValueFrom(
-      this._apiService.post('favourite', { type, pet_id })
+      this._apiService.post('favourite', payload)
     ).then((res) => {
       if(res.statusCode == 200){
 
@@ -138,25 +164,49 @@ export class SearchPage implements OnInit {
       }
     }).catch((err) => {
       this.toast.handleError(err)
+    }).finally(() => {
+      this.toast.close('loading')
     })
   }
 
-  checkOut(pet_id: number, i:number, type: string){
+  async onCheckOut(pet_id: number, i:number,){
     if(!Object.keys(this.user).length){
-      if(!this.isModal){
-        this.navController.navigateForward('auth/login');
-        return
-      } else {
-        this.showModalLogin();
-        return
-      }
+      const modal = await this.modalController.create({
+        mode: 'ios',
+        component: LoginPage,
+        componentProps: { isModal: true }
+      })
+  
+      await modal.present();
+      await modal.onDidDismiss().then(async (o) => {
+        if(o.data?.authenticate){
+          this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
+          const deviceId = await Device.getId();
+
+          this.checkOut(pet_id, i, deviceId.identifier);
+        }
+      })
+
+      return
     }
 
+    this.checkOut(pet_id, i);
+
+  }
+
+  checkOut(pet_id: number, i: number, device_id = ''){
     if(this.data[i].formLoading) return
     this.data[i].formLoading = true;
 
+    const payload: any = { pet_ids: JSON.stringify([pet_id]) }
+    payload['user_id'] = this.user.id
+
+    if(device_id){
+      payload['device_id'] = device_id 
+    }
+
     lastValueFrom(
-      this._apiService.post('check-out', { pet_ids: JSON.stringify([pet_id]) })
+      this._apiService.post('check-out', payload)
     ).then((res) => {
       if(res.statusCode == 200){
         this.showCheckOutModal(res.data)
@@ -166,7 +216,6 @@ export class SearchPage implements OnInit {
     }).finally(() => {
       this.data[i].formLoading = false;
     })
-
   }
 
   loop(length: number){
@@ -315,22 +364,6 @@ export class SearchPage implements OnInit {
     } else {
       this.modalController.dismiss()
     }
-  }
-
-  async showModalLogin(){
-    const modal = await this.modalController.create({
-      mode: 'ios',
-      component: LoginPage,
-      componentProps: { isModal: true }
-    })
-
-    await modal.present();
-    await modal.onDidDismiss().then((o) => {
-      if(o.data?.redirectHome){
-        this.navController.navigateForward('/home');
-        // this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
-      }
-    })
   }
 
 }

@@ -8,8 +8,7 @@ import { lastValueFrom } from 'rxjs';
 import * as _ from  'lodash';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password.page';
 import { RegisterPage } from '../register/register.page';
-import { environment } from 'src/environments/environment';
-import { Capacitor } from '@capacitor/core';
+import { Device } from '@capacitor/device';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +22,7 @@ export class LoginPage implements OnInit {
   private endpoint: string = 'auth/login';
   public email: string = '';
   public password: string = '';
+  public deviceId: any;
   public showPassword: boolean = false;
   public formLoading: boolean = false;
   public isGuest: boolean = JSON.parse(localStorage.getItem('isGuestHewanKita') || 'false')
@@ -36,10 +36,14 @@ export class LoginPage implements OnInit {
     private _encryptionService: EncryptionService,
     private toast: ToastService
   ) {
-
-   }
+  }
 
   ngOnInit() {
+    this.getDeviceId();
+  }
+
+  async getDeviceId() {
+    this.deviceId = await Device.getId();
   }
 
   onSubmit() {
@@ -52,7 +56,7 @@ export class LoginPage implements OnInit {
     lastValueFrom(
       this._apiService.post(
         this.endpoint,
-        { email: this.email, password: this.password },
+        { email: this.email, password: this.password, device_id: this.deviceId.identifier },
         false
       )
     )
@@ -73,8 +77,7 @@ export class LoginPage implements OnInit {
           if(!this.isModal){
             this.navController.navigateForward('/home');
           } else {
-            // this.modalController.dismiss({ reloadUser: true });
-            this.modalController.dismiss({ redirectHome: true });
+            this.modalController.dismiss({ authenticate: true });
           }
           
         } else {
@@ -117,7 +120,7 @@ export class LoginPage implements OnInit {
       await modal.onDidDismiss().then((o) => {
         if(this.isModal){
           // this.modalController.dismiss({ reloadUser: true })
-          this.modalController.dismiss({ redirectHome: true })
+          this.modalController.dismiss({ authenticate: true })
         }
       })
     }

@@ -76,6 +76,9 @@ export class MenuPage implements OnInit {
           localStorage.removeItem('isLoginHewanKita');
           localStorage.removeItem('token');
           localStorage.removeItem('hewanKitaUserMobile');
+          localStorage.removeItem('unseen-message-count');
+          localStorage.removeItem('favourite-count');
+          localStorage.removeItem('notification-count');
 
           this.toast.success(res.message);
           this.navController.navigateForward('/auth/login');

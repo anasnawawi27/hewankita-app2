@@ -109,11 +109,7 @@
 
       <!-- Shop -->
       <div class="shop p-10px">
-        <div
-          class="detail"
-          [routerLink]="'/shop/detail/' + data.shop_id"
-          routerDirection="forward"
-        >
+        <div class="detail" (click)="onViewShop(data.shop_id)">
           <img
             class="avatar"
             [src]="data?.shop?.user?.profile_image ? (data?.shop?.user?.profile_image | imgCld) : 'assets/images/avatar.svg'"
@@ -269,7 +265,7 @@
       color="primary"
       shape="round"
       class="mr-10px w-100"
-      (click)="checkOut()"
+      (click)="onCheckOut()"
       [disabled]="loading || formLoading || !data?.stock "
     >
       <ion-spinner *ngIf="formLoading" name="crescent"></ion-spinner>
@@ -277,7 +273,7 @@
         >{{ !data?.stock ? 'Stok Pet Kosong' : 'Beli Sekarang' }}</span
       >
     </ion-button>
-    <div (click)="addFav(data?.id)" class="add-fav ion-activatable">
+    <div (click)="onFavourite(data?.id)" class="add-fav ion-activatable">
       <ion-icon
         color="danger"
         [name]=" !data?.favourite ? 'heart-outline' : 'heart'"
