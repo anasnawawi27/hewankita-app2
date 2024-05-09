@@ -16,6 +16,7 @@ import { StarRatingConfigService } from 'angular-star-rating';
 import { LoginPage } from 'src/app/auth/login/login.page';
 import { CheckOutPage } from 'src/app/check-out/check-out.page';
 import { Device } from '@capacitor/device';
+import { DetailPage as DetailShopPage } from 'src/app/shop/detail/detail.page';
 
 Swiper.use([Navigation, Pagination]);
 
@@ -302,11 +303,17 @@ export class DetailPage implements OnInit {
     await modal.present();
   }
 
-  onViewShop(shop_id: number){
+  async onViewShop(shop_id: number){
     if(!this.isModal){
       this.navController.navigateForward('/shop/detail/' + shop_id)
     } else {
-      
+      const modal = await this.modalController.create({
+        mode: 'ios',
+        component: DetailShopPage,
+        componentProps: { isModal: true, shop_id }
+      })
+  
+      await modal.present();
     }
   }
 

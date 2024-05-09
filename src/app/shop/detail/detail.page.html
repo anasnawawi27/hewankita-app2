@@ -6,8 +6,7 @@
   <ion-title>Detail Shop</ion-title>
   <div
     *ngIf="!loading && data?.id == user?.shop?.id"
-    [routerLink]="'/shop/form/' + data.id"
-    routerDirection="forward"
+    (click)="onEditShop(data.id)"
     slot="start"
     class="action-header right ion-activatable"
   >
@@ -111,11 +110,15 @@
   </ng-container>
 
   <div class="ion-padding">
+    <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
     <div class="heading">
       <h5 class="ion-margin-bottom">Daftar Pet</h5>
       <ion-button
         *ngIf="!loading && data?.id == user?.shop?.id"
-        [routerLink]="'/pet/form/' + data?.id"
+        (click)="onCreate()"
         [disabled]="loading"
         class="add-pet"
         >Tambah &nbsp;<ng-icon size="20" name="lucidePlus"></ng-icon
@@ -133,7 +136,8 @@
                     [src]="(pet.images | firstArray) | imgCld"
                   />
                   <div
-                    (click)="addFav(pet.id, i)"
+                    *ngIf="data?.id !== user?.shop?.id"
+                    (click)="onFavourite(pet.id, i)"
                     class="add-fav ion-activatable"
                   >
                     <ion-icon
@@ -191,23 +195,34 @@
                 <ion-row *ngIf="data?.id == user?.shop?.id; else buy">
                   <ion-col size="6" class="ion-no-padding">
                     <ion-button
-                      [routerLink]="'/pet/form/' + data.id + '/' + pet.id"
-                      routerDirection="forward"
                       class="ion-margin-top edit"
                       size="small"
                       expand="block"
-                      >Edit</ion-button
+                      (click)="onEdit(id, pet, i)"
+                      [disabled]="pet.editLoading"
                     >
+                      <ion-spinner
+                        *ngIf="pet.editLoading"
+                        name="crescent"
+                      ></ion-spinner>
+                      <span *ngIf="!pet.editLoading">Edit</span>
+                    </ion-button>
                   </ion-col>
                   <ion-col size="6" class="ion-no-padding">
                     <ion-button
-                      (click)="onDelete(pet.id)"
+                      (click)="onDelete(pet.id, i)"
+                      [disabled]="pet.deleteLoading"
                       color="danger"
                       class="ion-margin-top delete"
                       size="small"
                       expand="block"
-                      >Hapus</ion-button
                     >
+                      <ion-spinner
+                        *ngIf="pet.deleteLoading"
+                        name="crescent"
+                      ></ion-spinner>
+                      <span *ngIf="!pet.deleteLoading">Hapus</span>
+                    </ion-button>
                   </ion-col>
                 </ion-row>
 
@@ -216,13 +231,28 @@
                     class="ion-margin-top buy"
                     size="small"
                     expand="block"
-                    >Beli</ion-button
+                    [disabled]="pet.formLoading"
+                    (click)="onCheckOut(pet.id, i)"
                   >
+                    <ion-spinner
+                      *ngIf="pet.formLoading"
+                      name="crescent"
+                    ></ion-spinner>
+                    <span *ngIf="!pet.formLoading">Beli</span>
+                  </ion-button>
                 </ng-template>
               </ion-card-content>
             </ion-card>
           </ion-col>
         </ng-container>
+        <ion-infinite-scroll
+          threshold="5%"
+          (ionInfinite)="loadData($event)"
+          *ngIf="!loading2 && pets.length"
+        >
+          <ion-infinite-scroll-content loadingSpinner="crescent">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </ng-container>
     </ion-row>
   </div>

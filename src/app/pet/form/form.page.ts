@@ -8,7 +8,7 @@ import { ToastService } from 'src/services/toast.service';
 import { ActivatedRoute } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { UploadService } from 'src/services/upload.service';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 
 
 
@@ -56,7 +56,12 @@ export class FormPage implements OnInit {
   public isEdit: boolean = false;
   public loading: boolean = false;
 
+  props: any = {};
+  isModal: boolean = false;
+  shop_id: number = 0;
+
   constructor(
+    private modalController: ModalController,
     private _apiService: ApiService,
     private _uploadService: UploadService,
     private toast: ToastService,
@@ -73,6 +78,14 @@ export class FormPage implements OnInit {
    }
 
   ngOnInit() {
+    if(Object.keys(this.props).length){
+      this.isEdit = true;
+      this.petId = this.props.data.id;
+      this.setValue(this.props.data);
+    }
+
+    if(this.shop_id)  this.shopId = this.shop_id
+
   }
 
   getDetail(){
@@ -82,46 +95,51 @@ export class FormPage implements OnInit {
     ).then((res) => {
       if(res.statusCode == 200){
         const data = res.data
-        this.name = data.name
-        this.description = data.description;
-        this.description_url = data.description_url;
-        this.gender = data.gender;
-
-        const age = data.age.split(' ');
-        this.age = age[0];
-        this.ageType = age[1];
-        this.weight = data.weight;
-
-        this.selectedCategory = {
-          id: data.category_id,
-          name: data.category?.name
-        }
-        this.images = _.map(JSON.parse(data.images), (d) => {
-          return { type: 'edit', file: d }
-        })
-
-        if(data.discount_type){
-          this.withDiscount = true;
-          this.discountType = data.discount_type;
-          this.discountPercent = data.discount_percent
-          this.discountAmount = data.discount_amount
-        }
-
-        this.price = data.price.toString();
-        this.stock = data.stock
-        this.tags = _.map(data.tags.split(', '), (d) => {
-          return {
-            display: d,
-            value: d
-          }
-        });
-        this.display = data.display;
+        this.setValue(data)
+        
       }
     }).catch((err) => {
       this.toast.handleError(err)
     }).finally(() => {
       this.loading = false
     })
+  }
+
+  setValue(data: any){
+    this.name = data.name
+    this.description = data.description;
+    this.description_url = data.description_url;
+    this.gender = data.gender;
+
+    const age = data.age.split(' ');
+    this.age = age[0];
+    this.ageType = age[1];
+    this.weight = data.weight;
+
+    this.selectedCategory = {
+      id: data.category_id,
+      name: data.category?.name
+    }
+    this.images = _.map(JSON.parse(data.images), (d) => {
+      return { type: 'edit', file: d }
+    })
+
+    if(data.discount_type){
+      this.withDiscount = true;
+      this.discountType = data.discount_type;
+      this.discountPercent = data.discount_percent
+      this.discountAmount = data.discount_amount
+    }
+
+    this.price = data.price.toString();
+    this.stock = data.stock
+    this.tags = _.map(data.tags.split(', '), (d) => {
+      return {
+        display: d,
+        value: d
+      }
+    });
+    this.display = data.display;
   }
 
   async onSave(){
@@ -195,8 +213,14 @@ export class FormPage implements OnInit {
     ).then((res) => {
       if(res.statusCode == 200 || res.statusCode == 201){
         this.toast.success(res.message);
-        localStorage.setItem('reload_page', 'TRUE')
-        this.back();
+
+        if(!this.isModal){
+          localStorage.setItem('reload_page', 'TRUE')
+          this.back();
+        } else {
+          this.modalController.dismiss({ reload: true})
+        }
+
       }
     }).catch((err) => {
       this.toast.handleError(err)
@@ -283,8 +307,11 @@ export class FormPage implements OnInit {
   }
 
   back(){
-    
-    this.navController.navigateBack('/shop/detail/' + this.shopId)
+    if(!this.isModal){
+      this.navController.back()
+    } else {
+      this.modalController.dismiss();
+    }
   }
 
 }

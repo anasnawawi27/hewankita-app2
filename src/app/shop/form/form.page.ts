@@ -18,7 +18,7 @@ import {
 } from 'ngx-image-cropper';
 
 import { Capacitor } from '@capacitor/core';
-import { LoadingController, NavController } from '@ionic/angular';
+import { LoadingController, ModalController, NavController } from '@ionic/angular';
 import { UploadService } from 'src/services/upload.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -70,12 +70,18 @@ export class FormPage implements OnInit {
   public loading: boolean = false;
   public isEdit: boolean = false;
 
+  isModal: boolean = false
+  shop_id: number = 0
+
+  public edited: boolean = false;
+
   constructor(
     private _apiService: ApiService,
     private toast: ToastService,
     private route: ActivatedRoute,
     private _uploadService: UploadService,
     private navController: NavController,
+    private modalController: ModalController,
     private loadingController: LoadingController
   ) { 
     this.id = this.route.snapshot.params['id'];
@@ -86,6 +92,11 @@ export class FormPage implements OnInit {
   }
 
   ngOnInit() {
+    if(this.shop_id){
+      this.id = this.shop_id
+      this.isEdit = true;
+      this.getDetail();
+    } 
   }
 
   getDetail(){
@@ -191,6 +202,8 @@ export class FormPage implements OnInit {
         this.user = res.data;
         localStorage.setItem('hewanKitaUserMobile', JSON.stringify(res.data));
         this.toast.success(res.message);
+
+        if(this.isModal && res.statusCode == 200) this.edited = true;
       } else {
         this.toast.error(res.message);
       }
@@ -425,7 +438,17 @@ export class FormPage implements OnInit {
   }
 
   back(){
+    if(!this.isModal){
       this.navController.back()
+    } else {
+      if(this.edited){
+        this.modalController.dismiss({ reload: true})
+      } else {
+        this.modalController.dismiss()
+      }
+     
+    }
+      
   }
 
 }
