@@ -103,7 +103,7 @@ export class HomePage implements OnInit {
           const currentURL = this._router.url.substring(1);
           this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}')
           if(currentURL == 'home'){
-            this.initEverything();
+            this.getNotifCount();
           }
 
           this.listenNotifications();
@@ -315,6 +315,8 @@ export class HomePage implements OnInit {
 
   addFav(pet_id: number, index: number, type: string, typeParam: string, user_id = '', device_id = ''){
 
+    this.toast.loading('Mohon Tunggu...');
+
     const payload: any = { type, pet_id }
     if(user_id) payload['user_id'] = user_id
     if(device_id) payload['device_id'] = device_id
@@ -339,6 +341,8 @@ export class HomePage implements OnInit {
       }
     }).catch((err) => {
       this.toast.handleError(err)
+    }).finally(() => {
+      this.toast.close('loading')
     })
   }
 
@@ -459,7 +463,7 @@ export class HomePage implements OnInit {
 
   getNotifCount(){
     lastValueFrom(
-      this._apiService.get('notification/count-unseen', {})
+      this._apiService.get('notification/count-unseen', { user_id: this.user.id })
     ).then((res) => {
       if(res.statusCode == 200){
         this.notifCount = res.data

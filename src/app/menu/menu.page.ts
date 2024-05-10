@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/services/api.service';
+import { FavCountService } from 'src/services/fav-count.service';
 import { ToastService } from 'src/services/toast.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class MenuPage implements OnInit {
   public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
   
   constructor(
+    private favService: FavCountService,
     private toast: ToastService,
     private loadingController: LoadingController,
     private _apiService: ApiService,
@@ -80,6 +82,7 @@ export class MenuPage implements OnInit {
           localStorage.removeItem('favourite-count');
           localStorage.removeItem('notification-count');
 
+          this.favService.setFavCount(0);
           this.toast.success(res.message);
           this.navController.navigateForward('/auth/login');
         }

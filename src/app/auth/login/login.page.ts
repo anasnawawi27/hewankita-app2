@@ -113,13 +113,12 @@ export class LoginPage implements OnInit {
       const modal = await this.modalController.create({
         mode: 'ios',
         component: RegisterPage,
-        componentProps: { isModal: true }
+        componentProps: { isModal: true, notFromInit: true }
       })
 
       await modal.present();
       await modal.onDidDismiss().then((o) => {
-        if(this.isModal){
-          // this.modalController.dismiss({ reloadUser: true })
+        if(o.data?.authenticate){
           this.modalController.dismiss({ authenticate: true })
         }
       })

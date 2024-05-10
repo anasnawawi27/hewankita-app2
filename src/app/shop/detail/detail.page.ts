@@ -209,6 +209,8 @@ export class DetailPage implements OnInit {
   }
 
   addFav(pet_id: number, index: number, user_id = '', device_id = ''){
+    this.toast.loading('Mohon Tunggu...');
+    
     const type = this.pets[index].favourite == null ? 'add' : 'delete';
     const payload: any = { type, pet_id }
 
@@ -225,6 +227,8 @@ export class DetailPage implements OnInit {
       }
     }).catch((err) => {
       this.toast.handleError(err)
+    }).finally(() => {
+      this.toast.close('loading')
     })
   }
 

@@ -39,6 +39,8 @@ export class VerificationPage implements OnInit {
 
   public deviceId: any;
 
+  notFromInit: boolean = false;
+
   constructor(
     private toast: ToastService,
     private _apiService: ApiService,
@@ -85,8 +87,13 @@ export class VerificationPage implements OnInit {
         localStorage.setItem('hewanKitaUserMobile', JSON.stringify(res.data.account));
 
         this.toast.success(res.message);
-        this.modalController.dismiss();
+        if(this.notFromInit){
+          this.modalController.dismiss({ authenticate: true });
+        } else {
+          this.modalController.dismiss();
+        }
         this.navController.navigateForward('/home');
+
       } else {
         this.toast.error(res.message)
       }

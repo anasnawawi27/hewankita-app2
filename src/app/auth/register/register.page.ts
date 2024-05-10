@@ -87,8 +87,8 @@ export class RegisterPage implements OnInit {
           })
           await modal.present();
           await modal.onDidDismiss().then((o) => {
-            if(this.isModal){
-              this.modalController.dismiss()
+            if(o.data?.authenticate){
+              this.modalController.dismiss({ authenticate: true });
             }
           })
 

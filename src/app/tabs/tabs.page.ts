@@ -48,6 +48,7 @@ export class TabsPage implements OnDestroy {
   }
 
   ionViewDidEnter(){
+
     if(localStorage.getItem('unseen-message-count')){
       this.unseenCount = parseInt(JSON.parse(localStorage.getItem('unseen-message-count') || '0'))
     }
@@ -63,13 +64,12 @@ export class TabsPage implements OnDestroy {
     if(Object.keys(this.user).length){
       this.getUnseen();
       this.getFavCount();
+      this.listenMessages();
     }
-    this.listenMessages();
     this.listenDeviceEvent();
   }
 
   getFavCount(){
-
     lastValueFrom(this._apiService.get('get-fav-count', { user_id: this.user.id })).then((res) => {
         if(res.statusCode == 200){
             this.favCount = res.data;
@@ -105,6 +105,8 @@ export class TabsPage implements OnDestroy {
   }
 
   listenMessages(){
+    this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
+    console.warn('init updateUnseen-' + this.user.id, this.user)
     this.pusherService.channel.bind('updateUnseen-' + this.user.id, (chat: any) => {
       this.unseenCount = chat.data
       localStorage.setItem('unseen-message-count',  JSON.stringify(this.unseenCount))
@@ -127,6 +129,22 @@ export class TabsPage implements OnDestroy {
           localStorage.setItem('favourite-count',  JSON.stringify(this.favCount))
         }
       });
+
+
+      this.pusherService.channel.bind('event-device-' + this.deviceId.identifier, (d: any) => {
+        if(d.data == 'reload'){
+          this.favService.favCount.pipe(takeUntil(this._unsubscribeAll)).subscribe((res: number) => {
+            if (_.isNumber(res)) {
+              this.favCount = res
+              localStorage.setItem('favourite-count',  JSON.stringify(this.favCount))
+              console.warn('service ' + this.favCount)
+            }
+          });
+         
+          this.listenMessages();
+        }
+      });
+
     }
   }
 
