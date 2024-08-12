@@ -33,6 +33,20 @@
         <small>Email</small>
         <h6>{{ data.email }}</h6>
       </div>
+
+      <div class="detail ion-margin-top">
+        <small>Level</small>
+        <div class="flex-center mt-10px" style="margin-bottom: 20px">
+          <ng-icon
+            size="20"
+            [name]="data.level == 'superadmin' ? 'hugeUserSettings01' : 'hugeUserEdit01'"
+            [color]="'#2dd36f'"
+          ></ng-icon>
+          <span class="ft-15 d-block ml-5px ion-text-capitalize"
+            >{{ data.level }}</span
+          >
+        </div>
+      </div>
       <div class="detail ion-margin-top border-bottom">
         <small>Status</small>
         <div class="flex-center mt-10px" style="margin-bottom: 20px">
@@ -51,7 +65,7 @@
 </ion-content>
 <ion-toolbar *ngIf="!loading" class="common-toolbar" slot="end">
   <ion-row>
-    <ion-col *ngIf="user.id !== data.id" size="6">
+    <ion-col *ngIf="user.id !== data.id && user.level == 'superadmin'" size="6">
       <ion-button
         mode="ios"
         expand="block"
@@ -64,7 +78,9 @@
         Hapus
       </ion-button>
     </ion-col>
-    <ion-col [size]="user.id !== data.id ? '6' : '12'">
+    <ion-col
+      [size]="user.id !== data.id && user.level == 'superadmin' ? '6' : '12'"
+    >
       <ion-button
         (click)="onEdit()"
         mode="ios"

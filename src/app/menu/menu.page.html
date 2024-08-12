@@ -68,7 +68,7 @@
       </ion-item>
     </ion-list>
 
-    <ng-container *ngIf="user.level == 'admin'">
+    <ng-container *ngIf="user.level == 'admin' || user.level == 'superadmin'">
       <h6 class="title">Admin</h6>
       <ion-list mode="ios" [inset]="true">
         <ion-item

@@ -5,16 +5,17 @@ import { DetailPage as DetailPageChat }  from 'src/app/chats/detail/detail.page'
 
 import * as _ from 'lodash';
 
-import { PusherService } from 'src/services/pusher.service';
-import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/services/api.service';
+import { ChatService } from 'src/services/chat.service';
+import { Socket } from 'ngx-socket-io';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-chats',
   templateUrl: './chats.page.html',
   styleUrls: ['./chats.page.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [PusherService, ApiService]
+  providers: [ChatService, ApiService]
 })
 export class ChatsPage implements OnInit {
 
@@ -23,21 +24,52 @@ export class ChatsPage implements OnInit {
   public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
   
   constructor(
-    private pusherService: PusherService,
+    private socket: Socket,
     private toast: ToastService,
-    private _apiService: ApiService,
+    private chatService: ChatService,
     private modalController: ModalController,
     private navController: NavController
   ) { }
 
   ngOnInit() {
     this.getChats();
-    this.listenMessages()
+    this.listenMessages();
+    this.listenUnseenChat();
+    this.listenUpdateChat();
+  }
+
+  listenUpdateChat(){
+    this.chatService.getUpdateChat().subscribe((chat: any) => {
+      if(Object.keys(chat).length){
+        const list = chat.list;
+        const index = _.findIndex(this.chats, (d: any) => d.id == list.id );
+        if(index < 0){
+          this.chats.push(list)
+        } else {
+          this.chats[index] = list
+        }
+      }
+    })
+  }
+
+  listenUnseenChat(){
+    this.chatService.getUnseenChat().subscribe((chat: any) => {
+      if(Object.keys(chat).length){
+        const list = chat.list;
+        const index = _.findIndex(this.chats, (d: any) => d.id == list.id );
+        if(index < 0){
+          this.chats.push(list)
+        } else {
+          this.chats[index] = list
+        }
+      }
+    })
   }
 
   async getChats(){
     this.loading = true;
-    lastValueFrom(this._apiService.get('chat', {}))
+    await fetch(environment.chatUrl + 'chat?user_id=' + this.user.id)
+    .then(response => response.json())
     .then(res => {
         if(res.statusCode == 200){
           this.chats = res.data
@@ -51,33 +83,32 @@ export class ChatsPage implements OnInit {
   }
 
   listenMessages(){
-    this.pusherService.channel.bind('chatListUpdate-' + this.user.id, (chat: any) => {
-
-      const list = JSON.parse(chat.data);
-      const index = _.findIndex(this.chats, (d: any) => d.id == list.id );
-
-      if(index < 0){
-        this.chats.push(list)
-      } else {
-        this.chats[index] = list
+    this.chatService.getMessages().subscribe((chat: any) => {
+      if(Object.keys(chat).length){
+        const list = chat.list;
+        const index = _.findIndex(this.chats, (d: any) => d.id == list.id );
+        if(index < 0){
+          this.chats.push(list)
+        } else {
+          this.chats[index] = list
+        }
       }
-
-    });
+    })
   }
 
   async onOpenDetail(chat: any){
-    let header = null;
+    let heading = null;
     const sender_id = this.user.id
     let receiver_id = null;
 
     if(chat.sender_id == this.user.id){
-      header = {
+      heading = {
         profile_image: chat.shop.profile_image,
         name: chat.shop?.shop?.name || chat.shop.fullname,
       }
       receiver_id = chat.shop.id
     } else {
-      header = {
+      heading = {
         profile_image: chat.user.profile_image,
         name: chat.user.fullname,
       }
@@ -89,7 +120,7 @@ export class ChatsPage implements OnInit {
       mode: 'ios',
       component: DetailPageChat,
       componentProps: {
-        params: { header, sender_id, receiver_id }
+        params: { heading, sender_id, receiver_id }
       }
     })
     await modal.present()

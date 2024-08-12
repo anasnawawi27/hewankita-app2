@@ -73,7 +73,7 @@ import { FormPage as FormAdmins } from './admins/form/form.page';
       heroCheckBadgeSolid
     }),
     PickerComponent,
-    MenuPageRoutingModule
+    MenuPageRoutingModule,
   ],
   declarations: [MenuPage, ProfilePage, ShopPage, DetailPage, SettingsPage, CategoriesPage, AddressPage, FormPage, BannersPage, FormBannerPage, ChangePasswordPage, AdminsPage, DetailAdmins, FormAdmins]
 })

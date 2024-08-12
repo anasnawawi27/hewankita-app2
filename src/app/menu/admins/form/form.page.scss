@@ -7,3 +7,25 @@
     height: 100px !important; 
     width: 100% !important
 }
+
+.btn-options{
+    display: flex;
+    button{
+        padding: 10px 15px;
+        background: #efefef;
+        border-radius: 20px;
+
+        &.active{
+            padding: 10px 15px;
+            background: var(--ion-color-primary);
+            color: white;
+            border-radius: 20px;
+        }
+    }
+}
+.active{
+    border: 1px solid var(--ion-color-primary);
+    color: var(--ion-color-primary);
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+}

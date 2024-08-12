@@ -45,6 +45,27 @@
       </ion-item>
     </div>
 
+    <div *ngIf="user.level == 'superadmin'" class="input ion-margin-bottom">
+      <ion-label class="input-title">Level</ion-label>
+      <div class="btn-options">
+        <button
+          (click)="input.level = 'admin'"
+          [class.active]="input.level == 'admin'"
+          type="button"
+          class="mr-10px"
+        >
+          Admin
+        </button>
+        <button
+          (click)="input.level = 'superadmin'"
+          [class.active]="input.level == 'superadmin'"
+          type="button"
+        >
+          Super Admin
+        </button>
+      </div>
+    </div>
+
     <div class="input ion-margin-bottom">
       <ion-label class="input-title">Password</ion-label>
       <ion-item class="input-outline ion-no-margin" lines="none">

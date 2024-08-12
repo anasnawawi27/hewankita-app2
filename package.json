@@ -45,6 +45,7 @@
     "@ng-icons/core": "^27.3.1",
     "@ng-icons/font-awesome": "^27.3.1",
     "@ng-icons/heroicons": "^27.3.1",
+    "@ng-icons/huge-icons": "^29.3.0",
     "@ng-icons/iconsax": "^27.3.1",
     "@ng-icons/lucide": "^27.3.1",
     "@ngneat/overview": "^6.0.0",

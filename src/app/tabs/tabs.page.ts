@@ -7,14 +7,16 @@ import * as _ from 'lodash';
 import { FavCountService } from 'src/services/fav-count.service';
 import { Subject, lastValueFrom, takeUntil } from 'rxjs';
 import { ApiService } from 'src/services/api.service';
-import { PusherService } from 'src/services/pusher.service';
 import { Device } from '@capacitor/device';
+import { environment } from 'src/environments/environment';
+import { ChatService } from 'src/services/chat.service';
+import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
-  providers: [ApiService, PusherService]
+  providers: [ApiService, ChatService]
 })
 export class TabsPage implements OnDestroy {
 
@@ -27,11 +29,13 @@ export class TabsPage implements OnDestroy {
   public deviceId: any;
 
   constructor(
+    private socket: Socket,
+    private chatService: ChatService,
     private _apiService: ApiService,
-    private pusherService: PusherService,
     private favService: FavCountService,
     private toast: ToastService,
     private router: Router) {
+      
       this._unsubscribeAll = new Subject<void>();
       this.router.events.subscribe((event: any) => {
         if (event instanceof NavigationEnd) {
@@ -55,8 +59,6 @@ export class TabsPage implements OnDestroy {
 
     if(localStorage.getItem('favourite-count')){
       this.favCount = parseInt(JSON.parse(localStorage.getItem('favourite-count') || '0'))
-
-      console.warn('local storage view enter ' + this.favCount)
     }
 
 
@@ -74,14 +76,12 @@ export class TabsPage implements OnDestroy {
         if(res.statusCode == 200){
             this.favCount = res.data;
             localStorage.setItem('favourite-count',  JSON.stringify(this.favCount))
-            console.warn('function get ' + this.favCount)
 
             this.favService.setFavCount(res.data);
             this.favService.favCount.pipe(takeUntil(this._unsubscribeAll)).subscribe((res: number) => {
               if (_.isNumber(res)) {
                 this.favCount = res
                 localStorage.setItem('favourite-count',  JSON.stringify(this.favCount))
-                console.warn('service ' + this.favCount)
               }
             });
 
@@ -94,56 +94,58 @@ export class TabsPage implements OnDestroy {
   }
 
   async getUnseen(){
-    lastValueFrom(this._apiService.get('chat/unseen-count', { user_id: this.user.id})).then((res) => {
-      if(res.statusCode == 200){
-        this.unseenCount = res.data;
-        localStorage.setItem('unseen-message-count',  JSON.stringify(this.unseenCount))
-      }
-    }).catch((err) => {
-        this.toast.handleError(err)
+    await fetch(environment.chatUrl + 'chat?user_id=' + this.user.id)
+    .then(response => response.json())
+    .then(res => {
+        if(res.statusCode == 200){
+          this.unseenCount = _.reduce(res.data, (sum, obj) => sum + obj.unseen, 0);
+        }
+    } )
+    .catch((err) => {
+      this.toast.handleError(err)
     })
   }
 
   listenMessages(){
     this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
-    console.warn('init updateUnseen-' + this.user.id, this.user)
-    this.pusherService.channel.bind('updateUnseen-' + this.user.id, (chat: any) => {
-      this.unseenCount = chat.data
+    this.chatService.badgeChatTab().subscribe((unseenChatCount: any) => {
+      this.unseenCount = unseenChatCount
       localStorage.setItem('unseen-message-count',  JSON.stringify(this.unseenCount))
-    });
+    })
+
   }
 
   async listenDeviceEvent(){
     if(!Object.keys(this.user).length){
       this.deviceId = await Device.getId();
 
-      this.pusherService.channel.bind('update-badge-' + this.deviceId.identifier, (d: any) => {
-        if(d.data){
-          const data = JSON.parse(d.data);
-          this.unseenCount = data.messageCount;
-          this.favCount = data.favCount
+      // this.pusherService.channel.bind('update-badge-' + this.deviceId.identifier, (d: any) => {
+      //   if(d.data){
+      //     const data = JSON.parse(d.data);
+      //     this.unseenCount = data.messageCount;
+      //     this.favCount = data.favCount
 
-          console.warn('listener ' + this.favCount)
+      //     console.warn('listener ' + this.favCount)
 
-          localStorage.setItem('unseen-message-count',  JSON.stringify(this.unseenCount))
-          localStorage.setItem('favourite-count',  JSON.stringify(this.favCount))
-        }
-      });
+      //     localStorage.setItem('unseen-message-count',  JSON.stringify(this.unseenCount))
+      //     localStorage.setItem('favourite-count',  JSON.stringify(this.favCount))
+      //   }
+      // });
 
 
-      this.pusherService.channel.bind('event-device-' + this.deviceId.identifier, (d: any) => {
-        if(d.data == 'reload'){
-          this.favService.favCount.pipe(takeUntil(this._unsubscribeAll)).subscribe((res: number) => {
-            if (_.isNumber(res)) {
-              this.favCount = res
-              localStorage.setItem('favourite-count',  JSON.stringify(this.favCount))
-              console.warn('service ' + this.favCount)
-            }
-          });
+      // this.pusherService.channel.bind('event-device-' + this.deviceId.identifier, (d: any) => {
+      //   if(d.data == 'reload'){
+      //     this.favService.favCount.pipe(takeUntil(this._unsubscribeAll)).subscribe((res: number) => {
+      //       if (_.isNumber(res)) {
+      //         this.favCount = res
+      //         localStorage.setItem('favourite-count',  JSON.stringify(this.favCount))
+      //         console.warn('service ' + this.favCount)
+      //       }
+      //     });
          
-          this.listenMessages();
-        }
-      });
+      //     this.listenMessages();
+      //   }
+      // });
 
     }
   }

@@ -38,14 +38,12 @@
           </ng-container>
         </h6>
 
-        <p [class.ion-text-bold]="chat.unseen.length">
-          {{ chat.last_message }}
-        </p>
+        <p [class.ion-text-bold]="chat.unseen">{{ chat.last_message }}</p>
       </div>
       <div slot="end" class="mr-10px">
         <span class="updated-at">{{ chat.updated_at | date: 'HH:mm'}}</span>
-        <span *ngIf="chat.unseen.length" class="badge unseen-chat"
-          >{{ chat.unseen.length }}</span
+        <span *ngIf="chat.unseen" class="badge unseen-chat"
+          >{{ chat.unseen }}</span
         >
       </div>
     </ion-item>

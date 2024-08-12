@@ -36,6 +36,7 @@ export class FormPage implements OnInit {
     is_active: true,
     profile_image: '',
     password: '',
+    level: 'admin'
   }
 
   public image: any= {
@@ -44,6 +45,8 @@ export class FormPage implements OnInit {
   }
 
   props: any = {}
+  public user: any = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}');
+  
   constructor(
     private _apiService: ApiService,
     private toast: ToastService,
@@ -60,6 +63,7 @@ export class FormPage implements OnInit {
       this.input.email = this.props.email
       this.input.phone_number = this.props.phone_number
       this.input.is_active = this.props.is_active ? true : false;
+      this.input.level = this.props.level
 
       if(this.props.profile_image){
         this.input.profile_image = this.props.profile_image;
@@ -74,7 +78,7 @@ export class FormPage implements OnInit {
     this.formSubmitted = true;
     if(
       !this.input.fullname ||
-      !this.input.email ||
+      !this.input.email || !this.input.level ||
       (!this.isEdit && !this.input.password)
     ) return
 

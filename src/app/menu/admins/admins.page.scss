@@ -30,4 +30,12 @@ app-admins{
         //     left: -10px;
         // }
       }
+
+      .badge-admin{
+        background: var(--ion-color-primary-shade);
+        padding: 5px 10px;
+        position: absolute;
+        right: 0;
+        border-radius: 5px 0 0 5px;
+      }
 }

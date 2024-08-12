@@ -10,16 +10,16 @@ import { Capacitor } from '@capacitor/core';
 import { environment } from 'src/environments/environment';
 import { SearchPage } from '../search/search.page';
 import { FavCountService } from 'src/services/fav-count.service';
-import { PusherService } from 'src/services/pusher.service';
 import { Device } from '@capacitor/device';
 import { LoginPage } from '../auth/login/login.page';
 import { Router } from '@angular/router';
+import { NotificationService } from 'src/services/notification.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  providers: [ApiService, PusherService],
+  providers: [ApiService, NotificationService],
   encapsulation: ViewEncapsulation.None
 })
 export class HomePage implements OnInit {
@@ -48,10 +48,10 @@ export class HomePage implements OnInit {
 
   constructor(
     private _router: Router,
-    private pusherService: PusherService,
     private favService: FavCountService,
     private navController: NavController,
     private modalController: ModalController,
+    private _notificationService: NotificationService,
     private _apiService: ApiService,
     private toast: ToastService
   ) {
@@ -69,7 +69,7 @@ export class HomePage implements OnInit {
 
   listenNotifications(){
     if(Object.keys(this.user).length){
-      this.pusherService.channel.bind('notificationsUser-' + (this.user.level == 'admin' ? 'admin' : this.user.id), (d: any) => {
+      this._notificationService.getNotif('notificationsUser-' + (this.user.level == 'admin' ? 'admin' : this.user.id)).subscribe((d: any) => {
         this.notifCount = d.data;
         localStorage.setItem('notification-count', JSON.stringify(this.notifCount))
         
@@ -88,7 +88,8 @@ export class HomePage implements OnInit {
             if(banner.display) this.banners.unshift(banner)
           }
         }
-      });
+      })
+      
     }
   }
 
@@ -97,8 +98,7 @@ export class HomePage implements OnInit {
     if(!Object.keys(this.user).length){
       this.deviceId = await Device.getId();
 
-      this.pusherService.channel.bind('event-device-' + this.deviceId.identifier, (d: any) => {
-        console.warn('event ' + d.data)
+      this._notificationService.getNotif('event-device-' + this.deviceId.identifier).subscribe((d: any) => {
         if(d.data == 'reload'){
           const currentURL = this._router.url.substring(1);
           this.user = JSON.parse(localStorage.getItem('hewanKitaUserMobile') || '{}')
@@ -110,15 +110,15 @@ export class HomePage implements OnInit {
         } else {
           this.initEverything();
         }
-      });
+      })
 
-      this.pusherService.channel.bind('update-badge-' + this.deviceId.identifier, (d: any) => {
+      this._notificationService.getNotif('update-badge-' + this.deviceId.identifier).subscribe((d: any) => {
         if(d.data){
           const data = JSON.parse(d.data);
           this.notifCount = data.notifCount
           localStorage.setItem('notification-count', JSON.stringify(this.notifCount))
         }
-      });
+      })
     }
   }
 
