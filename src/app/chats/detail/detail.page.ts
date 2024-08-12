@@ -26,7 +26,10 @@ export class DetailPage implements OnInit {
   @ViewChild('content') private content: any;
 
   public data: any =  {
-    header: {}
+    heading: {
+      profile_image: '',
+      name: ''
+    }
   }
   public pet: any = null
 
